@@ -3,8 +3,8 @@ package game;
 import java.awt.Graphics2D;
 
 public class Teleporter extends Projectile {
-	public Teleporter(Lander firedBy, Vector position, Vector velocity, GameController gameController) {
-		super(firedBy, position, velocity, gameController);
+	public Teleporter(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
+		super(firedBy, position, velocity, mapManager);
 	}
 
 	@Override

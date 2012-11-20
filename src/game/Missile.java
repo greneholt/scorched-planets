@@ -3,8 +3,8 @@ package game;
 import java.awt.Graphics2D;
 
 public class Missile extends Projectile {
-	public Missile(Lander firedBy, Vector position, Vector velocity, GameController gameController) {
-		super(firedBy, position, velocity, gameController);
+	public Missile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
+		super(firedBy, position, velocity, mapManager);
 	}
 
 	@Override
@@ -27,7 +27,11 @@ public class Missile extends Projectile {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		// TODO Auto-generated method stub
-		
+		mapManager.makeExplosion(position, BLAST_RADIUS, YIELD);
+		mapManager.removePhysicsObject(this);
+		mapManager.removeRenderable(this);
 	}
+	
+	private static final float BLAST_RADIUS = 20;
+	private static final float YIELD = 40;
 }

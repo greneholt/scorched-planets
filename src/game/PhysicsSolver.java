@@ -15,20 +15,20 @@ public class PhysicsSolver {
 		staticObjects = new LinkedList<StaticObject>();
 	}
 
-	public void addStaticObject(StaticObject object) {
-		staticObjects.add(object);
+	public void addObject(PhysicsObject object) {
+		if (object instanceof DynamicObject) {
+			dynamicObjects.add((DynamicObject) object);
+		} else if (object instanceof StaticObject) {
+			staticObjects.add((StaticObject) object);
+		}
 	}
 
-	public void addDynamicObject(DynamicObject object) {
-		dynamicObjects.add(object);
-	}
-
-	public void removeStaticObject(StaticObject object) {
-		staticObjects.remove(object);
-	}
-
-	public void removeDynamicObject(DynamicObject object) {
-		dynamicObjects.remove(object);
+	public void removeObject(PhysicsObject object) {
+		if (object instanceof DynamicObject) {
+			dynamicObjects.remove((DynamicObject) object);
+		} else if (object instanceof StaticObject) {
+			staticObjects.remove((StaticObject) object);
+		}
 	}
 
 	public void simulateStep(float timeStep) {

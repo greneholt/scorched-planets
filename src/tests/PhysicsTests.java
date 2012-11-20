@@ -42,8 +42,8 @@ public class PhysicsTests {
 		}
 		MockObject mock1 = new MockObject(new Vector(100, 100), new Vector(0, 0));
 		MockObject mock2 = new MockObject(new Vector(100, 105), new Vector(0, 0));
-		physics.addDynamicObject(mock1);
-		physics.addDynamicObject(mock2);
+		physics.addObject(mock1);
+		physics.addObject(mock2);
 		physics.simulateStep(1);
 
 		assertTrue(mock1.hasCollided);

@@ -1,12 +1,12 @@
 package game;
 
 public abstract class Projectile extends MovableObject implements Renderable {
-	protected GameController gameController;
+	protected MapManager mapManager;
 	protected Lander firedBy;
 	
-	public Projectile(Lander firedBy, Vector position, Vector velocity, GameController gameController) {
+	public Projectile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(position, velocity);
 		this.firedBy = firedBy;
-		this.gameController = gameController;
+		this.mapManager = mapManager;
 	}
 }
