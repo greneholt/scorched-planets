@@ -32,17 +32,7 @@ public class GameSetupTests {
 	
 	@Test
 	public void landerPlacementTest() {
-		/*GameController game = new GameController();
-		game.generatePlanets(4);
-		game.generateLanders();
-		// TODO: initialize the following --> get access to landers generated
-		Lander l1 = null;
-		Lander l2 = null;
-		Planet p1 = l1.getCurrentPlanet();
-		Planet p2 = l2.getCurrentPlanet();*/
 		
-		// check to make sure there are no more than two landers on each planet
-		// check planets with 2 landers to make sure that two landers aren't in same hemisphere
 	}
  
 }
