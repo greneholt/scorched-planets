@@ -8,8 +8,6 @@ import game.Planet;
 
 import java.util.List;
 
-import javax.media.jai.operator.MinDescriptor;
-
 import org.junit.Test;
 
 public class GameSetupTests {
@@ -19,14 +17,13 @@ public class GameSetupTests {
 		MapGenerator gen = new MapGenerator();
 		List<Planet> planets = gen.generatePlanets(5);
 		assertEquals(5, planets.size());
-		
-		for(Planet p1 : planets) {
-			for(Planet p2 : planets) {
-				if(p1 == p2) {
+
+		for (Planet p1 : planets) {
+			for (Planet p2 : planets) {
+				if (p1 == p2) {
 					continue;
 				}
-				
-				
+
 				float distance = p1.getPosition().subtract(p2.getPosition()).magnitude();
 				float minDistance = p1.getRadius() + p2.getRadius() + MapGenerator.MIN_DISTANCE_BETWEEN_PLANETS;
 				assertTrue("planets too close together", distance >= minDistance);
