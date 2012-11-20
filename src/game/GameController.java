@@ -19,4 +19,12 @@ public class GameController {
 	public void runTurn() {
 	}
 
+	public void generatePlanets(int n) {
+		
+	}
+	
+	// generates a lander for each player
+	public void generateLanders() {
+		
+	}
 }
