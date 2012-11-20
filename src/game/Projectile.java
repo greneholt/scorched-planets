@@ -26,6 +26,12 @@ public abstract class Projectile implements DynamicObject {
 		velocity = velocity.add(acceleration.multiply(timeStep));
 		position = position.add(velocity.multiply(timeStep));
 	}
+	
+	public void collidedWith(PhysicsObject other) {
+		if (other instanceof Planet) {
+			//call hit
+		}
+	}
 
 	public abstract void hit(Planet planet, Scene scene);
 }

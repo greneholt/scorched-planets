@@ -21,6 +21,14 @@ public class Vector {
 		return new Vector(x*other, y*other);
 	}
 	
+	public Vector subtract(Vector other) {
+		return new Vector(x - other.x, y - other.y);
+	}
+	
+	public float magnitude() {
+		return (float) Math.sqrt(x*x + y*y);
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
