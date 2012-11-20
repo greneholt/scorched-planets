@@ -1,12 +1,12 @@
 package game;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 	
 	private Lander lander;
 	private int score;
-	private ArrayList<String> killsList;
+	private List<String> killsList;
 	private String name;
 	
 	public Player() {}
@@ -33,7 +33,7 @@ public class Player {
 		this.score = score;
 	}
 
-	public ArrayList<String> getKillsList() {
+	public List<String> getKillsList() {
 		return killsList;
 	}
 	

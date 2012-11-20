@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 
 public class Planet extends StaticObject{
-	
 	private int radius;
 	private Color color;
 	

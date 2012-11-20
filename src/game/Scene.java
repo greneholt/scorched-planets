@@ -1,18 +1,24 @@
 package game;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 
 public class Scene {
+	private List<Renderable> objects;
 	
-	// List of renderables
-	private PhysicsSolver physicsSolver;
-	private Timer timer;
+	public Scene() {
+		objects = new LinkedList<Renderable>();
+	}
 	
-	public Scene() {}
+	public void render(Graphics2D g) {
+		for (Renderable object : objects) {
+			object.render(g);
+		}
+	}
 	
-	public void render(Graphics g) {}
-	
-	public void removeObject(Object object) {}
-
+	public void removeObject(Renderable object) {
+		objects.remove(object);
+	}
 }

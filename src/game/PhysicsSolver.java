@@ -1,22 +1,26 @@
 package game;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PhysicsSolver {
-	
-	private ArrayList<DynamicObject> dynamicObjects;
-	private ArrayList<StaticObject> staticObjects;
-	
-	public PhysicsSolver() {}
-	
-	public PhysicsSolver(ArrayList<DynamicObject> dObject, 
-			ArrayList<StaticObject> sObject) {
-		this.dynamicObjects = dObject;
-		this.staticObjects = sObject;
-	}
-	
-	public void removeObject(Object object) {}
-	
-	public void simulateStep() {}
 
+	private List<DynamicObject> dynamicObjects;
+	private List<StaticObject> staticObjects;
+
+	public PhysicsSolver() {
+		dynamicObjects = new LinkedList<DynamicObject>();
+		staticObjects = new LinkedList<StaticObject>();
+	}
+
+	public void removeStaticObject(StaticObject object) {
+		staticObjects.remove(object);
+	}
+
+	public void removeDynamicObject(DynamicObject object) {
+		dynamicObjects.remove(object);
+	}
+
+	public void simulateStep() {
+	}
 }
