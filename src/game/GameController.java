@@ -5,6 +5,8 @@ import java.util.Timer;
 
 public class GameController {
 
+	public static float MIN_DISTANCE_BETWEEN_PLANETS = 20;
+	
 	private Scene scene;
 	private PhysicsSolver physicsSolver;
 	private List<Player> players;
