@@ -1,15 +1,10 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import game.GameController;
-import game.Lander;
+import static org.junit.Assert.assertTrue;
 import game.MapGenerator;
-import game.PhysicsSolver;
 import game.Planet;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -24,7 +19,7 @@ public class GameSetupTests {
 			for(Planet p2 : planets) {
 				if(!p1.equals(p2)) {
 					assertTrue(p1.getPosition().subtract(p2.getPosition()).magnitude()>= p1.getRadius() 
-							+ p2.getRadius() + game.MIN_DISTANCE_BETWEEN_PLANETS);
+							+ p2.getRadius() + MapGenerator.MIN_DISTANCE_BETWEEN_PLANETS);
 				}
 			}
 		}
