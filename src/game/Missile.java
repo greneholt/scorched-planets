@@ -1,9 +1,7 @@
 package game;
 
-import java.awt.Point;
-
 public class Missile extends Projectile {
-	public Missile(Point position, Point velocity) {
+	public Missile(Vector position, Vector velocity) {
 		super(position, velocity);
 	}
 
@@ -14,6 +12,12 @@ public class Missile extends Projectile {
 
 	@Override
 	public float getMass() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float getBoundingRadius() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

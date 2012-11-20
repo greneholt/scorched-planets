@@ -1,22 +1,21 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Point;
 
 public class Planet implements StaticObject {
-	private int radius;
+	private float radius;
 	private Color color;
 	private float mass;
-	private Point position;
+	private Vector position;
 
-	public Planet(float mass, Point position, int radius, Color color) {
+	public Planet(float mass, Vector position, float radius, Color color) {
 		this.mass = mass;
 		this.position = position;
 		this.radius = radius;
 		this.color = color;
 	}
 
-	public int getRadius() {
+	public float getRadius() {
 		return radius;
 	}
 
@@ -30,8 +29,13 @@ public class Planet implements StaticObject {
 	}
 
 	@Override
-	public Point getPosition() {
+	public Vector getPosition() {
 		return position;
+	}
+
+	@Override
+	public float getBoundingRadius() {
+		return radius;
 	}
 
 }

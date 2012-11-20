@@ -1,19 +1,17 @@
 package game;
 
-import java.awt.Point;
-
 public class Lander implements StaticObject {
-	
+
 	private int health;
 	private Planet currentPlanet;
 	private int angle;
 	private int power;
-	private Point position;
-	
-	public Lander() {}
-	
-	public Lander(int health, Planet planet, int angle,
-			int power, Point position) {
+	private Vector position;
+
+	public Lander() {
+	}
+
+	public Lander(int health, Planet planet, int angle, int power, Vector position) {
 		this.health = health;
 		this.currentPlanet = planet;
 		this.angle = angle;
@@ -42,8 +40,14 @@ public class Lander implements StaticObject {
 	}
 
 	@Override
-	public Point getPosition() {
+	public Vector getPosition() {
 		return position;
+	}
+
+	@Override
+	public float getBoundingRadius() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

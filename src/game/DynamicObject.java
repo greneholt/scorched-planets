@@ -1,12 +1,9 @@
 package game;
 
-import java.awt.Point;
-
-public interface DynamicObject {
-
+public interface DynamicObject extends PhysicsObject {
 	public float getMass();
 
-	public Point getPosition();
+	public Vector getVelocity();
 
-	public Point getVelocity();
+	public void simulateStep(Vector force, float timeStep);
 }

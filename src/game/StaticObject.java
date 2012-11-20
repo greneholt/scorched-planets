@@ -1,8 +1,7 @@
 package game;
 
-import java.awt.Point;
-
-public interface StaticObject {
+public interface StaticObject extends PhysicsObject {
 	public float getMass();
-	public Point getPosition();
+
+	public Vector getPosition();
 }

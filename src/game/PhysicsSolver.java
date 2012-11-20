@@ -12,6 +12,14 @@ public class PhysicsSolver {
 		dynamicObjects = new LinkedList<DynamicObject>();
 		staticObjects = new LinkedList<StaticObject>();
 	}
+	
+	public void addStaticObject(StaticObject object) {
+		staticObjects.add(object);
+	}
+	
+	public void addDynamicObject(DynamicObject object) {
+		dynamicObjects.add(object);
+	}
 
 	public void removeStaticObject(StaticObject object) {
 		staticObjects.remove(object);
@@ -21,6 +29,12 @@ public class PhysicsSolver {
 		dynamicObjects.remove(object);
 	}
 
-	public void simulateStep() {
+	public void simulateStep(float timeStep) {
+		for (DynamicObject object : dynamicObjects) {
+			// sum force on them
+			Vector force = new Vector();
+			
+			object.simulateStep(force, timeStep);
+		}
 	}
 }
