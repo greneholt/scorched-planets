@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.Graphics2D;
+
 public class Teleporter extends Projectile {
 	public Teleporter(Vector position, Vector velocity) {
 		super(position, velocity);
@@ -21,5 +23,11 @@ public class Teleporter extends Projectile {
 	public float getBoundingRadius() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void render(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
 	}
 }

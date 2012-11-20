@@ -1,8 +1,9 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 
-public class Planet implements StaticObject {
+public class Planet implements StaticObject, Renderable {
 	private float radius;
 	private Color color;
 	private float mass;
@@ -36,6 +37,12 @@ public class Planet implements StaticObject {
 	@Override
 	public float getBoundingRadius() {
 		return radius;
+	}
+
+	@Override
+	public void render(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

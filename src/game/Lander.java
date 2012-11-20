@@ -1,6 +1,8 @@
 package game;
 
-public class Lander implements StaticObject {
+import java.awt.Graphics2D;
+
+public class Lander implements StaticObject, Renderable {
 
 	private int health;
 	private Planet currentPlanet;
@@ -48,6 +50,12 @@ public class Lander implements StaticObject {
 	public float getBoundingRadius() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void render(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

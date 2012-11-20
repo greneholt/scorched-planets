@@ -1,6 +1,6 @@
 package game;
 
-public abstract class Projectile extends MovableObject {
+public abstract class Projectile extends MovableObject implements Renderable {
 	public Projectile(Vector position, Vector velocity) {
 		super(position, velocity);
 	}
