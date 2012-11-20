@@ -1,15 +1,12 @@
 package game;
 
 public abstract class Projectile extends MovableObject implements Renderable {
-	public Projectile(Vector position, Vector velocity) {
+	protected GameController gameController;
+	protected Lander firedBy;
+	
+	public Projectile(Lander firedBy, Vector position, Vector velocity, GameController gameController) {
 		super(position, velocity);
+		this.firedBy = firedBy;
+		this.gameController = gameController;
 	}
-
-	public void collidedWith(PhysicsObject other) {
-		if (other instanceof Planet) {
-			//call hit
-		}
-	}
-
-	public abstract void hit(Planet planet, Scene scene);
 }

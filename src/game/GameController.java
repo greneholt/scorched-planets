@@ -24,4 +24,8 @@ public class GameController {
 		// generate landers
 		// assign landers to players
 	}
+	
+	public void explosion(Vector position, float blastRadius, float yield) {
+		
+	}
 }

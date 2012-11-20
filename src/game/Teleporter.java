@@ -3,14 +3,8 @@ package game;
 import java.awt.Graphics2D;
 
 public class Teleporter extends Projectile {
-	public Teleporter(Vector position, Vector velocity) {
-		super(position, velocity);
-	}
-
-	@Override
-	public void hit(Planet planet, Scene scene) {
-		// TODO Auto-generated method stub
-
+	public Teleporter(Lander firedBy, Vector position, Vector velocity, GameController gameController) {
+		super(firedBy, position, velocity, gameController);
 	}
 
 	@Override
@@ -27,6 +21,12 @@ public class Teleporter extends Projectile {
 
 	@Override
 	public void render(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collidedWith(PhysicsObject other) {
 		// TODO Auto-generated method stub
 		
 	}
