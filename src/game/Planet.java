@@ -3,14 +3,15 @@ package game;
 import java.awt.Color;
 import java.awt.Point;
 
-public class Planet extends StaticObject{
+public class Planet implements StaticObject {
 	private int radius;
 	private Color color;
-	
-	public Planet() {}
-	
-	public Planet(int radius, Color color, int mass, Point position) {
-		super(mass, position);
+	private float mass;
+	private Point position;
+
+	public Planet(float mass, Point position, int radius, Color color) {
+		this.mass = mass;
+		this.position = position;
 		this.radius = radius;
 		this.color = color;
 	}
@@ -19,17 +20,18 @@ public class Planet extends StaticObject{
 		return radius;
 	}
 
-	public void setRadius(int radius) {
-		this.radius = radius;
-	}
-
 	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	@Override
+	public float getMass() {
+		return mass;
 	}
-	
-	
+
+	@Override
+	public Point getPosition() {
+		return position;
+	}
+
 }
