@@ -13,7 +13,7 @@ import org.junit.Test;
 public class GameSetupTests {
 
 	@Test
-	public void planetPlacingTest() {
+	public void planetPlacementTest() {
 		MapGenerator gen = new MapGenerator();
 		List<Planet> planets = gen.generatePlanets(5);
 		assertEquals(5, planets.size());
