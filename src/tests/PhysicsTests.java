@@ -1,16 +1,14 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import java.awt.Color;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import game.MovableObject;
 import game.PhysicsObject;
 import game.PhysicsSolver;
 import game.Planet;
-import game.Projectile;
-import game.Scene;
 import game.Vector;
+
+import java.awt.Color;
 
 import org.junit.Test;
 

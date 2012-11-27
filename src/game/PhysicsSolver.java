@@ -32,22 +32,39 @@ public class PhysicsSolver {
 	}
 
 	public void simulateStep(float timeStep) {
+		Set<Collission> collissions = new HashSet<Collission>();
+		
 		for (DynamicObject object : dynamicObjects) {
 			// sum force on them
-			Vector force = new Vector();
+			Vector totalForce = new Vector();
 
-			object.simulateStep(force, timeStep);
+			for (DynamicObject b : dynamicObjects) {
+				if (object == b) {
+					continue;
+				}
+				
+				totalForce.add(gravitationalForce(object, b));
+			}
+			
+			for (StaticObject b : staticObjects) {
+				totalForce = totalForce.add(gravitationalForce(object, b));
+			}
+			
+			object.simulateStep(totalForce, timeStep);
 		}
 
 		for (DynamicObject a : dynamicObjects) {
-			checkCollisions(a, dynamicObjects);
-			checkCollisions(a, staticObjects);
+			checkCollisions(collissions, a, dynamicObjects);
+			checkCollisions(collissions, a, staticObjects);
+		}
+		
+		for (Collission collission : collissions) {
+			collission.a.collidedWith(collission.b);
+			collission.b.collidedWith(collission.a);
 		}
 	}
 	
-	private void checkCollisions(DynamicObject object, List<? extends PhysicsObject> objects) {
-		Set<Collission> collissions = new HashSet<Collission>();
-		
+	private void checkCollisions(Set<Collission> collissions, DynamicObject object, List<? extends PhysicsObject> objects) {
 		for (PhysicsObject b : objects) {
 			if (object == b) {
 				continue;
@@ -56,11 +73,6 @@ public class PhysicsSolver {
 			if (object.getPosition().subtract(b.getPosition()).magnitude() <= (object.getBoundingRadius()+b.getBoundingRadius())) {
 				collissions.add(new Collission(object, b));
 			}
-		}
-		
-		for (Collission collission : collissions) {
-			collission.a.collidedWith(collission.b);
-			collission.b.collidedWith(collission.a);
 		}
 	}
 	
@@ -94,4 +106,14 @@ public class PhysicsSolver {
 			return a.hashCode() ^ b.hashCode();
 		}
 	}
+	
+	// calculates the gravitational force of source on target
+	private Vector gravitationalForce(PhysicsObject target, PhysicsObject source) {
+		Vector direction = source.getPosition().subtract(target.getPosition());
+		float distance = direction.magnitude();
+		
+		return direction.multiply(G * target.getMass() * source.getMass() / (distance * distance * distance));
+	}
+	
+	public static final float G = 20;
 }

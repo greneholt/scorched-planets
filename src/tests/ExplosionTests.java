@@ -1,15 +1,13 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+import static org.junit.Assert.assertTrue;
 import game.Lander;
 import game.MapGenerator;
 import game.MapManager;
-import game.Missile;
 import game.Planet;
 import game.Vector;
+
+import java.util.List;
 
 import org.junit.Test;
 

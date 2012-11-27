@@ -1,7 +1,6 @@
 package game;
 
 public interface DynamicObject extends PhysicsObject {
-	public float getMass();
 
 	public Vector getVelocity();
 
