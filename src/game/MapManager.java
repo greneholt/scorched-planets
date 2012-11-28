@@ -44,6 +44,8 @@ public class MapManager {
 			scene.addObject(planet);
 			physicsSolver.addObject(planet);
 		}
+		
+		scene = new Scene();
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {
