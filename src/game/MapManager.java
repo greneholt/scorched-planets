@@ -34,6 +34,8 @@ public class MapManager {
 		for (Player player : players) {
 			player.setLander(iter.next());
 		}
+		
+		scene = new Scene();
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {
