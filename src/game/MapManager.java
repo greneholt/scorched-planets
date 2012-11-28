@@ -19,9 +19,17 @@ public class MapManager {
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {
-		Explosion explosion = new Explosion();
+		Explosion explosion = new Explosion(position);
 		// add to scene
+		scene.addObject(explosion);
 		// calculate and then apply damages
+		for (Lander p : landers) {
+			float distance = p.getPosition().subtract(position).magnitude();
+			if(distance <= blastRadius) {
+				int damage = (int) ((1 - (distance/blastRadius)*(distance/blastRadius)) * yield);
+				p.setHealth(p.getHealth() - damage);
+			}
+		}
 	}
 
 	public void removeRenderable(Renderable object) {

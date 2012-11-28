@@ -15,10 +15,10 @@ public class ExplosionTests {
 
 	@Test
 	public void varyDamageTest() {
-		MapGenerator gen = new MapGenerator();
-		List<Planet> planets = gen.generatePlanets(2);
-		List<Lander> landers = gen.generateLanders(planets, 2);
 		MapManager manager = new MapManager();
+		manager.setupMap(2, 2);
+		List<Planet> planets = manager.getPlanets;
+		List<Lander> landers = manager.getLanders;
 		assertTrue(landers.size() == 2);
 		assertTrue(planets.size() == 2);
 		Lander a = landers.get(0);

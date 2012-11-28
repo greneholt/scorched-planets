@@ -7,10 +7,11 @@ import java.awt.Graphics2D;
  */
 public class Explosion implements Renderable {
 	private int animationStep;
+	private Vector position;
 	
-	public Explosion(Vector p) {
+	public Explosion(Vector position) {
 		super();
-		
+		this.position = position;
 	}
 	
 	@Override

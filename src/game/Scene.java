@@ -18,6 +18,10 @@ public class Scene {
 		}
 	}
 	
+	public void addObject(Renderable object) {
+		objects.add(object);
+	}
+	
 	public void removeObject(Renderable object) {
 		objects.remove(object);
 	}
