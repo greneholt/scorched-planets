@@ -29,7 +29,7 @@ public class ExplosionTests {
 		// Maybe check to make sure that health = 100?
 		Vector exp1 = a.getPosition().add(new Vector(5,5));
 		Vector exp2 = b.getPosition().add(new Vector(10,10));
-		// TODO: will have to double-check this once we fully implement explosion logic, may have to tweak values
+		
 		manager.makeExplosion(exp1, 40, 40);
 		manager.makeExplosion(exp2, 40, 40);
 		assertTrue("lander a was not damaged", a.getHealth() < Lander.FULL_HEALTH);
