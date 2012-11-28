@@ -28,7 +28,7 @@ public class MapManager {
 	public MapManager(int planetCount, List<Player> players) {
 		scene = new Scene();
 		physicsSolver = new PhysicsSolver();
-		
+
 		MapGenerator gen = new MapGenerator();
 		planets = gen.generatePlanets(planetCount);
 		landers = gen.generateLanders(planets, players.size());
@@ -39,13 +39,11 @@ public class MapManager {
 			scene.addObject(lander);
 			physicsSolver.addObject(lander);
 		}
-		
+
 		for (Planet planet : planets) {
 			scene.addObject(planet);
 			physicsSolver.addObject(planet);
 		}
-		
-		scene = new Scene();
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {
@@ -55,8 +53,8 @@ public class MapManager {
 		// calculate and then apply damages
 		for (Lander p : landers) {
 			float distance = p.getPosition().subtract(position).magnitude();
-			if(distance <= blastRadius) {
-				int damage = (int) ((1 - (distance/blastRadius)*(distance/blastRadius)) * yield);
+			if (distance < blastRadius) {
+				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
 				p.setHealth(p.getHealth() - damage);
 			}
 		}
