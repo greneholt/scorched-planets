@@ -2,11 +2,11 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 import game.Lander;
-import game.MapGenerator;
 import game.MapManager;
-import game.Planet;
+import game.Player;
 import game.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
@@ -15,12 +15,15 @@ public class ExplosionTests {
 
 	@Test
 	public void varyDamageTest() {
+		List<Player> players = new LinkedList<Player>();
+		players.add(new Player("Bob"));
+		players.add(new Player("Tom"));
 		
-		MapManager manager = new MapManager();
-		assertTrue(landers.size() == 2);
-		assertTrue(planets.size() == 2);
-		Lander a = landers.get(0);
-		Lander b = landers.get(1);
+		MapManager manager = new MapManager(2, players);
+		assertTrue(manager.getLanders().size() == 2);
+		assertTrue(manager.getPlanets().size() == 2);
+		Lander a = manager.getLanders().get(0);
+		Lander b = manager.getLanders().get(1);
 		// Maybe check to make sure that health = 100?
 		Vector exp1 = a.getPosition().add(new Vector(5,5));
 		Vector exp2 = b.getPosition().add(new Vector(10,10));

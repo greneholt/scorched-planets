@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class MapManager {
@@ -8,14 +9,31 @@ public class MapManager {
 	private List<Planet> planets;
 	private List<Lander> landers;
 
-	public void setupMap(int planetCount, int landerCount) {
+	public Scene getScene() {
+		return scene;
+	}
+
+	public PhysicsSolver getPhysicsSolver() {
+		return physicsSolver;
+	}
+
+	public List<Planet> getPlanets() {
+		return planets;
+	}
+
+	public List<Lander> getLanders() {
+		return landers;
+	}
+
+	public MapManager(int planetCount, List<Player> players) {
 		MapGenerator gen = new MapGenerator();
 		planets = gen.generatePlanets(planetCount);
-		landers = gen.generateLanders(planets, landerCount);
-		
-		// generate planets
-		// generate landers
-		// assign landers to players
+		landers = gen.generateLanders(planets, players.size());
+
+		Iterator<Lander> iter = landers.iterator();
+		for (Player player : players) {
+			player.setLander(iter.next());
+		}
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {

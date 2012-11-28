@@ -11,9 +11,7 @@ public class Player {
 	
 	public Player() {}
 	
-	public Player(Lander lander, int score, String name) {
-		this.lander = lander;
-		this.score = score;
+	public Player(String name) {
 		this.name = name;
 	}
 
