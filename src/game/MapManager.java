@@ -11,7 +11,9 @@ public class MapManager {
 	}
 
 	public void makeExplosion(Vector position, float blastRadius, float yield) {
-
+		Explosion explosion = new Explosion();
+		// add to scene
+		// calculate and then apply damages
 	}
 
 	public void removeRenderable(Renderable object) {
