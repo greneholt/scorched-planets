@@ -26,13 +26,23 @@ public class MapManager {
 	}
 
 	public MapManager(int planetCount, List<Player> players) {
+		scene = new Scene();
+		physicsSolver = new PhysicsSolver();
+		
 		MapGenerator gen = new MapGenerator();
 		planets = gen.generatePlanets(planetCount);
 		landers = gen.generateLanders(planets, players.size());
 
-		Iterator<Lander> iter = landers.iterator();
-		for (Player player : players) {
-			player.setLander(iter.next());
+		Iterator<Player> iter = players.iterator();
+		for (Lander lander : landers) {
+			iter.next().setLander(lander);
+			scene.addObject(lander);
+			physicsSolver.addObject(lander);
+		}
+		
+		for (Planet planet : planets) {
+			scene.addObject(planet);
+			physicsSolver.addObject(planet);
 		}
 	}
 
