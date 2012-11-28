@@ -42,7 +42,7 @@ public class GameSetupTests {
 		assertEquals(4, landers.size());
 
 		for (Lander lander : landers) {
-			assertTrue("more than one planet per lander", planets.contains(lander.getCurrentPlanet()));
+			assertTrue("more than one lander per planet", planets.contains(lander.getCurrentPlanet()));
 			planets.remove(lander.getCurrentPlanet());
 		}
 

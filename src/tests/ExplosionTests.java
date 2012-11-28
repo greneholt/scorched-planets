@@ -25,8 +25,10 @@ public class ExplosionTests {
 		assertTrue(manager.getPlanets().size() == 2);
 		Lander a = manager.getLanders().get(0);
 		Lander b = manager.getLanders().get(1);
+		a.setPosition(new Vector(0, 0));
+		b.setPosition(new Vector(100, 0));
 		assertEquals("lander not at full health",a.getHealth(), Lander.FULL_HEALTH);
-		// Maybe check to make sure that health = 100?
+		
 		Vector exp1 = a.getPosition().add(new Vector(5,5));
 		Vector exp2 = b.getPosition().add(new Vector(10,10));
 		
@@ -39,12 +41,13 @@ public class ExplosionTests {
 		// reset the health of the landers
 		a.setHealth(Lander.FULL_HEALTH);
 		b.setHealth(Lander.FULL_HEALTH);
+
 		exp2 = b.getPosition().subtract(new Vector(5,5));
 		manager.makeExplosion(exp1, 40, 40);
 		manager.makeExplosion(exp2, 40, 40);
 		// Test to ensure that direction of blast doesn't matter
 		assertEquals("landers a and b did not suffer the same amount of damage", a.getHealth(), b.getHealth());
-		
+
 		a.setHealth(Lander.FULL_HEALTH);
 		b.setHealth(Lander.FULL_HEALTH);
 		exp2 = b.getPosition().add(new Vector(5,5));

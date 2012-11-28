@@ -4,6 +4,10 @@ import java.awt.Graphics2D;
 
 public class Lander implements StaticObject, Renderable {
 	
+	public void setPosition(Vector position) {
+		this.position = position;
+	}
+
 	public static int FULL_HEALTH = 100;
 
 	private int health;
