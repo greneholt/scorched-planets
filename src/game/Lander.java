@@ -3,6 +3,8 @@ package game;
 import java.awt.Graphics2D;
 
 public class Lander implements StaticObject, Renderable {
+	
+	public static int FULL_HEALTH = 100;
 
 	private int health;
 	private Planet currentPlanet;
@@ -13,15 +15,20 @@ public class Lander implements StaticObject, Renderable {
 	public Lander() {
 	}
 
-	public Lander(int health, Planet planet, int angle, int power, Vector position) {
-		this.health = health;
+	public Lander(Planet planet, Vector position) {
 		this.currentPlanet = planet;
-		this.angle = angle;
-		this.power = power;
+		this.position = position;
+		this.health = FULL_HEALTH;
+		this.angle = 90;
+		this.power = 50;
 	}
 
 	public int getHealth() {
 		return health;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 	public Planet getCurrentPlanet() {

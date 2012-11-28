@@ -25,7 +25,8 @@ public class GameSetupTests {
 				}
 
 				float distance = p1.getPosition().subtract(p2.getPosition()).magnitude();
-				float minDistance = p1.getRadius() + p2.getRadius() + MapGenerator.MIN_DISTANCE_BETWEEN_PLANETS;
+				float minDistance = p1.getRadius() + p2.getRadius() +
+					MapGenerator.MIN_DISTANCE_BETWEEN_PLANETS;
 				assertTrue("planets too close together", distance >= minDistance);
 			}
 		}

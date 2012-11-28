@@ -34,16 +34,16 @@ public class ExplosionTests {
 		assertTrue("lander b was not damaged as much as lander a", a.getHealth() < b.getHealth());
 		
 		// reset the health of the landers
-		a = new Lander(100, a.getCurrentPlanet(), a.getAngle(), a.getPower(), a.getPosition());
-		b = new Lander(100, b.getCurrentPlanet(), b.getAngle(), b.getPower(), b.getPosition());
+		a.setHealth(100);
+		b.setHealth(100);
 		exp2 = b.getPosition().subtract(new Vector(5,5));
 		manager.makeExplosion(exp1, 20, 40);
 		manager.makeExplosion(exp2, 20, 40);
 		// Test to ensure that direction of blast doesn't matter
 		assertTrue("landers a and b did not suffer the same amount of damage", a.getHealth() == b.getHealth());
 		
-		a = new Lander(100, a.getCurrentPlanet(), a.getAngle(), a.getPower(), a.getPosition());
-		b = new Lander(100, b.getCurrentPlanet(), b.getAngle(), b.getPower(), b.getPosition());
+		a.setHealth(100);
+		b.setHealth(100);
 		exp2 = b.getPosition().add(new Vector(5,5));
 		manager.makeExplosion(exp1, 20, 40);
 		manager.makeExplosion(exp2, 20, 40);
