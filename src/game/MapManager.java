@@ -36,16 +36,16 @@ public class MapManager {
 		planets = gen.generatePlanets(planetCount);
 		landers = gen.generateLanders(planets, players.size());
 
+		for (Planet planet : planets) {
+			scene.addObject(planet);
+			physicsSolver.addObject(planet);
+		}
+		
 		Iterator<Player> iter = players.iterator();
 		for (Lander lander : landers) {
 			iter.next().setLander(lander);
 			scene.addObject(lander);
 			physicsSolver.addObject(lander);
-		}
-
-		for (Planet planet : planets) {
-			scene.addObject(planet);
-			physicsSolver.addObject(planet);
 		}
 	}
 

@@ -1,16 +1,17 @@
 package game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class MapGenerator {
-	public static float MIN_DISTANCE_BETWEEN_PLANETS = 20;
-	public static float MAX_RADIUS = 20;
+	public static float MIN_DISTANCE_BETWEEN_PLANETS = 30;
+	public static float MAX_RADIUS = 60;
 
 	public List<Planet> generatePlanets(int n) {
-		List<Planet> planets = new LinkedList<Planet>();
+		List<Planet> planets = new ArrayList<Planet>();
 		Random random = new Random();
 		int size = 4 * n ^ 2;
 

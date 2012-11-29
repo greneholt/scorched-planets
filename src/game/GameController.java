@@ -23,6 +23,8 @@ public class GameController {
 		sceneComponent.setScene(map.getScene());
 		
 		currentPlayerIndex = 0;
+		
+		sceneComponent.repaint();
 	}
 
 	public void nextTurn() {

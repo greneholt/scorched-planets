@@ -20,8 +20,18 @@ public class Scene {
 		Rectangle2D bounds = getBounds();
 		
 		AffineTransform xf = new AffineTransform();
+		
+		double scaleX = dimension.getWidth()/bounds.getWidth();
+		double scaleY = dimension.getHeight()/bounds.getHeight();
+		
+		if (scaleX < scaleY) {
+			xf.scale(scaleX, scaleX);
+		}
+		else {
+			xf.scale(scaleY, scaleY);
+		}
+		
 		xf.translate(-bounds.getMinX(), -bounds.getMinY());
-		xf.scale(dimension.getWidth()/bounds.getWidth(), dimension.getHeight()/bounds.getHeight());
 		
 		AffineTransform savedXf = g.getTransform();
 		
