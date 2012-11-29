@@ -20,8 +20,10 @@ public class MainWindow extends JFrame {
 		sceneComponent = new SceneComponent();
 		add(sceneComponent, BorderLayout.CENTER);
 		
-		//playerPanel = new PlayerPanel(game);
-		//add(playerPanel, BorderLayout.SOUTH);
+		this.newGame();
+		
+		playerPanel = new PlayerPanel(game);
+		add(playerPanel, BorderLayout.SOUTH);
 	}
 	
 	public void newGame() {
@@ -44,7 +46,7 @@ public class MainWindow extends JFrame {
 			break;
 		}
 		
-		game = new GameController(playerCount, sceneComponent);
+		game = new GameController(playerCount, sceneComponent, this);
 	}
 	
 	public PlayerPanel getPlayerPanel() {
@@ -62,7 +64,5 @@ public class MainWindow extends JFrame {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(new Dimension(700, 700));
 		window.setVisible(true);
-		
-		window.newGame();
 	}
 }
