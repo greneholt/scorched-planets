@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -14,8 +15,13 @@ public class MainWindow extends JFrame {
 	private PlayerPanel playerPanel;
 
 	public MainWindow() {
+		setLayout(new BorderLayout());
+		
 		sceneComponent = new SceneComponent();
-		setContentPane(sceneComponent);
+		add(sceneComponent, BorderLayout.CENTER);
+		
+		//playerPanel = new PlayerPanel(game);
+		//add(playerPanel, BorderLayout.SOUTH);
 	}
 	
 	public void newGame() {
@@ -41,12 +47,6 @@ public class MainWindow extends JFrame {
 		game = new GameController(playerCount, sceneComponent);
 	}
 	
-	public void buildBoard() {
-		setLayout(new GridLayout(1,0));
-		playerPanel = new PlayerPanel(game);
-		add(playerPanel);
-	}
-	
 	public PlayerPanel getPlayerPanel() {
 		return playerPanel;
 	}
@@ -64,6 +64,5 @@ public class MainWindow extends JFrame {
 		window.setVisible(true);
 		
 		window.newGame();
-		window.buildBoard();
 	}
 }
