@@ -50,8 +50,7 @@ public class Planet implements StaticObject, Renderable {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

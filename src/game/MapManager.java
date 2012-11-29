@@ -27,6 +27,10 @@ public class MapManager {
 	public List<Lander> getLanders() {
 		return landers;
 	}
+	
+	public List<Projectile> getProjectiles() {
+		return projectiles;
+	}
 
 	public MapManager(int planetCount, List<Player> players) {
 		scene = new Scene();
