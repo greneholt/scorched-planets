@@ -1,8 +1,7 @@
 package game;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.GridLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -12,6 +11,7 @@ import javax.swing.JOptionPane;
 public class MainWindow extends JFrame {
 	private GameController game;
 	private SceneComponent sceneComponent;
+	private PlayerPanel playerPanel;
 
 	public MainWindow() {
 		sceneComponent = new SceneComponent();
@@ -40,6 +40,16 @@ public class MainWindow extends JFrame {
 		
 		game = new GameController(playerCount, sceneComponent);
 	}
+	
+	public void buildBoard() {
+		setLayout(new GridLayout(1,0));
+		playerPanel = new PlayerPanel(game);
+		add(playerPanel);
+	}
+	
+	public PlayerPanel getPlayerPanel() {
+		return playerPanel;
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -54,5 +64,6 @@ public class MainWindow extends JFrame {
 		window.setVisible(true);
 		
 		window.newGame();
+		window.buildBoard();
 	}
 }

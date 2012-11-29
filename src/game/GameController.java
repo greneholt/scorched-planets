@@ -2,13 +2,12 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class GameController {
 	private MapManager map;
 	private List<Player> players;
-	private Timer timer;
 	private SceneComponent sceneComponent;
+	private int currentPlayerIndex;
 	
 	public GameController(int playerCount, SceneComponent sceneComponent) {
 		this.sceneComponent = sceneComponent;
@@ -22,15 +21,22 @@ public class GameController {
 		map = new MapManager(playerCount + 3, players);
 		
 		sceneComponent.setScene(map.getScene());
-	}
-
-	public MapManager getMap() {
-		return map;
+		
+		currentPlayerIndex = 0;
 	}
 
 	public void nextTurn() {
+		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 	}
 
 	public void runTurn() {
+	}
+	
+	public Player getCurrentPlayer() {
+		return players.get(currentPlayerIndex);
+	}
+	
+	public List<Player> getPlayers() {
+		return players;
 	}
 }
