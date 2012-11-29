@@ -22,12 +22,12 @@ public class Teleporter extends Projectile {
 	@Override
 	public void render(Graphics2D g) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

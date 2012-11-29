@@ -8,16 +8,16 @@ import java.awt.Graphics2D;
 public class Explosion implements Renderable {
 	private int animationStep;
 	private Vector position;
-	
+
 	public Explosion(Vector position) {
 		super();
 		this.position = position;
 	}
-	
+
 	@Override
 	public void render(Graphics2D g) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

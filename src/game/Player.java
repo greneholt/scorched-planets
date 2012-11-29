@@ -3,14 +3,15 @@ package game;
 import java.util.List;
 
 public class Player {
-	
+
 	private Lander lander;
 	private int score;
 	private List<String> killsList;
 	private String name;
-	
-	public Player() {}
-	
+
+	public Player() {
+	}
+
 	public Player(String name) {
 		this.name = name;
 	}
@@ -34,7 +35,7 @@ public class Player {
 	public List<String> getKillsList() {
 		return killsList;
 	}
-	
+
 	public void addToKillsList(String kill) {
 		killsList.add(kill);
 	}

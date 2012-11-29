@@ -22,7 +22,7 @@ public class Missile extends Projectile {
 	@Override
 	public void render(Graphics2D g) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class Missile extends Projectile {
 		mapManager.removePhysicsObject(this);
 		mapManager.removeRenderable(this);
 	}
-	
+
 	private static final float BLAST_RADIUS = 20;
 	private static final float YIELD = 40;
 }

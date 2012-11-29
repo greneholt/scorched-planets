@@ -15,16 +15,16 @@ public class MapGenerator {
 		int size = 4 * n ^ 2;
 
 		LinkedList<Vector> possibleSpaces = new LinkedList<Vector>();
-		float length = MAX_RADIUS*2 + MIN_DISTANCE_BETWEEN_PLANETS;
-		for(int i=0; i<size; i++) {
-			float x = (i%(2*n))*length + length/2;
-			float y = (i/(2*n)) *length + length/2;
-			possibleSpaces.add(new Vector(x,y));
+		float length = MAX_RADIUS * 2 + MIN_DISTANCE_BETWEEN_PLANETS;
+		for (int i = 0; i < size; i++) {
+			float x = (i % (2 * n)) * length + length / 2;
+			float y = (i / (2 * n)) * length + length / 2;
+			possibleSpaces.add(new Vector(x, y));
 		}
 
 		// Now, place the planets in a random spot on the grid
 		for (int i = 0; i < n; i++) {
-			int place = random.nextInt(size-i);
+			int place = random.nextInt(size - i);
 			float mass = random.nextFloat();
 			float radius = random.nextInt((int) MAX_RADIUS);
 			Color c = new Color('r');
@@ -38,25 +38,20 @@ public class MapGenerator {
 	// generates the specified number of landers and places them on the planets
 	public List<Lander> generateLanders(List<Planet> planets, int n) {
 		Random random = new Random();
-		
+
 		LinkedList<Planet> losablePlanets = new LinkedList<Planet>();
-		for(Planet p : planets) {
+		for (Planet p : planets) {
 			losablePlanets.add(p);
 		}
-		
+
 		List<Lander> landers = new LinkedList<Lander>();
 
 		for (int i = 0; i < n; i++) {
 			int planetNumber = random.nextInt(losablePlanets.size());
 			int angleOnPlanet = random.nextInt(360);
-			float x =(float) Math.cos(angleOnPlanet*Math.PI/180)*
-				losablePlanets.get(planetNumber).getRadius()+
-				losablePlanets.get(planetNumber).getPosition().x;
-			float y = (float) Math.sin(angleOnPlanet*Math.PI/180)*
-				losablePlanets.get(planetNumber).getRadius() +
-				losablePlanets.get(planetNumber).getPosition().y;
-			Lander lander = new Lander(losablePlanets.get(planetNumber), 
-				new Vector(x,y));
+			float x = (float) Math.cos(angleOnPlanet * Math.PI / 180) * losablePlanets.get(planetNumber).getRadius() + losablePlanets.get(planetNumber).getPosition().x;
+			float y = (float) Math.sin(angleOnPlanet * Math.PI / 180) * losablePlanets.get(planetNumber).getRadius() + losablePlanets.get(planetNumber).getPosition().y;
+			Lander lander = new Lander(losablePlanets.get(planetNumber), new Vector(x, y));
 			landers.add(lander);
 			losablePlanets.remove(planetNumber);
 		}

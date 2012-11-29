@@ -33,7 +33,7 @@ public class PhysicsSolver {
 
 	public void simulateStep(float timeStep) {
 		Set<Collission> collissions = new HashSet<Collission>();
-		
+
 		for (DynamicObject object : dynamicObjects) {
 			// sum force on them
 			Vector totalForce = new Vector();
@@ -42,14 +42,14 @@ public class PhysicsSolver {
 				if (object == b) {
 					continue;
 				}
-				
+
 				totalForce.add(gravitationalForce(object, b));
 			}
-			
+
 			for (StaticObject b : staticObjects) {
 				totalForce = totalForce.add(gravitationalForce(object, b));
 			}
-			
+
 			object.simulateStep(totalForce, timeStep);
 		}
 
@@ -57,63 +57,63 @@ public class PhysicsSolver {
 			checkCollisions(collissions, a, dynamicObjects);
 			checkCollisions(collissions, a, staticObjects);
 		}
-		
+
 		for (Collission collission : collissions) {
 			collission.a.collidedWith(collission.b);
 			collission.b.collidedWith(collission.a);
 		}
 	}
-	
+
 	private void checkCollisions(Set<Collission> collissions, DynamicObject object, List<? extends PhysicsObject> objects) {
 		for (PhysicsObject b : objects) {
 			if (object == b) {
 				continue;
 			}
-			
-			if (object.getPosition().subtract(b.getPosition()).magnitude() <= (object.getBoundingRadius()+b.getBoundingRadius())) {
+
+			if (object.getPosition().subtract(b.getPosition()).magnitude() <= (object.getBoundingRadius() + b.getBoundingRadius())) {
 				collissions.add(new Collission(object, b));
 			}
 		}
 	}
-	
+
 	private class Collission {
 		public PhysicsObject a, b;
-		
+
 		public Collission(PhysicsObject a, PhysicsObject b) {
 			this.a = a;
 			this.b = b;
 		}
-		
+
 		@Override
 		public boolean equals(Object other) {
 			if (this == other) {
 				return true;
 			}
-			
+
 			if (other instanceof Collission) {
 				Collission o = (Collission) other;
-				
-				if ((a == o.a && b == o.b) ||(b == o.a && a == o.b)) {
+
+				if ((a == o.a && b == o.b) || (b == o.a && a == o.b)) {
 					return true;
 				}
 			}
-			
+
 			return false;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return a.hashCode() ^ b.hashCode();
 		}
 	}
-	
+
 	// calculates the gravitational force of source on target
 	private Vector gravitationalForce(PhysicsObject target, PhysicsObject source) {
 		Vector direction = source.getPosition().subtract(target.getPosition());
 		float distance = direction.magnitude();
-		
+
 		return direction.multiply(G * target.getMass() * source.getMass() / (distance * distance * distance));
 	}
-	
+
 	public static final float G = 20;
 }

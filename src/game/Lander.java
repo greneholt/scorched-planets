@@ -3,7 +3,7 @@ package game;
 import java.awt.Graphics2D;
 
 public class Lander implements StaticObject, Renderable {
-	
+
 	public void setPosition(Vector position) {
 		this.position = position;
 	}
@@ -30,7 +30,7 @@ public class Lander implements StaticObject, Renderable {
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public void setHealth(int health) {
 		this.health = health;
 	}
@@ -66,7 +66,7 @@ public class Lander implements StaticObject, Renderable {
 	@Override
 	public void render(Graphics2D g) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
