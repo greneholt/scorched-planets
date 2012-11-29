@@ -39,19 +39,17 @@ public class MapGenerator {
 	public List<Lander> generateLanders(List<Planet> planets, int n) {
 		Random random = new Random();
 
-		LinkedList<Planet> losablePlanets = new LinkedList<Planet>();
-		for (Planet p : planets) {
-			losablePlanets.add(p);
-		}
+		LinkedList<Planet> losablePlanets = new LinkedList<Planet>(planets);
 
 		List<Lander> landers = new LinkedList<Lander>();
 
 		for (int i = 0; i < n; i++) {
 			int planetNumber = random.nextInt(losablePlanets.size());
 			int angleOnPlanet = random.nextInt(360);
-			float x = (float) Math.cos(angleOnPlanet * Math.PI / 180) * losablePlanets.get(planetNumber).getRadius() + losablePlanets.get(planetNumber).getPosition().x;
-			float y = (float) Math.sin(angleOnPlanet * Math.PI / 180) * losablePlanets.get(planetNumber).getRadius() + losablePlanets.get(planetNumber).getPosition().y;
-			Lander lander = new Lander(losablePlanets.get(planetNumber), new Vector(x, y));
+			Planet planet = losablePlanets.get(planetNumber);
+			float x = (float) Math.cos(angleOnPlanet * Math.PI / 180) * planet.getRadius() + planet.getPosition().x;
+			float y = (float) Math.sin(angleOnPlanet * Math.PI / 180) * planet.getRadius() + planet.getPosition().y;
+			Lander lander = new Lander(planet, new Vector(x, y));
 			landers.add(lander);
 			losablePlanets.remove(planetNumber);
 		}

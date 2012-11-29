@@ -8,7 +8,8 @@ public class GameController {
 	private List<Player> players;
 	private Timer timer;
 
-	public GameController() {
+	public GameController(int player_count) {
+		
 	}
 
 	public void nextTurn() {
