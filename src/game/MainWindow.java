@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -9,13 +11,15 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	private GameController game;
+	private SceneComponent sceneComponent;
 
 	public MainWindow() {
-		
+		sceneComponent = new SceneComponent();
+		setContentPane(sceneComponent);
 	}
 	
 	public void newGame() {
-		int player_count = 0;
+		int playerCount = 0;
 		
 		while (true) {
 			JOptionPane pane = new JOptionPane("Number of players:", JOptionPane.PLAIN_MESSAGE);
@@ -25,7 +29,7 @@ public class MainWindow extends JFrame {
 			dialog.setVisible(true);
 			
 			try {
-				player_count = Integer.parseInt((String) pane.getInputValue());
+				playerCount = Integer.parseInt((String) pane.getInputValue());
 			}
 			catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(this, "Invalid number", "Error", JOptionPane.ERROR_MESSAGE);
@@ -34,7 +38,7 @@ public class MainWindow extends JFrame {
 			break;
 		}
 		
-		game = new GameController(player_count);
+		game = new GameController(playerCount, sceneComponent);
 	}
 
 	public static void main(String[] args) {

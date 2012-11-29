@@ -1,6 +1,10 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
@@ -65,8 +69,12 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		// TODO Auto-generated method stub
-
+		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
+		AffineTransform xf = new AffineTransform();
+		xf.rotate(angle);
+		shape = xf.createTransformedShape(shape);
+		g.setColor(Color.RED);
+		g.fill(shape);
 	}
 
 	@Override
@@ -74,4 +82,15 @@ public class Lander implements StaticObject, Renderable {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public Rectangle2D getBounds() {
+		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
+		AffineTransform xf = new AffineTransform();
+		xf.rotate(angle);
+		shape = xf.createTransformedShape(shape);
+		return shape.getBounds2D();
+	}
+
+	private static final float WIDTH = 10;
+	private static final float HEIGHT = 7;
 }

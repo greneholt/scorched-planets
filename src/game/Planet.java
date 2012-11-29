@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 public class Planet implements StaticObject, Renderable {
 	private float radius;
@@ -41,14 +43,20 @@ public class Planet implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		// TODO Auto-generated method stub
-
+		Ellipse2D circle = new Ellipse2D.Float(position.x - radius, position.y - radius, radius*2, radius*2);
+		g.setColor(color);
+		g.fill(circle);
 	}
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Rectangle2D getBounds() {
+		return new Rectangle2D.Float(position.x - radius, position.y - radius, radius*2, radius*2);
 	}
 
 }
