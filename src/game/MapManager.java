@@ -2,12 +2,15 @@ package game;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
 
 public class MapManager {
 	private Scene scene;
 	private PhysicsSolver physicsSolver;
 	private List<Planet> planets;
 	private List<Lander> landers;
+	private List<Projectile> projectiles;
+	private Timer timer;
 
 	public Scene getScene() {
 		return scene;

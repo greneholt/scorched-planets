@@ -12,7 +12,7 @@ public class Lander implements StaticObject, Renderable {
 
 	private int health;
 	private Planet currentPlanet;
-	private int angle;
+	private double angle;
 	private int power;
 	private Vector position;
 
@@ -23,7 +23,7 @@ public class Lander implements StaticObject, Renderable {
 		this.currentPlanet = planet;
 		this.position = position;
 		this.health = FULL_HEALTH;
-		this.angle = 90;
+		this.angle = 100;
 		this.power = 50;
 	}
 
@@ -39,12 +39,20 @@ public class Lander implements StaticObject, Renderable {
 		return currentPlanet;
 	}
 
-	public int getAngle() {
+	public double getAngle() {
 		return angle;
+	}
+	
+	public void setAngle(double angle) {
+		this.angle = angle;
 	}
 
 	public int getPower() {
 		return power;
+	}
+	
+	public void setPower(int power) {
+		this.power = power;
 	}
 
 	@Override

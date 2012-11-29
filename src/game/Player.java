@@ -11,6 +11,11 @@ public class Player {
 
 	public Player() {
 	}
+	
+	public Player(Lander lander, String name) {
+		this.lander = lander;
+		this.name = name;
+	}
 
 	public Player(String name) {
 		this.name = name;

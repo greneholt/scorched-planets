@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -9,9 +10,9 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	private GameController game;
+	private PlayerPanel playerPanel;
 
 	public MainWindow() {
-		
 	}
 	
 	public void newGame() {
@@ -36,6 +37,16 @@ public class MainWindow extends JFrame {
 		
 		game = new GameController(player_count);
 	}
+	
+	public void buildBoard() {
+		setLayout(new GridLayout(1,0));
+		playerPanel = new PlayerPanel(game);
+		add(playerPanel);
+	}
+	
+	public PlayerPanel getPlayerPanel() {
+		return playerPanel;
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -50,5 +61,6 @@ public class MainWindow extends JFrame {
 		window.setVisible(true);
 		
 		window.newGame();
+		window.buildBoard();
 	}
 }
