@@ -7,32 +7,71 @@ import java.util.List;
 import java.util.Random;
 
 public class MapGenerator {
-	public static float MIN_DISTANCE_BETWEEN_PLANETS = 30;
-	public static float MAX_RADIUS = 60;
+	public static float MIN_DISTANCE_BETWEEN_PLANETS = 100;
+	public static float MAX_RADIUS = 80;
+	public static float MIN_RADIUS = 30;
+	public static float MIN_DENSITY = 10;
+	public static float MAX_DENSITY = 40;
 
-	public List<Planet> generatePlanets(int n) {
-		List<Planet> planets = new ArrayList<Planet>();
-		Random random = new Random();
-		int size = 4 * n ^ 2;
-
-		LinkedList<Vector> possibleSpaces = new LinkedList<Vector>();
-		float length = MAX_RADIUS * 2 + MIN_DISTANCE_BETWEEN_PLANETS;
-		for (int i = 0; i < size; i++) {
-			float x = (i % (2 * n)) * length + length / 2;
-			float y = (i / (2 * n)) * length + length / 2;
-			possibleSpaces.add(new Vector(x, y));
+	public List<Planet> generatePlanets(int planetCount) {
+		float gridSpacing = MIN_RADIUS * 2 + MIN_DISTANCE_BETWEEN_PLANETS;
+		
+		int gridSize = planetCount;
+		
+		Random rand = new Random();
+		
+		// populate list of possible positions
+		List<Vector> positions = new ArrayList<Vector>(gridSize * gridSize);
+		for (int y =  0; y < gridSize; y++) {
+			for (int x = 0; x < gridSize; x++) {
+				positions.add(new Vector(x * gridSpacing, y * gridSpacing));
+			}
 		}
-
-		// Now, place the planets in a random spot on the grid
-		for (int i = 0; i < n; i++) {
-			int place = random.nextInt(size - i);
-			float mass = random.nextFloat();
-			float radius = random.nextInt((int) MAX_RADIUS);
-			Color c = new Color('r');
-			Planet planet = new Planet(mass, possibleSpaces.get(place), radius, c);
-			planets.add(planet);
-			possibleSpaces.remove(place);
+		
+		// place the planets in random positions
+		LinkedList<Vector> planetPositions = new LinkedList<Vector>();
+		for (int i = 0; i < planetCount; i++) {
+			int p = rand.nextInt(positions.size());
+			planetPositions.add(positions.remove(p));
 		}
+		
+		List<Planet> planets = new ArrayList<Planet>(planetCount);
+		
+		// determine the size and mass of each planet
+		while (planetPositions.size() > 0) {
+			Vector position = planetPositions.removeFirst();
+			
+			// find how much space it has around it
+			float maxRadius = MAX_RADIUS;
+			
+			for (Planet planet : planets) {
+				// calculate the maximum radius the new planet could be without coming too close to this planet 
+				float maxLegalRadius = Vector.distanceBetween(planet.getPosition(), position) - planet.getRadius() - MIN_DISTANCE_BETWEEN_PLANETS;
+				if (maxLegalRadius < maxRadius) {
+					maxRadius = maxLegalRadius;
+				}
+			}
+			
+			for (Vector v : planetPositions) {
+				float maxLegalRadius = Vector.distanceBetween(v, position) - MIN_RADIUS - MIN_DISTANCE_BETWEEN_PLANETS;
+				if (maxLegalRadius < maxRadius) {
+					maxRadius = maxLegalRadius;
+				}
+			}
+			
+			float radius = rand.nextFloat() * (maxRadius - MIN_RADIUS) + MIN_RADIUS;
+			float density = rand.nextFloat() * (MAX_DENSITY - MIN_DENSITY) + MIN_DENSITY;
+			float mass = (float)Math.PI * radius * radius * radius * 4 / 3 * density;
+			
+			// the multipliers cause the colors to generally be darker
+			float red = rand.nextFloat() * 0.5f + 0.2f;
+			float green = rand.nextFloat() * 0.5f + 0.2f;
+			float blue = rand.nextFloat() * 0.5f + 0.2f;
+			Color color = new Color(red, green, blue);
+			
+			planets.add(new Planet(mass, position, radius, color));
+		}
+		
 		return planets;
 	}
 
