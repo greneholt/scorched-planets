@@ -38,15 +38,6 @@ public class MapGenerator {
 			Point point = positions.remove(r);
 			
 			planetPositions.add(new Vector(point.x * gridSpacing, point.y * gridSpacing));
-			
-			// remove all points in the same row or column (inefficient implementation, oh well)
-			Iterator<Point> iter = positions.iterator();
-			while (iter.hasNext()) {
-				Point p = iter.next();
-				if (p.x == point.x || p.y == point.y) {
-					iter.remove();
-				}
-			}
 		}
 		
 		List<Planet> planets = new ArrayList<Planet>(planetCount);

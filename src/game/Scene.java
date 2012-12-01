@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Scene {
 	private List<Renderable> objects;
+	private static final float MARGIN = 20;
 
 	public Scene() {
 		objects = new LinkedList<Renderable>();
@@ -21,8 +22,8 @@ public class Scene {
 		
 		AffineTransform xf = new AffineTransform();
 		
-		double scaleX = dimension.getWidth()/bounds.getWidth();
-		double scaleY = dimension.getHeight()/bounds.getHeight();
+		double scaleX = (dimension.getWidth() - MARGIN*2)/bounds.getWidth();
+		double scaleY = (dimension.getHeight() - MARGIN*2)/bounds.getHeight();
 		
 		if (scaleX < scaleY) {
 			xf.scale(scaleX, scaleX);
@@ -31,7 +32,7 @@ public class Scene {
 			xf.scale(scaleY, scaleY);
 		}
 		
-		xf.translate(-bounds.getMinX(), -bounds.getMinY());
+		xf.translate(MARGIN - bounds.getMinX(), MARGIN - bounds.getMinY());
 		
 		AffineTransform savedXf = g.getTransform();
 		
