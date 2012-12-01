@@ -77,10 +77,11 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
-		//AffineTransform xf = new AffineTransform();
-		//xf.rotate(angle);
-		//shape = xf.createTransformedShape(shape);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
+		AffineTransform xf = new AffineTransform();
+		xf.translate(position.x, position.y);
+		xf.rotate(angle);
+		shape = xf.createTransformedShape(shape);
 		g.setColor(Color.RED);
 		g.fill(shape);
 	}
@@ -92,10 +93,11 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
-		//AffineTransform xf = new AffineTransform();
-		//xf.rotate(angle);
-		//shape = xf.createTransformedShape(shape);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
+		AffineTransform xf = new AffineTransform();
+		xf.translate(position.x, position.y);
+		xf.rotate(angle);
+		shape = xf.createTransformedShape(shape);
 		return shape.getBounds2D();
 	}
 
