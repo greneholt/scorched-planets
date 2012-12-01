@@ -33,9 +33,9 @@ public class MapGenerator {
 		// place the planets in random positions
 		LinkedList<Vector> planetPositions = new LinkedList<Vector>();
 		for (int i = 0; i < planetCount; i++) {
-			int r = rand.nextInt(positions.size());
+			int n = rand.nextInt(positions.size());
 			
-			Point point = positions.remove(r);
+			Point point = positions.remove(n);
 			
 			planetPositions.add(new Vector(point.x * gridSpacing, point.y * gridSpacing));
 		}
@@ -81,23 +81,26 @@ public class MapGenerator {
 	}
 
 	// generates the specified number of landers and places them on the planets
-	public List<Lander> generateLanders(List<Planet> planets, int n) {
-		Random random = new Random();
+	public List<Lander> generateLanders(List<Planet> planets, int landerCount) {
+		Random rand = new Random();
 
-		LinkedList<Planet> losablePlanets = new LinkedList<Planet>(planets);
+		List<Planet> availablePlanets = new ArrayList<Planet>(planets);
 
 		List<Lander> landers = new LinkedList<Lander>();
 
-		for (int i = 0; i < n; i++) {
-			int planetNumber = random.nextInt(losablePlanets.size());
-			int angleOnPlanet = random.nextInt(360);
-			Planet planet = losablePlanets.get(planetNumber);
-			float x = (float) Math.cos(angleOnPlanet * Math.PI / 180) * planet.getRadius() + planet.getPosition().x;
-			float y = (float) Math.sin(angleOnPlanet * Math.PI / 180) * planet.getRadius() + planet.getPosition().y;
-			Lander lander = new Lander(planet, new Vector(x, y));
+		for (int i = 0; i < landerCount; i++) {
+			int n = rand.nextInt(availablePlanets.size());
+			
+			Planet planet = availablePlanets.remove(n);
+			
+			float angleOnPlanet = rand.nextFloat() * 2 * (float)Math.PI;
+			
+			float x = (float) Math.cos(angleOnPlanet) * planet.getRadius() + planet.getPosition().x;
+			float y = (float) Math.sin(angleOnPlanet) * planet.getRadius() + planet.getPosition().y;
+			Lander lander = new Lander(planet, new Vector(x, y), angleOnPlanet);
 			landers.add(lander);
-			losablePlanets.remove(planetNumber);
 		}
+		
 		return landers;
 	}
 }

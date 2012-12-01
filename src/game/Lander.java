@@ -19,16 +19,18 @@ public class Lander implements StaticObject, Renderable {
 	private double angle;
 	private int power;
 	private Vector position;
+	private float gunAngle;
 
 	public Lander() {
 	}
 
-	public Lander(Planet planet, Vector position) {
+	public Lander(Planet planet, Vector position, float angle) {
 		this.currentPlanet = planet;
 		this.position = position;
 		this.health = FULL_HEALTH;
-		this.angle = 100;
+		this.angle = angle;
 		this.power = 50;
+		this.gunAngle = (float) Math.PI / 2;
 	}
 
 	public int getHealth() {
@@ -46,7 +48,7 @@ public class Lander implements StaticObject, Renderable {
 	public double getAngle() {
 		return angle;
 	}
-	
+
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
@@ -54,7 +56,7 @@ public class Lander implements StaticObject, Renderable {
 	public int getPower() {
 		return power;
 	}
-	
+
 	public void setPower(int power) {
 		this.power = power;
 	}
@@ -77,13 +79,25 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(-WIDTH/2, -HEIGHT/2, WIDTH, HEIGHT);
+
+		Shape gun = new Rectangle2D.Float(0, -1.5f, 40, 3);
 		AffineTransform xf = new AffineTransform();
-		xf.translate(position.x, position.y);
-		xf.rotate(angle);
-		shape = xf.createTransformedShape(shape);
+		xf.rotate(gunAngle);
+		gun = xf.createTransformedShape(gun);
+
+		AffineTransform savedXf = g.getTransform();
+
+		g.translate(position.x, position.y);
+		// we draw the lander in in the positive Y direction, so we need to rotate it clockwise 90 degrees for the angles to work out
+		g.rotate(angle - Math.PI/2);
+
 		g.setColor(Color.RED);
 		g.fill(shape);
+		g.setColor(Color.GREEN);
+		g.fill(gun);
+
+		g.setTransform(savedXf);
 	}
 
 	@Override
@@ -93,7 +107,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + 40*2, HEIGHT + 40);
 		AffineTransform xf = new AffineTransform();
 		xf.translate(position.x, position.y);
 		xf.rotate(angle);
@@ -102,5 +116,5 @@ public class Lander implements StaticObject, Renderable {
 	}
 
 	private static final float WIDTH = 10;
-	private static final float HEIGHT = 7;
+	private static final float HEIGHT = 5;
 }
