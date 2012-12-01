@@ -1,7 +1,9 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -21,18 +23,30 @@ public class MapGenerator {
 		Random rand = new Random();
 		
 		// populate list of possible positions
-		List<Vector> positions = new ArrayList<Vector>(gridSize * gridSize);
+		List<Point> positions = new ArrayList<Point>(gridSize * gridSize);
 		for (int y =  0; y < gridSize; y++) {
 			for (int x = 0; x < gridSize; x++) {
-				positions.add(new Vector(x * gridSpacing, y * gridSpacing));
+				positions.add(new Point(x, y));
 			}
 		}
 		
 		// place the planets in random positions
 		LinkedList<Vector> planetPositions = new LinkedList<Vector>();
 		for (int i = 0; i < planetCount; i++) {
-			int p = rand.nextInt(positions.size());
-			planetPositions.add(positions.remove(p));
+			int r = rand.nextInt(positions.size());
+			
+			Point point = positions.remove(r);
+			
+			planetPositions.add(new Vector(point.x * gridSpacing, point.y * gridSpacing));
+			
+			// remove all points in the same row or column (inefficient implementation, oh well)
+			Iterator<Point> iter = positions.iterator();
+			while (iter.hasNext()) {
+				Point p = iter.next();
+				if (p.x == point.x || p.y == point.y) {
+					iter.remove();
+				}
+			}
 		}
 		
 		List<Planet> planets = new ArrayList<Planet>(planetCount);
