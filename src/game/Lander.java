@@ -21,9 +21,6 @@ public class Lander implements StaticObject, Renderable {
 	private Vector position;
 	private float gunAngle;
 
-	public Lander() {
-	}
-
 	public Lander(Planet planet, Vector position, float angle) {
 		this.currentPlanet = planet;
 		this.position = position;
@@ -102,7 +99,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		// TODO Auto-generated method stub
+		// do nothing
 	}
 
 	@Override

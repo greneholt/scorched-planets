@@ -4,11 +4,26 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-public class SceneComponent extends JComponent {
+public class SceneComponent extends JComponent implements MouseListener {
 	private Scene scene;
+	private KeyListener keyListener;
+	
+	public SceneComponent() {
+		setFocusable(true);
+		addMouseListener(this);
+	}
+	
+	public void setKeyListener(KeyListener keyListener) {
+		removeKeyListener(this.keyListener);
+		addKeyListener(keyListener);
+		this.keyListener = keyListener;
+	}
 	
 	public void setScene(Scene scene) {
 		this.scene = scene;
@@ -26,5 +41,30 @@ public class SceneComponent extends JComponent {
 		if (scene != null) {
 			scene.render(g2d, getSize());
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		requestFocusInWindow();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// do nothing
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// do nothing
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// do nothing
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// do nothing
 	}
 }

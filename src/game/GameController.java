@@ -1,33 +1,36 @@
 package game;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameController {
+public class GameController implements KeyListener {
 	private MapManager map;
 	private List<Player> players;
 	private SceneComponent sceneComponent;
 	private MainWindow mainWindow;
 	private int currentPlayerIndex;
-	
+
 	public GameController(int playerCount, SceneComponent sceneComponent,
 			MainWindow mw) {
 		this.sceneComponent = sceneComponent;
 		mainWindow = mw;
-		
+
 		players = new ArrayList<Player>(playerCount);
-		
+
 		for (int i = 0; i < playerCount; i++) {
 			players.add(new Player("Player " + (i + 1)));
 		}
-		
+
 		map = new MapManager(playerCount + 3, players);
-		
+
 		sceneComponent.setScene(map.getScene());
-		
+		sceneComponent.setKeyListener(this);
+
 		currentPlayerIndex = 0;
-		
+
 		sceneComponent.repaint();
 	}
 
@@ -69,18 +72,100 @@ public class GameController {
 						|| p.getPosition().x >= bounds.getMinX() - 100) {
 					if(p.getPosition().y <= bounds.getMaxY()+100
 						|| p.getPosition().y >= bounds.getMinY() - 100) {
-							
+
 					}
 				}
 			}
 		} while(notOutOfPlay);
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
 	}
-	
+
 	public List<Player> getPlayers() {
 		return players;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_UP:
+			upPressed();
+			break;
+		case KeyEvent.VK_DOWN:
+			downPressed();
+			break;
+		case KeyEvent.VK_RIGHT:
+			rightPressed();
+			break;
+		case KeyEvent.VK_LEFT:
+			leftPressed();
+			break;
+		}
+	}
+
+	private void leftPressed() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void rightPressed() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void downPressed() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void upPressed() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_UP:
+			upReleased();
+			break;
+		case KeyEvent.VK_DOWN:
+			downReleased();
+			break;
+		case KeyEvent.VK_RIGHT:
+			rightReleased();
+			break;
+		case KeyEvent.VK_LEFT:
+			leftReleased();
+			break;
+		}
+	}
+
+	private void leftReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void rightReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void downReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void upReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
