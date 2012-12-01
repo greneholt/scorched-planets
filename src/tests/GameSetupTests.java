@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import game.Lander;
 import game.MapGenerator;
 import game.Planet;
+import game.Vector;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class GameSetupTests {
 					continue;
 				}
 
-				float distance = p1.getPosition().subtract(p2.getPosition()).magnitude();
+				float distance = Vector.distanceBetween(p1.getPosition(), p2.getPosition());
 				float minDistance = p1.getRadius() + p2.getRadius() + MapGenerator.MIN_DISTANCE_BETWEEN_PLANETS;
 				assertTrue("planets too close together", distance >= minDistance);
 			}

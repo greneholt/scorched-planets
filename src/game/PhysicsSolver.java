@@ -70,7 +70,7 @@ public class PhysicsSolver {
 				continue;
 			}
 
-			if (object.getPosition().subtract(b.getPosition()).magnitude() <= (object.getBoundingRadius() + b.getBoundingRadius())) {
+			if (Vector.distanceBetween(object.getPosition(), b.getPosition()) <= (object.getBoundingRadius() + b.getBoundingRadius())) {
 				collissions.add(new Collission(object, b));
 			}
 		}

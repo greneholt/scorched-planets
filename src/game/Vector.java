@@ -43,4 +43,8 @@ public class Vector {
 
 		return false;
 	}
+	
+	public static float distanceBetween(Vector a, Vector b) {
+		return a.subtract(b).magnitude();
+	}
 }
