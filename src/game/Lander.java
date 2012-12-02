@@ -28,7 +28,7 @@ public class Lander implements StaticObject, Renderable {
 		this.position = position;
 		this.health = FULL_HEALTH;
 		this.angle = angle;
-		this.power = MAX_POWER;
+		this.power = MAX_POWER/2;
 		this.gunAngle = (float) Math.PI / 2;
 	}
 	
@@ -165,7 +165,7 @@ public class Lander implements StaticObject, Renderable {
 	private static final float WIDTH = 20;
 	private static final float HEIGHT = 8;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
-	private static final float POWER_MULTIPLIER = 100f;
+	private static final float POWER_MULTIPLIER = 200f;
 
 	@Override
 	public void animationTick() {

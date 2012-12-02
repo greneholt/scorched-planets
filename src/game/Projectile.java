@@ -20,5 +20,5 @@ public abstract class Projectile extends MovableObject implements Renderable {
 		super.simulateStep(force.add(dragForce), timeStep);
 	}
 	
-	private static final float DRAG_COEFFICIENT = 0.1f;
+	private static final float DRAG_COEFFICIENT = 100f;
 }
