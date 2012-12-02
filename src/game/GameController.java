@@ -166,6 +166,9 @@ public class GameController implements KeyListener {
 		case KeyEvent.VK_LEFT:
 			leftTimer.start();
 			break;
+		case KeyEvent.VK_SPACE:
+			nextPlayer();
+			break;
 		}
 	}
 
