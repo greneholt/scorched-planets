@@ -45,6 +45,12 @@ public class Scene {
 		g.setTransform(savedXf);
 	}
 	
+	public void animationTick() {
+		for (Renderable object : objects) {
+			object.animationTick();
+		}
+	}
+	
 	public Rectangle2D getBounds() {
 		Iterator<Renderable> iter = objects.iterator();
 		

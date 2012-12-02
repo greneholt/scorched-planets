@@ -58,4 +58,10 @@ public class Planet implements StaticObject, Renderable {
 		return new Rectangle2D.Float(position.x - radius, position.y - radius, radius*2, radius*2);
 	}
 
+	@Override
+	public void animationTick() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

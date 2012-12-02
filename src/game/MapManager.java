@@ -2,7 +2,6 @@ package game;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
 
 public class MapManager {
 	private Scene scene;
@@ -10,7 +9,6 @@ public class MapManager {
 	private List<Planet> planets;
 	private List<Lander> landers;
 	private List<Projectile> projectiles;
-	private Timer timer;
 	public static int KILL_BONUS = 1000;
 
 	public Scene getScene() {
@@ -42,22 +40,22 @@ public class MapManager {
 		landers = gen.generateLanders(planets, players.size());
 
 		for (Planet planet : planets) {
-			scene.addObject(planet);
-			physicsSolver.addObject(planet);
+			addRenderable(planet);
+			addPhysicsObject(planet);
 		}
 
 		Iterator<Player> iter = players.iterator();
 		for (Lander lander : landers) {
 			iter.next().setLander(lander);
-			scene.addObject(lander);
-			physicsSolver.addObject(lander);
+			addRenderable(lander);
+			addPhysicsObject(lander);
 		}
 	}
 
 	public void makeExplosion(Player player, Vector position, float blastRadius, float yield ) {
 		Explosion explosion = new Explosion(position);
 		// add to scene
-		scene.addObject(explosion);
+		addRenderable(explosion);
 		// calculate and then apply damages
 		int score = 0;
 		for (Lander p : landers) {
@@ -80,6 +78,19 @@ public class MapManager {
 		// apply score
 		score += player.getScore();
 		player.setScore(score);
+	}
+	
+	public void runStep(float timeStep) {
+		physicsSolver.simulateStep(timeStep);
+		scene.animationTick();
+	}
+	
+	public void addRenderable(Renderable object) {
+		scene.addObject(object);
+	}
+	
+	public void addPhysicsObject(PhysicsObject object) {
+		physicsSolver.addObject(object);
 	}
 
 	public void removeRenderable(Renderable object) {

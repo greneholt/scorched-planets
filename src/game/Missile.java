@@ -23,12 +23,16 @@ public class Missile extends Projectile {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
-		AffineTransform xf = new AffineTransform();
-		xf.rotate(getAngle());
-		shape = xf.createTransformedShape(shape);
-		g.setColor(Color.BLUE);
+		Shape shape = new Rectangle2D.Float(-HEIGHT/2, -WIDTH/2, HEIGHT, WIDTH);
+		
+		AffineTransform savedXf = g.getTransform();
+		
+		g.translate(position.x, position.y);
+		g.rotate(getAngle());
+		g.setColor(Color.YELLOW);
 		g.fill(shape);
+		
+		g.setTransform(savedXf);
 	}
 
 	@Override
@@ -40,20 +44,27 @@ public class Missile extends Projectile {
 	
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
 		AffineTransform xf = new AffineTransform();
+		xf.translate(position.x, position.y);
 		xf.rotate(getAngle());
 		shape = xf.createTransformedShape(shape);
 		return shape.getBounds2D();
 	}
 	
-	private double getAngle() {
-		return Math.atan2(velocity.y, velocity.x);
+	private float getAngle() {
+		return velocity.angle();
 	}
 
-	private static final float WIDTH = 4;
-	private static final float HEIGHT = 7;
+	private static final float WIDTH = 5;
+	private static final float HEIGHT = 20;
 
 	private static final float BLAST_RADIUS = 20;
 	private static final float YIELD = 40;
+	
+	@Override
+	public void animationTick() {
+		// TODO Auto-generated method stub
+		
+	}
 }
