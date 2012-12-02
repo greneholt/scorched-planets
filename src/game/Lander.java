@@ -8,6 +8,8 @@ import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
+	private static final int GUN_LENGTH = 30;
+
 	public void setPosition(Vector position) {
 		this.position = position;
 	}
@@ -93,7 +95,7 @@ public class Lander implements StaticObject, Renderable {
 	public void render(Graphics2D g) {
 		Shape base = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
 
-		Shape gun = new Rectangle2D.Float(0, -1.5f, 40, 3);
+		Shape gun = new Rectangle2D.Float(0, -1.5f, GUN_LENGTH, 3);
 		AffineTransform xf = new AffineTransform();
 		xf.rotate(gunAngle);
 		gun = xf.createTransformedShape(gun);
@@ -171,7 +173,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + 40 * 2, HEIGHT + 40);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + GUN_LENGTH * 2, HEIGHT + GUN_LENGTH);
 		AffineTransform xf = new AffineTransform();
 		xf.translate(position.x, position.y);
 		xf.rotate(angle);

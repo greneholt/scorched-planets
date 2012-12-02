@@ -68,8 +68,8 @@ public class Missile extends Projectile {
 		return velocity.angle();
 	}
 
-	private static final float WIDTH = 15;
-	private static final float HEIGHT = 35;
+	private static final float WIDTH = 14;
+	private static final float HEIGHT = 30;
 
 	private static final float BLAST_RADIUS = 50;
 	private static final float YIELD = 40;
