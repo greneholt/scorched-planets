@@ -13,6 +13,7 @@ public class Lander implements StaticObject, Renderable {
 	}
 
 	public static int FULL_HEALTH = 100;
+	public static int MAX_POWER = 100;
 
 	private int health;
 	private Planet currentPlanet;
@@ -26,8 +27,8 @@ public class Lander implements StaticObject, Renderable {
 		this.position = position;
 		this.health = FULL_HEALTH;
 		this.angle = angle;
-		this.power = 50;
-		this.gunAngle = (float) Math.PI / 2;
+		this.power = MAX_POWER;
+		this.gunAngle = (float) Math.PI / 4;
 	}
 
 	public int getHealth() {
@@ -76,7 +77,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape shape = new Rectangle2D.Float(-WIDTH/2, -HEIGHT/2, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
 
 		Shape gun = new Rectangle2D.Float(0, -1.5f, 40, 3);
 		AffineTransform xf = new AffineTransform();
@@ -86,12 +87,11 @@ public class Lander implements StaticObject, Renderable {
 		AffineTransform savedXf = g.getTransform();
 
 		g.translate(position.x, position.y);
-		// we draw the lander in in the positive Y direction, so we need to rotate it clockwise 90 degrees for the angles to work out
-		g.rotate(angle - Math.PI/2);
+		// we draw the lander in in the positive Y direction, so we need to rotate it -PI/2 (towards the positive X axis) for the angles to work out
+		g.rotate(angle - Math.PI / 2);
 
 		g.setColor(Color.RED);
 		g.fill(shape);
-		g.setColor(Color.GREEN);
 		g.fill(gun);
 
 		g.setTransform(savedXf);
@@ -102,9 +102,33 @@ public class Lander implements StaticObject, Renderable {
 		// do nothing
 	}
 
+	public void increasePower() {
+		if (power < MAX_POWER) {
+			power++;
+		}
+	}
+
+	public void decreasePower() {
+		if (power > 0) {
+			power--;
+		}
+	}
+
+	public void rotateCounterClockwise() {
+		if (gunAngle > 0) {
+			gunAngle -= ANGLE_INCREMENT;
+		}
+	}
+
+	public void rotateClockwise() {
+		if (gunAngle < Math.PI) {
+			gunAngle += ANGLE_INCREMENT;
+		}
+	}
+
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + 40*2, HEIGHT + 40);
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + 40 * 2, HEIGHT + 40);
 		AffineTransform xf = new AffineTransform();
 		xf.translate(position.x, position.y);
 		xf.rotate(angle);
@@ -112,6 +136,7 @@ public class Lander implements StaticObject, Renderable {
 		return shape.getBounds2D();
 	}
 
-	private static final float WIDTH = 10;
-	private static final float HEIGHT = 5;
+	private static final float WIDTH = 20;
+	private static final float HEIGHT = 8;
+	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
 }

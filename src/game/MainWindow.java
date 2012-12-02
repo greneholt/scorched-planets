@@ -23,7 +23,7 @@ public class MainWindow extends JFrame {
 		this.newGame();
 		
 		playerPanel = new PlayerPanel(game);
-		add(playerPanel, BorderLayout.SOUTH);
+		add(playerPanel, BorderLayout.EAST);
 	}
 	
 	public void newGame() {
