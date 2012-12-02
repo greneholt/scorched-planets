@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import game.Lander;
 import game.MapManager;
+import game.Missile;
 import game.Player;
 import game.Vector;
 
@@ -25,15 +26,19 @@ public class ExplosionTests {
 		assertTrue(manager.getPlanets().size() == 2);
 		Lander a = manager.getLanders().get(0);
 		Lander b = manager.getLanders().get(1);
+		a.setPlayer(players.get(0));
+		b.setPlayer(players.get(1));
+		players.get(0).setLander(a);
+		players.get(1).setLander(b);
 		a.setPosition(new Vector(0, 0));
 		b.setPosition(new Vector(100, 0));
 		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
 
-		Vector exp1 = a.getPosition().add(new Vector(5, 5));
-		Vector exp2 = b.getPosition().add(new Vector(10, 10));
+		Missile missile1 = new Missile(b, a.getPosition().add(new Vector(5, 5)), new Vector(0,0), manager);
+		Missile missile2 = new Missile(a, b.getPosition().add(new Vector(10, 10)), new Vector(0,0), manager);
 
-		manager.makeExplosion(exp1, 40, 40);
-		manager.makeExplosion(exp2, 40, 40);
+		manager.makeExplosion(missile1, 40, 40);
+		manager.makeExplosion(missile2, 40, 40);
 		assertTrue("lander a was not damaged", a.getHealth() < Lander.FULL_HEALTH);
 		assertTrue("lander b was not damaged", b.getHealth() < Lander.FULL_HEALTH);
 		assertTrue("lander b was not damaged as much as lander a", a.getHealth() < b.getHealth());
@@ -42,17 +47,17 @@ public class ExplosionTests {
 		a.setHealth(Lander.FULL_HEALTH);
 		b.setHealth(Lander.FULL_HEALTH);
 
-		exp2 = b.getPosition().subtract(new Vector(5, 5));
-		manager.makeExplosion(exp1, 40, 40);
-		manager.makeExplosion(exp2, 40, 40);
+		missile2 = new Missile(a, b.getPosition().subtract(new Vector(5, 5)), new Vector(0,0), manager);
+		manager.makeExplosion(missile1, 40, 40);
+		manager.makeExplosion(missile2, 40, 40);
 		// Test to ensure that direction of blast doesn't matter
 		assertEquals("landers a and b did not suffer the same amount of damage", a.getHealth(), b.getHealth());
 
 		a.setHealth(Lander.FULL_HEALTH);
 		b.setHealth(Lander.FULL_HEALTH);
-		exp2 = b.getPosition().add(new Vector(5, 5));
-		manager.makeExplosion(exp1, 40, 40);
-		manager.makeExplosion(exp2, 40, 40);
+		missile2 = new Missile(a, b.getPosition().add(new Vector(5, 5)), new Vector(0,0), manager);
+		manager.makeExplosion(missile1, 40, 40);
+		manager.makeExplosion(missile2, 40, 40);
 		// Test to make sure that same explosion location (relative) will produce same amount of damage
 		assertEquals("landers suffered different amounts of damage", a.getHealth(), b.getHealth());
 	}

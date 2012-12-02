@@ -9,4 +9,8 @@ public abstract class Projectile extends MovableObject implements Renderable {
 		this.firedBy = firedBy;
 		this.mapManager = mapManager;
 	}
+	
+	public Lander getFiredBy() {
+		return firedBy;
+	}
 }

@@ -21,6 +21,7 @@ public class Lander implements StaticObject, Renderable {
 	private int power;
 	private Vector position;
 	private float gunAngle;
+	private Player player;
 
 	public Lander(Planet planet, Vector position, float angle) {
 		this.currentPlanet = planet;
@@ -29,6 +30,14 @@ public class Lander implements StaticObject, Renderable {
 		this.angle = angle;
 		this.power = MAX_POWER;
 		this.gunAngle = (float) Math.PI / 2;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	public int getHealth() {
