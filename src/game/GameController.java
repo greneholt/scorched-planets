@@ -43,7 +43,7 @@ public class GameController implements KeyListener {
 
 		currentPlayerIndex = 0;
 
-		playerPanel.updatePlayerInfo();
+		updateCurrentPlayer();
 
 		sceneComponent.repaint();
 
@@ -100,13 +100,15 @@ public class GameController implements KeyListener {
 				if (!cont) {
 					simulationTimer.stop();
 					enableInput = true;
-					playerPanel.updatePlayerInfo();
+					updateCurrentPlayer();
 				}
 			}
 		});
 	}
 
 	public void nextPlayer() {
+		getCurrentPlayer().getLander().setHighlight(false);
+		
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 
 		if (currentPlayerIndex == 0) {
@@ -114,8 +116,14 @@ public class GameController implements KeyListener {
 			runSimulation();
 		}
 		else {
+			getCurrentPlayer().getLander().setHighlight(true);
 			playerPanel.updatePlayerInfo();
 		}
+	}
+	
+	private void updateCurrentPlayer() {
+		getCurrentPlayer().getLander().setHighlight(true);
+		playerPanel.updatePlayerInfo();
 	}
 
 	public void runSimulation() {

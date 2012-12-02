@@ -56,58 +56,73 @@ public class MapManager {
 		}
 	}
 
-	public void makeExplosion(Player player, Vector position, float blastRadius, float yield ) {
-		Explosion explosion = new Explosion(position, blastRadius);
-		// add to scene
-		addRenderable(explosion);
+	public void makeExplosion(Player player, Vector position, float blastRadius, float yield) {
+		// add explosion to scene
+		addRenderable(new Explosion(position, blastRadius));
+		
 		// calculate and then apply damages
 		int score = 0;
-		for (Lander p : landers) {
-			float distance = Vector.distanceBetween(p.getPosition(), position);
+		
+		Iterator<Lander> iter = landers.iterator();
+		while (iter.hasNext()) {
+			Lander lander = iter.next();
+			float distance = Vector.distanceBetween(lander.getPosition(), position);
 			if (distance < blastRadius) {
 				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
+
+				lander.damage(damage);
+
 				// apply kill bonus
-				if (p.getHealth() - damage <= 0 && !p.getPlayer().equals(player)) {
-					score += KILL_BONUS;
+				if (lander.getHealth() <= 0) {
+					addRenderable(new Explosion(lander.getPosition(), 20)); // just for fun
+					
+					iter.remove();
+					removeRenderable(lander);
+					removePhysicsObject(lander);
+					
+					if (!lander.getPlayer().equals(player)) {
+						score += KILL_BONUS;
+					}
 				}
-				p.setHealth(p.getHealth() - damage);
+
 				// give negative score for hitting yourself, or just add damage to score if you hit someone else
-				if (p.getPlayer().equals(player)) {
+				if (lander.getPlayer().equals(player)) {
 					score -= damage;
 				} else {
 					score += damage;
 				}
 			}
 		}
+		
 		// apply score
 		score += player.getScore();
 		player.setScore(score);
 	}
-	
+
 	// returns true if the simulation needs to continue
 	public boolean runStep(float timeStep) {
 		physicsSolver.simulateStep(timeStep);
 		scene.animationTick();
-		
+
 		return projectiles.size() > 0 || scene.hasAnimations();
 	}
-	
+
 	public void addProjectile(Projectile projectile) {
 		projectiles.add(projectile);
 		addRenderable(projectile);
 		addPhysicsObject(projectile);
 	}
-	
+
 	public void removeProjectile(Projectile projectile) {
 		projectiles.remove(projectile);
 		removeRenderable(projectile);
 		removePhysicsObject(projectile);
 	}
-	
+
 	public void addRenderable(Renderable object) {
 		scene.addObject(object);
 	}
-	
+
 	public void addPhysicsObject(PhysicsObject object) {
 		physicsSolver.addObject(object);
 	}

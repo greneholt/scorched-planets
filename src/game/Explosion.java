@@ -30,7 +30,7 @@ public class Explosion implements Renderable, Animatable {
 		AffineTransform savedXf = g.getTransform();
 
 		g.translate(position.x, position.y);
-		g.setColor(Color.RED);
+		g.setColor(new Color(0xFC410D));
 		g.fill(shape);
 
 		g.setTransform(savedXf);

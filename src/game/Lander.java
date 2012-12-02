@@ -22,6 +22,7 @@ public class Lander implements StaticObject, Renderable {
 	private Vector position;
 	private float gunAngle;
 	private Player player;
+	private boolean highlight;
 
 	public Lander(Planet planet, Vector position, float angle) {
 		this.currentPlanet = planet;
@@ -58,6 +59,10 @@ public class Lander implements StaticObject, Renderable {
 
 	public void setAngle(float angle) {
 		this.angle = angle;
+	}
+
+	public void damage(int damage) {
+		health -= damage;
 	}
 
 	public int getPower() {
@@ -99,7 +104,11 @@ public class Lander implements StaticObject, Renderable {
 		// we draw the lander in in the positive Y direction, so we need to rotate it -PI/2 (towards the positive X axis) for the angles to work out
 		g.rotate(angle - Math.PI / 2);
 
-		g.setColor(Color.RED);
+		if (highlight) {
+			g.setColor(Color.WHITE);
+		} else {
+			g.setColor(Color.RED);
+		}
 		g.fill(shape);
 		g.fill(gun);
 
@@ -166,4 +175,8 @@ public class Lander implements StaticObject, Renderable {
 	private static final float HEIGHT = 8;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
 	private static final float POWER_MULTIPLIER = 200f;
+
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+	}
 }
