@@ -108,19 +108,20 @@ public class GameController implements KeyListener {
 
 	public void nextPlayer() {
 		getCurrentPlayer().getLander().setHighlight(false);
-		
-		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+
+		do {
+			currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+		} while (getCurrentPlayer().getLander().getHealth() <= 0);
 
 		if (currentPlayerIndex == 0) {
 			enableInput = false;
 			runSimulation();
-		}
-		else {
+		} else {
 			getCurrentPlayer().getLander().setHighlight(true);
 			playerPanel.updatePlayerInfo();
 		}
 	}
-	
+
 	private void updateCurrentPlayer() {
 		getCurrentPlayer().getLander().setHighlight(true);
 		playerPanel.updatePlayerInfo();
