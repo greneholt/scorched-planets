@@ -17,8 +17,11 @@ public class GameController implements KeyListener {
 	private PlayerPanel playerPanel;
 	private int currentPlayerIndex;
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
+	private Timer simulationTimer;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
+	private static final int ANIMATION_INTERVAL = 500;
+	private static final float TIME_STEP = 0.001f;
 
 	public GameController(int playerCount, SceneComponent sceneComponent, PlayerPanel playerPanel) {
 		this.sceneComponent = sceneComponent;
@@ -86,6 +89,15 @@ public class GameController implements KeyListener {
 				repaint();
 			}
 		});
+		
+		simulationTimer = new Timer(ANIMATION_INTERVAL, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				repaint();
+				map.runStep(TIME_STEP);
+			}
+		});
 	}
 
 	public void nextPlayer() {
@@ -99,7 +111,14 @@ public class GameController implements KeyListener {
 	}
 	
 	public void runSimulation() {
+		// create projectiles for each lander
+		for (Lander lander : map.getLanders()) {
+			Projectile projectile = lander.fireProjectile(map);
+			map.addRenderable(projectile);
+			map.addPhysicsObject(projectile);
+		}
 		
+		simulationTimer.start();
 	}
 
 	/*

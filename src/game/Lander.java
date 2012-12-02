@@ -142,6 +142,15 @@ public class Lander implements StaticObject, Renderable {
 	public float getGunAngle() {
 		return gunAngle;
 	}
+	
+	public Projectile fireProjectile(MapManager map) {
+		// when the gun is pointing straight up from the surface it is at an angle of PI/2, so we must subtract PI/2
+		float traj = gunAngle + angle - (float) Math.PI / 2;
+		
+		Vector start = position.add(Vector.polar(30, traj));
+		
+		return new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map);
+	}
 
 	@Override
 	public Rectangle2D getBounds() {
@@ -156,4 +165,11 @@ public class Lander implements StaticObject, Renderable {
 	private static final float WIDTH = 20;
 	private static final float HEIGHT = 8;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
+	private static final float POWER_MULTIPLIER = 1f;
+
+	@Override
+	public void animationTick() {
+		// TODO Auto-generated method stub
+		
+	}
 }

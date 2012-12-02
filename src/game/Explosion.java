@@ -29,4 +29,10 @@ public class Explosion implements Renderable {
 
 	public static final float WIDTH = 10;
 	public static final float HEIGHT = 10;
+
+	@Override
+	public void animationTick() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -54,4 +54,9 @@ public class Teleporter extends Projectile {
 
 	private static final float WIDTH = 3;
 	private static final float HEIGHT = 7;
+	@Override
+	public void animationTick() {
+		// TODO Auto-generated method stub
+		
+	}
 }
