@@ -52,15 +52,14 @@ public class MapManager {
 		}
 	}
 
-	public void makeExplosion(Missile missile, float blastRadius, float yield ) {
-		Explosion explosion = new Explosion(missile.getPosition());
+	public void makeExplosion(Player player, Vector position, float blastRadius, float yield ) {
+		Explosion explosion = new Explosion(position);
 		// add to scene
 		addRenderable(explosion);
 		// calculate and then apply damages
-		Player player = missile.getFiredBy().getPlayer();
 		int score = 0;
 		for (Lander p : landers) {
-			float distance = Vector.distanceBetween(p.getPosition(), missile.getPosition());
+			float distance = Vector.distanceBetween(p.getPosition(), position);
 			if (distance < blastRadius) {
 				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
 				// apply kill bonus

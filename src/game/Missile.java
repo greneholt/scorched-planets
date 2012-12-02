@@ -37,7 +37,7 @@ public class Missile extends Projectile {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		mapManager.makeExplosion(this, BLAST_RADIUS, YIELD);
+		mapManager.makeExplosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD);
 		mapManager.removePhysicsObject(this);
 		mapManager.removeRenderable(this);
 	}
