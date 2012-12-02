@@ -19,11 +19,10 @@ public class MainWindow extends JFrame {
 		
 		sceneComponent = new SceneComponent();
 		add(sceneComponent, BorderLayout.CENTER);
+		playerPanel = new PlayerPanel();
+		add(playerPanel, BorderLayout.EAST);
 		
 		this.newGame();
-		
-		playerPanel = new PlayerPanel(game);
-		add(playerPanel, BorderLayout.EAST);
 	}
 	
 	public void newGame() {
@@ -46,7 +45,7 @@ public class MainWindow extends JFrame {
 			break;
 		}
 		
-		game = new GameController(playerCount, sceneComponent, this);
+		game = new GameController(playerCount, sceneComponent, playerPanel);
 	}
 	
 	public PlayerPanel getPlayerPanel() {

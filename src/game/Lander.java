@@ -17,7 +17,7 @@ public class Lander implements StaticObject, Renderable {
 
 	private int health;
 	private Planet currentPlanet;
-	private double angle;
+	private float angle;
 	private int power;
 	private Vector position;
 	private float gunAngle;
@@ -28,7 +28,7 @@ public class Lander implements StaticObject, Renderable {
 		this.health = FULL_HEALTH;
 		this.angle = angle;
 		this.power = MAX_POWER;
-		this.gunAngle = (float) Math.PI / 4;
+		this.gunAngle = (float) Math.PI / 2;
 	}
 
 	public int getHealth() {
@@ -47,7 +47,7 @@ public class Lander implements StaticObject, Renderable {
 		return angle;
 	}
 
-	public void setAngle(double angle) {
+	public void setAngle(float angle) {
 		this.angle = angle;
 	}
 
@@ -124,6 +124,14 @@ public class Lander implements StaticObject, Renderable {
 		if (gunAngle < Math.PI) {
 			gunAngle += ANGLE_INCREMENT;
 		}
+	}
+	
+	public void setGunAngle(float gunAngle) {
+		this.gunAngle = gunAngle;
+	}
+	
+	public float getGunAngle() {
+		return gunAngle;
 	}
 
 	@Override

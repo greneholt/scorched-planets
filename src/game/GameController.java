@@ -14,15 +14,15 @@ public class GameController implements KeyListener {
 	private MapManager map;
 	private List<Player> players;
 	private SceneComponent sceneComponent;
-	private MainWindow mainWindow;
+	private PlayerPanel playerPanel;
 	private int currentPlayerIndex;
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
 
-	public GameController(int playerCount, SceneComponent sceneComponent, MainWindow mw) {
+	public GameController(int playerCount, SceneComponent sceneComponent, PlayerPanel playerPanel) {
 		this.sceneComponent = sceneComponent;
-		mainWindow = mw;
+		this.playerPanel = playerPanel;
 
 		players = new ArrayList<Player>(playerCount);
 
@@ -34,17 +34,26 @@ public class GameController implements KeyListener {
 
 		sceneComponent.setScene(map.getScene());
 		sceneComponent.setKeyListener(this);
+		
+		playerPanel.setGameController(this);
 
 		currentPlayerIndex = 0;
+		
+		playerPanel.updatePlayerInfo();
 
-		redraw();
+		sceneComponent.repaint();
 
+		makeTimers();
+	}
+
+	private void makeTimers() {
 		upTimer = new Timer(KEY_REPEAT_INTERVAL, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getCurrentPlayer().getLander().increasePower();
-				redraw();
+				playerPanel.setPower(getCurrentPlayer().getLander().getPower());
+				repaint();
 			}
 		});
 
@@ -53,7 +62,8 @@ public class GameController implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getCurrentPlayer().getLander().decreasePower();
-				redraw();
+				playerPanel.setPower(getCurrentPlayer().getLander().getPower());
+				repaint();
 			}
 		});
 
@@ -62,7 +72,8 @@ public class GameController implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getCurrentPlayer().getLander().rotateCounterClockwise();
-				redraw();
+				playerPanel.setAngle(getCurrentPlayer().getLander().getGunAngle());
+				repaint();
 			}
 		});
 
@@ -71,18 +82,30 @@ public class GameController implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getCurrentPlayer().getLander().rotateClockwise();
-				redraw();
+				playerPanel.setAngle(getCurrentPlayer().getLander().getGunAngle());
+				repaint();
 			}
 		});
 	}
 
-	private void redraw() {
-		sceneComponent.repaint();
+	public void nextPlayer() {
+		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+		
+		playerPanel.updatePlayerInfo();
+		
+		if (currentPlayerIndex == 0) {
+			runSimulation();
+		}
+	}
+	
+	public void runSimulation() {
+		
 	}
 
 	/*
 	 * This should update the current players values for angle and power, and then switch to the next player (unless all the players have had their turn, in which case it goes to run turn).
 	 */
+	/*
 	public void nextTurn() {
 		double angle = mainWindow.getPlayerPanel().getAngle();
 		int power = mainWindow.getPlayerPanel().getPower();
@@ -94,11 +117,13 @@ public class GameController implements KeyListener {
 		}
 		mainWindow.getPlayerPanel().setAngleAndPower();
 	}
+	*/
 
 	/*
 	 * This should run the simulation. The simulation should quit out under certain conditions, which are the following: 1: All of the rockets have exploded 2: All of the rockets are very far away 3:
 	 * One or all of the rockets are stuck in a loop 4: Some combination thereof
 	 */
+	/*
 	public void runTurn() {
 		List<Projectile> movers;
 		movers = map.getProjectiles();
@@ -116,6 +141,7 @@ public class GameController implements KeyListener {
 			}
 		} while (notOutOfPlay);
 	}
+	*/
 
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
@@ -164,5 +190,19 @@ public class GameController implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// do nothing
+	}
+
+	public void repaint() {
+		sceneComponent.repaint();
+	}
+
+	public void changeCurrentGunAngle(float angle) {
+		getCurrentPlayer().getLander().setGunAngle(angle);
+		repaint();
+	}
+
+	public void changeCurrentPower(int power) {
+		getCurrentPlayer().getLander().setPower(power);
+		repaint();
 	}
 }
