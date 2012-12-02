@@ -15,7 +15,6 @@ public class Player {
 	public Player(Lander lander, String name) {
 		this.lander = lander;
 		this.name = name;
-		this.lander.setPlayer(this);
 	}
 
 	public Player(String name) {

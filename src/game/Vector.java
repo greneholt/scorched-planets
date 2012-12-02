@@ -57,4 +57,9 @@ public class Vector {
 	public static float distanceBetween(Vector a, Vector b) {
 		return a.subtract(b).magnitude();
 	}
+	
+	@Override
+	public String toString() {
+		return "x=" + x + " y=" + y;
+	}
 }

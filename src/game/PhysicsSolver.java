@@ -115,5 +115,5 @@ public class PhysicsSolver {
 		return direction.multiply(G * target.getMass() * source.getMass() / (distance * distance * distance));
 	}
 
-	public static final float G = 20;
+	public static final float G = 2E7f;
 }

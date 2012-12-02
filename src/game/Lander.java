@@ -165,7 +165,7 @@ public class Lander implements StaticObject, Renderable {
 	private static final float WIDTH = 20;
 	private static final float HEIGHT = 8;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
-	private static final float POWER_MULTIPLIER = 1f;
+	private static final float POWER_MULTIPLIER = 100f;
 
 	@Override
 	public void animationTick() {

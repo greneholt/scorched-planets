@@ -20,8 +20,8 @@ public class GameController implements KeyListener {
 	private Timer simulationTimer;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
-	private static final int ANIMATION_INTERVAL = 500;
-	private static final float TIME_STEP = 0.001f;
+	private static final int ANIMATION_INTERVAL = 20;
+	private static final float TIME_STEP = 0.0005f;
 
 	public GameController(int playerCount, SceneComponent sceneComponent, PlayerPanel playerPanel) {
 		this.sceneComponent = sceneComponent;

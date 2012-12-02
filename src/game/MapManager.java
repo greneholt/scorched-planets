@@ -46,7 +46,9 @@ public class MapManager {
 
 		Iterator<Player> iter = players.iterator();
 		for (Lander lander : landers) {
-			iter.next().setLander(lander);
+			Player player = iter.next();
+			player.setLander(lander);
+			lander.setPlayer(player);
 			addRenderable(lander);
 			addPhysicsObject(lander);
 		}

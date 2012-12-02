@@ -12,8 +12,8 @@ public class MapGenerator {
 	public static float MIN_DISTANCE_BETWEEN_PLANETS = 100;
 	public static float MAX_RADIUS = 80;
 	public static float MIN_RADIUS = 30;
-	public static float MIN_DENSITY = 10;
-	public static float MAX_DENSITY = 40;
+	public static float MIN_DENSITY = 2E-4f;
+	public static float MAX_DENSITY = 8E-4f;
 
 	public List<Planet> generatePlanets(int planetCount) {
 		float gridSpacing = MIN_RADIUS * 2 + MIN_DISTANCE_BETWEEN_PLANETS;
