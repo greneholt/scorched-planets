@@ -137,27 +137,6 @@ public class GameController implements KeyListener {
 		simulationTimer.start();
 	}
 
-	/*
-	 * This should update the current players values for angle and power, and then switch to the next player (unless all the players have had their turn, in which case it goes to run turn).
-	 */
-	/*
-	 * public void nextTurn() { double angle = mainWindow.getPlayerPanel().getAngle(); int power = mainWindow.getPlayerPanel().getPower(); players.get(currentPlayerIndex).getLander().setAngle(angle);
-	 * players.get(currentPlayerIndex).getLander().setPower(power); currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); if (currentPlayerIndex == 0) { runTurn(); }
-	 * mainWindow.getPlayerPanel().setAngleAndPower(); }
-	 */
-
-	/*
-	 * This should run the simulation. The simulation should quit out under certain conditions, which are the following: 1: All of the rockets have exploded 2: All of the rockets are very far away 3:
-	 * One or all of the rockets are stuck in a loop 4: Some combination thereof
-	 */
-	/*
-	 * public void runTurn() { List<Projectile> movers; movers = map.getProjectiles(); boolean notOutOfPlay; do { notOutOfPlay = false; map.getPhysicsSolver().simulateStep((float) 0.1); Rectangle2D
-	 * bounds = map.getScene().getBounds(); for (Projectile p : movers) { if (p.getPosition().x <= bounds.getMaxX() + 100 || p.getPosition().x >= bounds.getMinX() - 100) { if (p.getPosition().y <=
-	 * bounds.getMaxY() + 100 || p.getPosition().y >= bounds.getMinY() - 100) {
-	 * 
-	 * } } } } while (notOutOfPlay); }
-	 */
-
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
 	}
