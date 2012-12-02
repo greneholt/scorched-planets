@@ -91,7 +91,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape shape = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
+		Shape base = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
 
 		Shape gun = new Rectangle2D.Float(0, -1.5f, 40, 3);
 		AffineTransform xf = new AffineTransform();
@@ -109,8 +109,16 @@ public class Lander implements StaticObject, Renderable {
 		} else {
 			g.setColor(Color.RED);
 		}
-		g.fill(shape);
+		g.fill(base);
 		g.fill(gun);
+		
+		Shape health = new Rectangle2D.Float(-WIDTH/2, -15, WIDTH, 5);
+		g.setColor(Color.GREEN);
+		g.fill(health);
+		
+		Shape damage = new Rectangle2D.Float(-WIDTH/2, -15, WIDTH * (FULL_HEALTH - this.health) / FULL_HEALTH, 5);
+		g.setColor(Color.RED);
+		g.fill(damage);
 
 		g.setTransform(savedXf);
 	}
