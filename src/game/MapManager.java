@@ -11,7 +11,7 @@ public class MapManager {
 	private List<Lander> landers;
 	private List<Projectile> projectiles;
 	private Timer timer;
-	private static int KILL_BONUS = 1000;
+	public static int KILL_BONUS = 1000;
 
 	public Scene getScene() {
 		return scene;
@@ -65,12 +65,12 @@ public class MapManager {
 			if (distance < blastRadius) {
 				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
 				// apply kill bonus
-				if (p.getHealth() - damage <= 0 && !p.equals(player)) {
+				if (p.getHealth() - damage <= 0 && !p.getPlayer().equals(player)) {
 					score += KILL_BONUS;
 				}
 				p.setHealth(p.getHealth() - damage);
 				// give negative score for hitting yourself, or just add damage to score if you hit someone else
-				if (p.equals(player)) {
+				if (p.getPlayer().equals(player)) {
 					score -= damage;
 				} else {
 					score += damage;

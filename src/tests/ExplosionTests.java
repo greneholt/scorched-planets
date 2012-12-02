@@ -61,5 +61,48 @@ public class ExplosionTests {
 		// Test to make sure that same explosion location (relative) will produce same amount of damage
 		assertEquals("landers suffered different amounts of damage", a.getHealth(), b.getHealth());
 	}
+	
+	@Test
+	public void scoreTest() {
+		List<Player> players = new LinkedList<Player>();
+		players.add(new Player("Bob"));
+		players.add(new Player("Tom"));
+
+		MapManager manager = new MapManager(2, players);
+		assertTrue(manager.getLanders().size() == 2);
+		assertTrue(manager.getPlanets().size() == 2);
+		Lander a = manager.getLanders().get(0);
+		Lander b = manager.getLanders().get(1);
+		a.setPlayer(players.get(0));
+		b.setPlayer(players.get(1));
+		players.get(0).setLander(a);
+		players.get(1).setLander(b);
+		a.setPosition(new Vector(0, 0));
+		b.setPosition(new Vector(100, 0));
+		
+		int initialScoreB = b.getPlayer().getScore();
+		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
+		Vector exp1 = a.getPosition().add(new Vector(5, 5));
+		manager.makeExplosion(b.getPlayer(), exp1, 40, 40);
+		assertTrue("player's score did not increase", b.getPlayer().getScore() > initialScoreB);
+		
+		while(a.getHealth() > 0) {
+			initialScoreB = b.getPlayer().getScore();
+			manager.makeExplosion(b.getPlayer(), exp1, 40, 40);
+		}
+		assertTrue("player did not get kill bonus", MapManager.KILL_BONUS <= b.getPlayer().getScore() - initialScoreB);
+		
+		int initialScoreA = a.getPlayer().getScore();
+		a.setHealth(Lander.FULL_HEALTH);
+		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
+		manager.makeExplosion(a.getPlayer(), exp1, 40, 40);
+		assertTrue("player did not lose points for self-damage", a.getPlayer().getScore() < initialScoreA);
+		
+		while(a.getHealth() > 0) {
+			initialScoreA = a.getPlayer().getScore();
+			manager.makeExplosion(a.getPlayer(), exp1, 40, 40);
+		}
+		assertTrue("player got kill bonus for suicide", MapManager.KILL_BONUS > a.getPlayer().getScore() - initialScoreA);
+	}
 
 }
