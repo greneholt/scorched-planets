@@ -1,8 +1,8 @@
 package game;
 
 public class Vector {
-	public float x;
-	public float y;
+	public float x = 0;
+	public float y = 0;
 
 	public static Vector polar(float r, float theta) {
 		float x = r * (float) Math.cos(theta);

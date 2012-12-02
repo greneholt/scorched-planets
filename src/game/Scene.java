@@ -10,68 +10,86 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Scene {
-	private List<Renderable> objects;
+	private List<Renderable> renderables;
+	private List<Animatable> animations;
 	private static final float MARGIN = 20;
 
 	public Scene() {
-		objects = new LinkedList<Renderable>();
+		renderables = new LinkedList<Renderable>();
+		animations = new LinkedList<Animatable>();
 	}
 
 	public void render(Graphics2D g, Dimension dimension) {
 		Rectangle2D bounds = getBounds();
-		
+
 		AffineTransform xf = new AffineTransform();
-		
-		double scaleX = (dimension.getWidth() - MARGIN*2)/bounds.getWidth();
-		double scaleY = (dimension.getHeight() - MARGIN*2)/bounds.getHeight();
-		
+
+		double scaleX = (dimension.getWidth() - MARGIN * 2) / bounds.getWidth();
+		double scaleY = (dimension.getHeight() - MARGIN * 2) / bounds.getHeight();
+
 		if (scaleX < scaleY) {
 			xf.scale(scaleX, scaleX);
-		}
-		else {
+		} else {
 			xf.scale(scaleY, scaleY);
 		}
-		
+
 		xf.translate(MARGIN - bounds.getMinX(), MARGIN - bounds.getMinY());
-		
+
 		AffineTransform savedXf = g.getTransform();
-		
+
 		g.transform(xf);
-		
-		for (Renderable object : objects) {
+
+		for (Renderable object : renderables) {
 			object.render(g);
 		}
-		
+
 		g.setTransform(savedXf);
 	}
-	
+
 	public void animationTick() {
-		for (Renderable object : objects) {
+		Iterator<Animatable> iter = animations.iterator();
+		while (iter.hasNext()) {
+			Animatable object = iter.next();
 			object.animationTick();
+			
+			if (object.animationDone()) {
+				renderables.remove(object);
+				iter.remove();
+			}
 		}
 	}
-	
+
 	public Rectangle2D getBounds() {
-		Iterator<Renderable> iter = objects.iterator();
-		
+		Iterator<Renderable> iter = renderables.iterator();
+
 		if (!iter.hasNext()) {
 			return null;
 		}
-		
+
 		Rectangle2D bounds = iter.next().getBounds();
-		
+
 		while (iter.hasNext()) {
 			bounds.add(iter.next().getBounds());
 		}
-		
+
 		return bounds;
+	}
+	
+	public boolean hasAnimations() {
+		return animations.size() > 0;
 	}
 
 	public void addObject(Renderable object) {
-		objects.add(object);
+		renderables.add(object);
+		if (object instanceof Animatable) {
+			animations.add((Animatable) object);
+		}
 	}
 
 	public void removeObject(Renderable object) {
-		objects.remove(object);
+		renderables.remove(object);
+		if (object instanceof Animatable) {
+			animations.remove((Animatable) object);
+		}
 	}
 }

@@ -38,13 +38,12 @@ public class Missile extends Projectile {
 	@Override
 	public void collidedWith(PhysicsObject other) {
 		mapManager.makeExplosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD);
-		mapManager.removePhysicsObject(this);
-		mapManager.removeRenderable(this);
+		mapManager.removeProjectile(this);
 	}
 	
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(-HEIGHT/2, -WIDTH/2, HEIGHT, WIDTH);
 		AffineTransform xf = new AffineTransform();
 		xf.translate(position.x, position.y);
 		xf.rotate(getAngle());
@@ -59,12 +58,6 @@ public class Missile extends Projectile {
 	private static final float WIDTH = 5;
 	private static final float HEIGHT = 20;
 
-	private static final float BLAST_RADIUS = 20;
+	private static final float BLAST_RADIUS = 50;
 	private static final float YIELD = 40;
-	
-	@Override
-	public void animationTick() {
-		// TODO Auto-generated method stub
-		
-	}
 }

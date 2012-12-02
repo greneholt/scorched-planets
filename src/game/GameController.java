@@ -18,6 +18,7 @@ public class GameController implements KeyListener {
 	private int currentPlayerIndex;
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
 	private Timer simulationTimer;
+	private boolean enableInput = true;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
 	private static final int ANIMATION_INTERVAL = 20;
@@ -37,11 +38,11 @@ public class GameController implements KeyListener {
 
 		sceneComponent.setScene(map.getScene());
 		sceneComponent.setKeyListener(this);
-		
+
 		playerPanel.setGameController(this);
 
 		currentPlayerIndex = 0;
-		
+
 		playerPanel.updatePlayerInfo();
 
 		sceneComponent.repaint();
@@ -89,35 +90,41 @@ public class GameController implements KeyListener {
 				repaint();
 			}
 		});
-		
+
 		simulationTimer = new Timer(ANIMATION_INTERVAL, new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
-				map.runStep(TIME_STEP);
+				boolean cont = map.runStep(TIME_STEP);
+				if (!cont) {
+					simulationTimer.stop();
+					enableInput = true;
+					playerPanel.updatePlayerInfo();
+				}
 			}
 		});
 	}
 
 	public void nextPlayer() {
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-		
-		playerPanel.updatePlayerInfo();
-		
+
 		if (currentPlayerIndex == 0) {
+			enableInput = false;
 			runSimulation();
 		}
+		else {
+			playerPanel.updatePlayerInfo();
+		}
 	}
-	
+
 	public void runSimulation() {
 		// create projectiles for each lander
 		for (Lander lander : map.getLanders()) {
 			Projectile projectile = lander.fireProjectile(map);
-			map.addRenderable(projectile);
-			map.addPhysicsObject(projectile);
+			map.addProjectile(projectile);
 		}
-		
+
 		simulationTimer.start();
 	}
 
@@ -125,42 +132,22 @@ public class GameController implements KeyListener {
 	 * This should update the current players values for angle and power, and then switch to the next player (unless all the players have had their turn, in which case it goes to run turn).
 	 */
 	/*
-	public void nextTurn() {
-		double angle = mainWindow.getPlayerPanel().getAngle();
-		int power = mainWindow.getPlayerPanel().getPower();
-		players.get(currentPlayerIndex).getLander().setAngle(angle);
-		players.get(currentPlayerIndex).getLander().setPower(power);
-		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-		if (currentPlayerIndex == 0) {
-			runTurn();
-		}
-		mainWindow.getPlayerPanel().setAngleAndPower();
-	}
-	*/
+	 * public void nextTurn() { double angle = mainWindow.getPlayerPanel().getAngle(); int power = mainWindow.getPlayerPanel().getPower(); players.get(currentPlayerIndex).getLander().setAngle(angle);
+	 * players.get(currentPlayerIndex).getLander().setPower(power); currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); if (currentPlayerIndex == 0) { runTurn(); }
+	 * mainWindow.getPlayerPanel().setAngleAndPower(); }
+	 */
 
 	/*
 	 * This should run the simulation. The simulation should quit out under certain conditions, which are the following: 1: All of the rockets have exploded 2: All of the rockets are very far away 3:
 	 * One or all of the rockets are stuck in a loop 4: Some combination thereof
 	 */
 	/*
-	public void runTurn() {
-		List<Projectile> movers;
-		movers = map.getProjectiles();
-		boolean notOutOfPlay;
-		do {
-			notOutOfPlay = false;
-			map.getPhysicsSolver().simulateStep((float) 0.1);
-			Rectangle2D bounds = map.getScene().getBounds();
-			for (Projectile p : movers) {
-				if (p.getPosition().x <= bounds.getMaxX() + 100 || p.getPosition().x >= bounds.getMinX() - 100) {
-					if (p.getPosition().y <= bounds.getMaxY() + 100 || p.getPosition().y >= bounds.getMinY() - 100) {
-
-					}
-				}
-			}
-		} while (notOutOfPlay);
-	}
-	*/
+	 * public void runTurn() { List<Projectile> movers; movers = map.getProjectiles(); boolean notOutOfPlay; do { notOutOfPlay = false; map.getPhysicsSolver().simulateStep((float) 0.1); Rectangle2D
+	 * bounds = map.getScene().getBounds(); for (Projectile p : movers) { if (p.getPosition().x <= bounds.getMaxX() + 100 || p.getPosition().x >= bounds.getMinX() - 100) { if (p.getPosition().y <=
+	 * bounds.getMaxY() + 100 || p.getPosition().y >= bounds.getMinY() - 100) {
+	 * 
+	 * } } } } while (notOutOfPlay); }
+	 */
 
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
@@ -172,40 +159,44 @@ public class GameController implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			upTimer.start();
-			break;
-		case KeyEvent.VK_DOWN:
-			downTimer.start();
-			break;
-		case KeyEvent.VK_RIGHT:
-			rightTimer.start();
-			break;
-		case KeyEvent.VK_LEFT:
-			leftTimer.start();
-			break;
-		case KeyEvent.VK_SPACE:
-			nextPlayer();
-			break;
+		if (enableInput) {
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				upTimer.start();
+				break;
+			case KeyEvent.VK_DOWN:
+				downTimer.start();
+				break;
+			case KeyEvent.VK_RIGHT:
+				rightTimer.start();
+				break;
+			case KeyEvent.VK_LEFT:
+				leftTimer.start();
+				break;
+			case KeyEvent.VK_SPACE:
+				nextPlayer();
+				break;
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			upTimer.stop();
-			break;
-		case KeyEvent.VK_DOWN:
-			downTimer.stop();
-			break;
-		case KeyEvent.VK_RIGHT:
-			rightTimer.stop();
-			break;
-		case KeyEvent.VK_LEFT:
-			leftTimer.stop();
-			break;
+		if (enableInput) {
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				upTimer.stop();
+				break;
+			case KeyEvent.VK_DOWN:
+				downTimer.stop();
+				break;
+			case KeyEvent.VK_RIGHT:
+				rightTimer.stop();
+				break;
+			case KeyEvent.VK_LEFT:
+				leftTimer.stop();
+				break;
+			}
 		}
 	}
 
@@ -219,12 +210,16 @@ public class GameController implements KeyListener {
 	}
 
 	public void changeCurrentGunAngle(float angle) {
-		getCurrentPlayer().getLander().setGunAngle(angle);
-		repaint();
+		if (enableInput) {
+			getCurrentPlayer().getLander().setGunAngle(angle);
+			repaint();
+		}
 	}
 
 	public void changeCurrentPower(int power) {
-		getCurrentPlayer().getLander().setPower(power);
-		repaint();
+		if (enableInput) {
+			getCurrentPlayer().getLander().setPower(power);
+			repaint();
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package game;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MapManager {
@@ -38,6 +39,7 @@ public class MapManager {
 		MapGenerator gen = new MapGenerator();
 		planets = gen.generatePlanets(planetCount);
 		landers = gen.generateLanders(planets, players.size());
+		projectiles = new LinkedList<Projectile>();
 
 		for (Planet planet : planets) {
 			addRenderable(planet);
@@ -55,7 +57,7 @@ public class MapManager {
 	}
 
 	public void makeExplosion(Player player, Vector position, float blastRadius, float yield ) {
-		Explosion explosion = new Explosion(position);
+		Explosion explosion = new Explosion(position, blastRadius);
 		// add to scene
 		addRenderable(explosion);
 		// calculate and then apply damages
@@ -82,9 +84,24 @@ public class MapManager {
 		player.setScore(score);
 	}
 	
-	public void runStep(float timeStep) {
+	// returns true if the simulation needs to continue
+	public boolean runStep(float timeStep) {
 		physicsSolver.simulateStep(timeStep);
 		scene.animationTick();
+		
+		return projectiles.size() > 0 || scene.hasAnimations();
+	}
+	
+	public void addProjectile(Projectile projectile) {
+		projectiles.add(projectile);
+		addRenderable(projectile);
+		addPhysicsObject(projectile);
+	}
+	
+	public void removeProjectile(Projectile projectile) {
+		projectiles.remove(projectile);
+		removeRenderable(projectile);
+		removePhysicsObject(projectile);
 	}
 	
 	public void addRenderable(Renderable object) {

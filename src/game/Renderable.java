@@ -7,6 +7,4 @@ public interface Renderable {
 	public void render(Graphics2D g);
 	
 	public Rectangle2D getBounds();
-	
-	public void animationTick();
 }

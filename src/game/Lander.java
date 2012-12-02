@@ -28,14 +28,14 @@ public class Lander implements StaticObject, Renderable {
 		this.position = position;
 		this.health = FULL_HEALTH;
 		this.angle = angle;
-		this.power = MAX_POWER/2;
+		this.power = MAX_POWER / 2;
 		this.gunAngle = (float) Math.PI / 2;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
@@ -134,21 +134,21 @@ public class Lander implements StaticObject, Renderable {
 			gunAngle += ANGLE_INCREMENT;
 		}
 	}
-	
+
 	public void setGunAngle(float gunAngle) {
 		this.gunAngle = gunAngle;
 	}
-	
+
 	public float getGunAngle() {
 		return gunAngle;
 	}
-	
+
 	public Projectile fireProjectile(MapManager map) {
 		// when the gun is pointing straight up from the surface it is at an angle of PI/2, so we must subtract PI/2
 		float traj = gunAngle + angle - (float) Math.PI / 2;
-		
+
 		Vector start = position.add(Vector.polar(30, traj));
-		
+
 		return new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map);
 	}
 
@@ -166,10 +166,4 @@ public class Lander implements StaticObject, Renderable {
 	private static final float HEIGHT = 8;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
 	private static final float POWER_MULTIPLIER = 200f;
-
-	@Override
-	public void animationTick() {
-		// TODO Auto-generated method stub
-		
-	}
 }
