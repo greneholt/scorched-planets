@@ -1,8 +1,11 @@
 package game;
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -10,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -28,6 +33,11 @@ public class PlayerPanel extends JPanel {
 
 	private JPanel infoPanel;
 	private JLabel playerName, healthLabel, scoreLabel;
+	
+	private JPanel listPanel;
+	private List<JLabel> playerHealthLabels = null;
+	private List<JLabel> playerScoreLabels = null;
+
 	private JCheckBox easyPlayButton;
 	public boolean easyPlay;
 
@@ -46,7 +56,8 @@ public class PlayerPanel extends JPanel {
 				}
 			}
 		});
-
+		
+		add(createPlayerListPanel());
 		add(createPlayerInfoPanel());
 		add(createGunControlsPanel());
 		add(fireButton);
@@ -106,6 +117,7 @@ public class PlayerPanel extends JPanel {
 	private JPanel createPlayerInfoPanel() {
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new GridLayout(0, 1));
+		infoPanel.setBorder(new TitledBorder(new EtchedBorder(), "Current Player Info"));
 		playerName = new JLabel("Current Player: None");
 		healthLabel = new JLabel("Health: NA");
 		scoreLabel = new JLabel("Score: NA");
@@ -113,12 +125,29 @@ public class PlayerPanel extends JPanel {
 		
 		easyPlayButton.addActionListener(new CheckBoxListener());
 
-		add(playerName);
-		add(healthLabel);
-		add(scoreLabel);
-		add(easyPlayButton);
+		infoPanel.add(playerName);
+		infoPanel.add(healthLabel);
+		infoPanel.add(scoreLabel);
+		infoPanel.add(easyPlayButton);
 
 		return infoPanel;
+	}
+	
+	private JPanel createPlayerListPanel() {
+		listPanel = new JPanel();
+		listPanel.setLayout(new FlowLayout());
+		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
+		JPanel labels = new JPanel();
+		labels.setLayout(new GridLayout(3,0));
+		JLabel playerName = new JLabel ("Player:");
+		JLabel healthName = new JLabel ("Health ( /" + Lander.FULL_HEALTH + "):");
+		JLabel scoreName = new JLabel ("Score:");
+		labels.add(playerName);
+		labels.add(healthName);
+		labels.add(scoreName);
+		listPanel.add(labels);
+		
+		return listPanel;
 	}
 	
 	private class CheckBoxListener implements ActionListener {
@@ -141,6 +170,43 @@ public class PlayerPanel extends JPanel {
 
 			setAngle(gameController.getCurrentPlayer().getLander().getGunAngle());
 			setPower(gameController.getCurrentPlayer().getLander().getPower());
+			
+			updatePlayerListInfo();
+		}
+	}
+	
+	public void updatePlayerListInfo() {
+		if (gameController != null) {
+			if (playerHealthLabels != null && playerScoreLabels != null) {
+				int index = 0;
+				for(Player p : gameController.getPlayers()) {
+					int health = p.getLander().getHealth();
+					playerHealthLabels.get(index).setText("" + health);
+					int score = p.getScore();
+					playerScoreLabels.get(index).setText("" + score);
+					++index;
+				}
+			} else {	// add the player information
+				playerHealthLabels = new LinkedList<JLabel>();
+				playerScoreLabels = new LinkedList<JLabel>();
+				JPanel panelContent = new JPanel();
+				panelContent.setLayout(new GridLayout(3,0));
+				for(Player p : gameController.getPlayers()) {
+					JLabel nameP = new JLabel(" " + p.getName() + " ");
+					JLabel healthP = new JLabel("NA");
+					playerHealthLabels.add(healthP);
+					JLabel scoreP = new JLabel("NA");
+					playerScoreLabels.add(scoreP);
+					panelContent.add(nameP);
+				}
+				for(JLabel health : playerHealthLabels) {
+					panelContent.add(health);
+				}
+				for(JLabel score : playerScoreLabels) {
+					panelContent.add(score);
+				}
+				listPanel.add(panelContent);
+			}
 		}
 	}
 
