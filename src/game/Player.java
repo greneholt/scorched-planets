@@ -1,6 +1,8 @@
 package game;
 
+import java.awt.Color;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 
@@ -8,18 +10,21 @@ public class Player {
 	private int score;
 	private List<String> killsList;
 	private String name;
-
-	public Player(Lander lander, String name) {
-		this.lander = lander;
-		this.name = name;
-	}
+	private Color color;
 
 	public Player(String name) {
 		this.name = name;
+
+		Random rand = new Random();
+		color = Color.getHSBColor(rand.nextFloat(), 1, 1);
 	}
 
 	public Lander getLander() {
 		return lander;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 	public void setLander(Lander lander) {
@@ -49,7 +54,7 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void damage(int damage, Player causedBy) {
 		int score = 0;
 
@@ -69,6 +74,6 @@ public class Player {
 
 		causedBy.addScore(score);
 	}
-	
+
 	public static int KILL_BONUS = 100;
 }

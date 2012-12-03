@@ -1,15 +1,17 @@
 package game;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
 	private static final int DESTROYED_YIELD = 30;
-	private static final int DESTROYED_BLAST_RADIUS = 70;
+	private static final int DESTROYED_BLAST_RADIUS = 30;
 	private static final int GUN_LENGTH = 30;
 
 	public void setPosition(Vector position) {
@@ -67,7 +69,7 @@ public class Lander implements StaticObject, Renderable {
 	public void damage(int damage, Player causedBy) {
 		health -= damage;
 		player.damage(damage, causedBy);
-		
+
 		if (health <= 0) {
 			mapManager.addRenderable(new Explosion(getPlayer(), position, DESTROYED_BLAST_RADIUS, DESTROYED_YIELD, mapManager));
 			mapManager.removeLander(this);
@@ -115,17 +117,21 @@ public class Lander implements StaticObject, Renderable {
 
 		if (highlight) {
 			g.setColor(Color.WHITE);
-		} else {
-			g.setColor(Color.RED);
+
+			Shape arc = new Arc2D.Float(-GUN_LENGTH, -GUN_LENGTH, GUN_LENGTH * 2, GUN_LENGTH * 2, 180, 180, Arc2D.OPEN);
+			g.setStroke(new BasicStroke(3));
+			g.draw(arc);
 		}
+		
+		g.setColor(player.getColor());
 		g.fill(base);
 		g.fill(gun);
-		
-		Shape health = new Rectangle2D.Float(-WIDTH/2, -15, WIDTH, 5);
+
+		Shape health = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH, 5);
 		g.setColor(Color.GREEN);
 		g.fill(health);
-		
-		Shape damage = new Rectangle2D.Float(-WIDTH/2, -15, WIDTH * (FULL_HEALTH - this.health) / FULL_HEALTH, 5);
+
+		Shape damage = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH * (FULL_HEALTH - this.health) / FULL_HEALTH, 5);
 		g.setColor(Color.RED);
 		g.fill(damage);
 
@@ -138,26 +144,30 @@ public class Lander implements StaticObject, Renderable {
 	}
 
 	public void increasePower() {
-		if (power < MAX_POWER) {
-			power++;
+		power++;
+		if (power > MAX_POWER) {
+			power = MAX_POWER;
 		}
 	}
 
 	public void decreasePower() {
-		if (power > 0) {
-			power--;
+		power--;
+		if (power < 0) {
+			power = 0;
 		}
 	}
 
 	public void rotateCounterClockwise() {
-		if (gunAngle > 0) {
-			gunAngle -= ANGLE_INCREMENT;
+		gunAngle -= ANGLE_INCREMENT;
+		if (gunAngle < 0) {
+			gunAngle = 0;
 		}
 	}
 
 	public void rotateClockwise() {
-		if (gunAngle < Math.PI) {
-			gunAngle += ANGLE_INCREMENT;
+		gunAngle += ANGLE_INCREMENT;
+		if (gunAngle > Math.PI) {
+			gunAngle = (float) Math.PI;
 		}
 	}
 
