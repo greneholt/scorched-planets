@@ -57,8 +57,7 @@ public class PhysicsSolver {
 		Set<Collission> collissions = new HashSet<Collission>();
 
 		for (DynamicObject object : dynamicObjects) {
-			// sum force on them
-			Vector totalForce = sumVectors(object);
+			Vector totalForce = sumForcesOn(object);
 
 			object.simulateStep(totalForce, timeStep);
 		}
@@ -74,7 +73,7 @@ public class PhysicsSolver {
 		}
 	}
 	
-	private Vector sumVectors(DynamicObject object) {
+	private Vector sumForcesOn(DynamicObject object) {
 		Vector totalForce = new Vector();
 
 		for (DynamicObject b : dynamicObjects) {
@@ -82,12 +81,13 @@ public class PhysicsSolver {
 				continue;
 			}
 
-			totalForce.add(gravitationalForce(object, b));
+			totalForce = totalForce.add(gravitationalForce(object, b));
 		}
 
 		for (StaticObject b : staticObjects) {
 			totalForce = totalForce.add(gravitationalForce(object, b));
 		}
+		
 		return totalForce;
 	}
 
