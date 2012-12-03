@@ -6,8 +6,10 @@ import game.Lander;
 import game.MapGenerator;
 import game.MapManager;
 import game.Planet;
+import game.Player;
 import game.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,7 +37,13 @@ public class GameSetupTests {
 
 	@Test
 	public void landerPlacementTest() {
-		MapManager map = new MapManager(4, 4);
+		List<Player> players = new LinkedList<Player>();
+		players.add(new Player("Bob"));
+		players.add(new Player("Tom"));
+		players.add(new Player("Tim"));
+		players.add(new Player("John"));
+		
+		MapManager map = new MapManager(4, players);
 		List<Planet> planets = map.getPlanets();
 		List<Lander> landers = map.getLanders();
 

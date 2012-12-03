@@ -35,14 +35,7 @@ public class GameController implements KeyListener {
 			players.add(new Player("Player " + (i + 1)));
 		}
 
-		map = new MapManager(playerCount + 3, players.size());
-		
-		Iterator<Player> iter = players.iterator();
-		for (Lander lander : map.getLanders()) {
-			Player player = iter.next();
-			player.setLander(lander);
-			lander.setPlayer(player);
-		}
+		map = new MapManager(playerCount + 3, players);
 
 		sceneComponent.setScene(map.getScene());
 		sceneComponent.setKeyListener(this);

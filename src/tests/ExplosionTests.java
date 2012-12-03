@@ -22,15 +22,11 @@ public class ExplosionTests {
 		players.add(new Player("Bob"));
 		players.add(new Player("Tom"));
 
-		MapManager map = new MapManager(2, players.size());
+		MapManager map = new MapManager(2, players);
 		assertTrue(map.getLanders().size() == 2);
 		assertTrue(map.getPlanets().size() == 2);
 		Lander a = map.getLanders().get(0);
 		Lander b = map.getLanders().get(1);
-		a.setPlayer(players.get(0));
-		b.setPlayer(players.get(1));
-		players.get(0).setLander(a);
-		players.get(1).setLander(b);
 		a.setPosition(new Vector(0, 0));
 		b.setPosition(new Vector(100, 0));
 		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
@@ -82,15 +78,11 @@ public class ExplosionTests {
 		players.add(new Player("Bob"));
 		players.add(new Player("Tom"));
 
-		MapManager map = new MapManager(2, players.size());
+		MapManager map = new MapManager(2, players);
 		assertTrue(map.getLanders().size() == 2);
 		assertTrue(map.getPlanets().size() == 2);
 		Lander a = map.getLanders().get(0);
 		Lander b = map.getLanders().get(1);
-		a.setPlayer(players.get(0));
-		b.setPlayer(players.get(1));
-		players.get(0).setLander(a);
-		players.get(1).setLander(b);
 		a.setPosition(new Vector(0, 0));
 		b.setPosition(new Vector(100, 0));
 

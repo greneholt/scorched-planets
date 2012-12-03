@@ -81,14 +81,14 @@ public class MapGenerator {
 	}
 
 	// generates the specified number of landers and places them on the planets
-	public List<Lander> generateLanders(List<Planet> planets, int landerCount, MapManager mapManager) {
+	public List<Lander> generateLanders(List<Planet> planets, List<Player> players, MapManager mapManager) {
 		Random rand = new Random();
 
 		List<Planet> availablePlanets = new ArrayList<Planet>(planets);
 
 		List<Lander> landers = new LinkedList<Lander>();
 
-		for (int i = 0; i < landerCount; i++) {
+		for (Player player : players) {
 			int n = rand.nextInt(availablePlanets.size());
 			
 			Planet planet = availablePlanets.remove(n);
@@ -97,7 +97,8 @@ public class MapGenerator {
 			
 			float x = (float) Math.cos(angleOnPlanet) * planet.getRadius() + planet.getPosition().x;
 			float y = (float) Math.sin(angleOnPlanet) * planet.getRadius() + planet.getPosition().y;
-			Lander lander = new Lander(planet, new Vector(x, y), angleOnPlanet, mapManager);
+			Lander lander = new Lander(player, planet, new Vector(x, y), angleOnPlanet, mapManager);
+			player.setLander(lander);
 			landers.add(lander);
 		}
 		

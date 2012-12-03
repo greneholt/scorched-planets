@@ -29,7 +29,8 @@ public class Lander implements StaticObject, Renderable {
 	private boolean highlight;
 	private MapManager mapManager;
 
-	public Lander(Planet planet, Vector position, float angle, MapManager mapManager) {
+	public Lander(Player player, Planet planet, Vector position, float angle, MapManager mapManager) {
+		this.player = player;
 		this.currentPlanet = planet;
 		this.position = position;
 		this.health = FULL_HEALTH;
@@ -41,10 +42,6 @@ public class Lander implements StaticObject, Renderable {
 
 	public Player getPlayer() {
 		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
 	}
 
 	public int getHealth() {

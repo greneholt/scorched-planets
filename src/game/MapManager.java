@@ -31,10 +31,10 @@ public class MapManager {
 		return projectiles;
 	}
 
-	public MapManager(int planetCount, int playerCount) {
+	public MapManager(int planetCount, List<Player> players) {
 		MapGenerator gen = new MapGenerator();
 		List<Planet> planets = gen.generatePlanets(planetCount);
-		List<Lander> landers = gen.generateLanders(planets, playerCount, this);
+		List<Lander> landers = gen.generateLanders(planets, players, this);
 
 		for (Planet planet : planets) {
 			addPlanet(planet);
