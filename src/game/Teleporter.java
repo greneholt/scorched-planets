@@ -7,20 +7,21 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 public class Teleporter extends Projectile {
+	public static final float MASS = 1;
+	private static final float BOUNDING_RADIUS = 4;
+	
 	public Teleporter(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
 	}
 
 	@Override
 	public float getMass() {
-		// TODO Auto-generated method stub
-		return 0;
+		return MASS;
 	}
 
 	@Override
 	public float getBoundingRadius() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BOUNDING_RADIUS;
 	}
 
 	@Override

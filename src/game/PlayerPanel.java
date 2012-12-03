@@ -135,12 +135,12 @@ public class PlayerPanel extends JPanel {
 	
 	private JPanel createPlayerListPanel() {
 		listPanel = new JPanel();
-		listPanel.setLayout(new FlowLayout());
+		listPanel.setLayout(new GridLayout(0,1));
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
 		JPanel labels = new JPanel();
-		labels.setLayout(new GridLayout(3,0));
-		JLabel playerName = new JLabel ("Player:");
-		JLabel healthName = new JLabel ("Health ( /" + Lander.FULL_HEALTH + "):");
+		labels.setLayout(new GridLayout(0,3));
+		JLabel playerName = new JLabel ("Player:  ");
+		JLabel healthName = new JLabel ("Health ( /" + Lander.FULL_HEALTH + "):  ");
 		JLabel scoreName = new JLabel ("Score:");
 		labels.add(playerName);
 		labels.add(healthName);
@@ -190,20 +190,17 @@ public class PlayerPanel extends JPanel {
 				playerHealthLabels = new LinkedList<JLabel>();
 				playerScoreLabels = new LinkedList<JLabel>();
 				JPanel panelContent = new JPanel();
-				panelContent.setLayout(new GridLayout(3,0));
+				panelContent.setLayout(new GridLayout(0,3));
 				for(Player p : gameController.getPlayers()) {
-					JLabel nameP = new JLabel(" " + p.getName() + " ");
+					JLabel nameP = new JLabel(p.getName());
 					JLabel healthP = new JLabel("NA");
 					playerHealthLabels.add(healthP);
 					JLabel scoreP = new JLabel("NA");
 					playerScoreLabels.add(scoreP);
+					
 					panelContent.add(nameP);
-				}
-				for(JLabel health : playerHealthLabels) {
-					panelContent.add(health);
-				}
-				for(JLabel score : playerScoreLabels) {
-					panelContent.add(score);
+					panelContent.add(healthP);
+					panelContent.add(scoreP);
 				}
 				listPanel.add(panelContent);
 			}
