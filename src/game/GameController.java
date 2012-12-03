@@ -22,12 +22,10 @@ public class GameController implements KeyListener {
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
 	private Timer simulationTimer;
 	private boolean enableInput = true;
-	private float maxVelocityLastStep;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
 	private static final int ANIMATION_INTERVAL = 20;
 	private static final float TIME_STEP = 0.0005f;
-	protected static final float MIN_VELOCITY = 5E3f;
 
 	public GameController(int playerCount, SceneComponent sceneComponent, PlayerPanel playerPanel) {
 		this.sceneComponent = sceneComponent;
@@ -100,13 +98,9 @@ public class GameController implements KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (maxVelocityLastStep < MIN_VELOCITY) {
-					maxVelocityLastStep = map.runStep(MIN_VELOCITY / maxVelocityLastStep * TIME_STEP);
-				} else {
-					maxVelocityLastStep = map.runStep(TIME_STEP);
-				}
-				
+				map.runStep(TIME_STEP);
 				repaint();
+				
 				if (!map.nextStepNeeded()) {
 					simulationTimer.stop();
 					setInputEnabled(true);
@@ -179,7 +173,6 @@ public class GameController implements KeyListener {
 			lander.fireProjectile(map);
 		}
 
-		maxVelocityLastStep = Float.MAX_VALUE;
 		simulationTimer.start();
 	}
 
