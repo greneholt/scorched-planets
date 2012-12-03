@@ -139,7 +139,7 @@ public class GameController implements KeyListener {
 				message = "No winner. Continue?";
 			}
 
-			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION);
+			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 			// if they say yes
 			if (n == 0) {
