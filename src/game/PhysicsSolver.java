@@ -53,14 +53,20 @@ public class PhysicsSolver {
 		}
 	}
 
-	public void simulateStep(float timeStep) {
+	public float simulateStep(float timeStep) {
 		Set<Collission> collissions = new HashSet<Collission>();
 
 		List<DynamicObject> dynamicObjectsTemp = new LinkedList<DynamicObject>(dynamicObjects);
+		float maxVelocity = Float.MIN_VALUE;
 		for (DynamicObject object : dynamicObjectsTemp) {
 			Vector totalForce = sumForcesOn(object);
 
 			object.simulateStep(totalForce, timeStep);
+			
+			float velocity = object.getVelocity().magnitude();
+			if (velocity > maxVelocity) {
+				maxVelocity = velocity;
+			}
 		}
 
 		for (DynamicObject a : dynamicObjects) {
@@ -72,6 +78,8 @@ public class PhysicsSolver {
 			collission.a.collidedWith(collission.b);
 			collission.b.collidedWith(collission.a);
 		}
+		
+		return maxVelocity;
 	}
 	
 	private Vector sumForcesOn(DynamicObject object) {

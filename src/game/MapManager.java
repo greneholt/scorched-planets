@@ -46,10 +46,12 @@ public class MapManager {
 	}
 
 	// returns true if the simulation needs to continue
-	public boolean runStep(float timeStep) {
-		physicsSolver.simulateStep(timeStep);
+	public float runStep(float timeStep) {
 		scene.animationTick();
-
+		return physicsSolver.simulateStep(timeStep);
+	}
+	
+	public boolean nextStepNeeded() {
 		return projectiles.size() > 0 || scene.hasAnimations();
 	}
 
