@@ -173,7 +173,7 @@ public class MainWindow extends JFrame {
 
 		MainWindow window = new MainWindow();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(new Dimension(700, 700));
+		window.setSize(new Dimension(900, 700));
 		window.setVisible(true);
 	}
 }
