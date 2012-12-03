@@ -80,6 +80,7 @@ public class MainWindow extends JFrame {
 		}
 
 		game = new GameController(playerCount, sceneComponent, playerPanel);
+		playerPanel.updatePlayerListInfo();
 	}
 
 	private JMenuItem createFileExitItem() {
