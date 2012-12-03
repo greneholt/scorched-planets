@@ -2,6 +2,10 @@ package game;
 
 public abstract class Projectile extends MovableObject implements Renderable {
 	private static final float DRAG_COEFFICIENT = 5f;
+	
+	protected static final float BLAST_RADIUS = 50;
+	protected static final float YIELD = 40;
+	
 	protected Lander firedBy;
 
 	protected MapManager mapManager;

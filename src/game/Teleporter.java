@@ -46,7 +46,8 @@ public class Teleporter extends Projectile {
 
 	@Override
 	public void explode() {
-		// TODO Auto-generated method stub
+		mapManager.removeProjectile(this);
+		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, Missile.BLAST_RADIUS, YIELD, mapManager));
 
 	}
 
