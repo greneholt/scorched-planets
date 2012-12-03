@@ -10,13 +10,9 @@ import java.awt.geom.Rectangle2D;
 public class Missile extends Projectile {
 	public static final float MASS = 1;
 
-	private static final float BLAST_RADIUS = 50;
-
 	private static final float HEIGHT = 30;
 
 	private static final float WIDTH = 14;
-
-	private static final float YIELD = 40;
 
 	public Missile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);

@@ -22,6 +22,7 @@ public class Lander implements StaticObject, Renderable {
 	private static final float HEIGHT = 8;
 	private static final float POWER_MULTIPLIER = 200f;
 	private static final float WIDTH = 20;
+	
 	private float angle;
 	private Planet currentPlanet;
 	private float gunAngle;
@@ -34,6 +35,12 @@ public class Lander implements StaticObject, Renderable {
 	private Vector position;
 
 	private int power;
+	
+	private ProjectileType projectileType;
+	
+	public enum ProjectileType {MISSILE, TELEPORTER }
+	
+	
 
 	public Lander(Player player, Planet planet, Vector position, float angle, MapManager mapManager) {
 		this.player = player;
@@ -44,11 +51,12 @@ public class Lander implements StaticObject, Renderable {
 		this.power = MAX_POWER / 2;
 		this.gunAngle = (float) Math.PI / 2;
 		this.mapManager = mapManager;
+		projectileType = ProjectileType.MISSILE;
 	}
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		// do nothing
+		//Do nothing
 	}
 
 	public void damage(int damage, Player causedBy) {
@@ -74,7 +82,14 @@ public class Lander implements StaticObject, Renderable {
 
 		Vector start = position.add(Vector.polar(30, traj));
 
-		map.addProjectile(new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map));
+		if(projectileType == ProjectileType.MISSILE) {
+			map.addProjectile(new Missile(this, start, 
+					Vector.polar(power * POWER_MULTIPLIER, traj), map));
+		}
+		else if(projectileType == ProjectileType.TELEPORTER) {
+			map.addProjectile(new Teleporter(this, start, 
+					Vector.polar(power * POWER_MULTIPLIER, traj), map));
+		}
 	}
 
 	public double getAngle() {
@@ -219,5 +234,13 @@ public class Lander implements StaticObject, Renderable {
 
 	public void setPower(int power) {
 		this.power = power;
+	}
+	
+	public ProjectileType getProjectileType() {
+		return projectileType;
+	}
+	
+	public void setProjectileType(ProjectileType pt) {
+		projectileType = pt;
 	}
 }

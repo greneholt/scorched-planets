@@ -1,15 +1,18 @@
 package game;
 
+import game.Lander.ProjectileType;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
@@ -25,18 +28,7 @@ import javax.swing.event.ChangeListener;
 
 public class PlayerPanel extends JPanel {
 
-	private class CheckBoxListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (easyPlayButton.isSelected())
-				easyPlay = true;
-			else
-				easyPlay = false;
-		}
-	}
-
-	public boolean easyPlay;
 	private JSpinner angleSpinner;
-	private JCheckBox easyPlayButton;
 
 	private JButton fireButton;
 	private GameController gameController;
@@ -47,11 +39,12 @@ public class PlayerPanel extends JPanel {
 
 	private JLabel playerName, healthLabel, scoreLabel;
 	private List<JLabel> playerScoreLabels = null;
+	private JRadioButton missile;
+	private JRadioButton teleporter;
 
 	private JSpinner powerSpinner;
 
 	public PlayerPanel() {
-		easyPlay = false;
 
 		setLayout(new GridLayout(0, 1));
 
@@ -92,6 +85,14 @@ public class PlayerPanel extends JPanel {
 	public void setPower(int power) {
 		powerSpinner.setValue(power);
 	}
+	
+	public void setProjectileType(ProjectileType pt) {
+		if(pt == Lander.ProjectileType.MISSILE) 
+			missile.setSelected(true);
+		else
+			teleporter.setSelected(false);
+			
+	}
 
 	public void updatePlayerInfo() {
 		if (gameController != null) {
@@ -104,6 +105,7 @@ public class PlayerPanel extends JPanel {
 
 			setAngle(gameController.getCurrentPlayer().getLander().getGunAngle());
 			setPower(gameController.getCurrentPlayer().getLander().getPower());
+			setProjectileType(gameController.getCurrentPlayer().getLander().getProjectileType());
 
 			updatePlayerListInfo();
 		}
@@ -115,9 +117,9 @@ public class PlayerPanel extends JPanel {
 				int index = 0;
 				for (Player p : gameController.getPlayers()) {
 					int health = p.getLander().getHealth();
-					playerHealthLabels.get(index).setText("" + health);
+					playerHealthLabels.get(index).setText("  " + health);
 					int score = p.getScore();
-					playerScoreLabels.get(index).setText("" + score);
+					playerScoreLabels.get(index).setText(" " + score);
 					++index;
 				}
 			} else { // add the player information
@@ -127,9 +129,9 @@ public class PlayerPanel extends JPanel {
 				panelContent.setLayout(new GridLayout(0, 3));
 				for (Player p : gameController.getPlayers()) {
 					JLabel nameP = new JLabel(p.getName());
-					JLabel healthP = new JLabel("NA");
+					JLabel healthP = new JLabel("  100");
 					playerHealthLabels.add(healthP);
-					JLabel scoreP = new JLabel("NA");
+					JLabel scoreP = new JLabel(" 0");
 					playerScoreLabels.add(scoreP);
 
 					panelContent.add(nameP);
@@ -153,9 +155,6 @@ public class PlayerPanel extends JPanel {
 				if (gameController != null) {
 					gameController.changeCurrentGunAngle(angle / 180 * (float) Math.PI);
 				}
-				if (easyPlay) {
-					// Write those lines!
-				}
 			}
 		});
 
@@ -169,18 +168,43 @@ public class PlayerPanel extends JPanel {
 				if (gameController != null) {
 					gameController.changeCurrentPower(power);
 				}
-				if (easyPlay) {
-					// Write those lines!
-				}
 			}
 		});
+		
+		missile = new JRadioButton("Missile");
+		teleporter = new JRadioButton("Teleporter");
+		missile.setSelected(true);
+		ButtonGroup projectileType = new ButtonGroup();
+		projectileType.add(missile);
+		projectileType.add(teleporter);
+		
+		RadioListener listener = new RadioListener();
+		missile.addActionListener(listener);
+		teleporter.addActionListener(listener);
 
 		panel.add(new JLabel("Angle: "));
 		panel.add(angleSpinner);
 		panel.add(new JLabel("Power: "));
 		panel.add(powerSpinner);
+		panel.add(missile);
+		panel.add(teleporter);
 
 		return panel;
+	}
+	
+	private class RadioListener implements ActionListener {
+		  public void actionPerformed(ActionEvent e)
+		  {
+		    if (missile.isSelected()) {
+		    	gameController.getCurrentPlayer().getLander()
+		    		.setProjectileType(ProjectileType.MISSILE);
+		    }
+		    else {
+		    	gameController.getCurrentPlayer().getLander()
+	    			.setProjectileType(ProjectileType.TELEPORTER);
+		    }
+		      
+		  }
 	}
 
 	private JPanel createPlayerInfoPanel() {
@@ -190,14 +214,10 @@ public class PlayerPanel extends JPanel {
 		playerName = new JLabel("Current Player: None");
 		healthLabel = new JLabel("Health: NA");
 		scoreLabel = new JLabel("Score: NA");
-		easyPlayButton = new JCheckBox("Easy Play");
-
-		easyPlayButton.addActionListener(new CheckBoxListener());
 
 		infoPanel.add(playerName);
 		infoPanel.add(healthLabel);
 		infoPanel.add(scoreLabel);
-		infoPanel.add(easyPlayButton);
 
 		return infoPanel;
 	}

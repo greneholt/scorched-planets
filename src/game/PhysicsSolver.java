@@ -65,25 +65,6 @@ public class PhysicsSolver {
 		}
 	}
 
-	/*
-	 * This needs to be fixed, somehow run through multiple steps and add the lines to the drawing. Maybe add some kind of line class?
-	 */
-	public void showMissileDirection(Lander l, float timeStep) {
-		Vector position = l.getPosition();
-		for (int i = 0; i < 1000; i++) {
-			Vector totalForce = new Vector();
-			for (StaticObject b : staticObjects) {
-				totalForce = totalForce.add(gravitationalForce(position, b));
-			}
-
-			/*
-			 * Vector dragForce = velocity.multiply(-DRAG_COEFFICIENT); Vector acceleration = new Vector(force.x / getMass(), force.y / getMass());
-			 * 
-			 * velocity = velocity.add(acceleration.multiply(timeStep)); position = position.add(velocity.multiply(timeStep));
-			 */
-		}
-	}
-
 	public void simulateStep(float timeStep) {
 		Set<Collission> collissions = new HashSet<Collission>();
 
