@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Missile extends Projectile {
 	public static final float MASS = 1;
-	
+
 	public Missile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
 	}
@@ -42,6 +42,7 @@ public class Missile extends Projectile {
 		path.lineTo(HEIGHT / 2 - 8, WIDTH / 2 - 5);
 		path.lineTo(-HEIGHT / 2 + 6, WIDTH / 2 - 5);
 		path.lineTo(-HEIGHT / 2, WIDTH / 2);
+		path.lineTo(-HEIGHT / 2 - 4, 0);
 		path.lineTo(-HEIGHT / 2, -WIDTH / 2);
 		path.lineTo(-HEIGHT / 2 + 6, -WIDTH / 2 + 5);
 		path.closePath();
