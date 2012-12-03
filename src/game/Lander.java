@@ -10,26 +10,30 @@ import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
-	private static final int DESTROYED_YIELD = 30;
-	private static final int DESTROYED_BLAST_RADIUS = 30;
-	private static final int GUN_LENGTH = 40;
-
-	public void setPosition(Vector position) {
-		this.position = position;
-	}
-
 	public static int FULL_HEALTH = 100;
 	public static int MAX_POWER = 100;
+	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
 
-	private int health;
-	private Planet currentPlanet;
+	private static final int DESTROYED_BLAST_RADIUS = 30;
+
+	private static final int DESTROYED_YIELD = 30;
+	private static final int GUN_LENGTH = 40;
+
+	private static final float HEIGHT = 8;
+	private static final float POWER_MULTIPLIER = 200f;
+	private static final float WIDTH = 20;
 	private float angle;
-	private int power;
-	private Vector position;
+	private Planet currentPlanet;
 	private float gunAngle;
-	private Player player;
+	private int health;
 	private boolean highlight;
 	private MapManager mapManager;
+
+	private Player player;
+
+	private Vector position;
+
+	private int power;
 
 	public Lander(Player player, Planet planet, Vector position, float angle, MapManager mapManager) {
 		this.player = player;
@@ -42,32 +46,9 @@ public class Lander implements StaticObject, Renderable {
 		this.mapManager = mapManager;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public Planet getCurrentPlanet() {
-		return currentPlanet;
-	}
-	
-	public void setCurrentPlanet(Planet planet) {
-		currentPlanet = planet;
-	}
-
-	public double getAngle() {
-		return angle;
-	}
-
-	public void setAngle(float angle) {
-		this.angle = angle;
+	@Override
+	public void collidedWith(PhysicsObject other) {
+		// do nothing
 	}
 
 	public void damage(int damage, Player causedBy) {
@@ -80,12 +61,52 @@ public class Lander implements StaticObject, Renderable {
 		}
 	}
 
-	public int getPower() {
-		return power;
+	public void decreasePower() {
+		power--;
+		if (power < 0) {
+			power = 0;
+		}
 	}
 
-	public void setPower(int power) {
-		this.power = power;
+	public void fireProjectile(MapManager map) {
+		// when the gun is pointing straight up from the surface it is at an angle of PI/2, so we must subtract PI/2
+		float traj = gunAngle + angle - (float) Math.PI / 2;
+
+		Vector start = position.add(Vector.polar(30, traj));
+
+		map.addProjectile(new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map));
+	}
+
+	public double getAngle() {
+		return angle;
+	}
+
+	@Override
+	public float getBoundingRadius() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Rectangle2D getBounds() {
+		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + GUN_LENGTH * 2, HEIGHT + GUN_LENGTH);
+		AffineTransform xf = new AffineTransform();
+		xf.translate(position.x, position.y);
+		xf.rotate(angle);
+		shape = xf.createTransformedShape(shape);
+		return shape.getBounds2D();
+	}
+
+	public Planet getCurrentPlanet() {
+		return currentPlanet;
+	}
+
+	public float getGunAngle() {
+		return gunAngle;
+	}
+
+	public int getHealth() {
+		return health;
 	}
 
 	@Override
@@ -93,15 +114,24 @@ public class Lander implements StaticObject, Renderable {
 		return 0;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
 	@Override
 	public Vector getPosition() {
 		return position;
 	}
 
-	@Override
-	public float getBoundingRadius() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getPower() {
+		return power;
+	}
+
+	public void increasePower() {
+		power++;
+		if (power > MAX_POWER) {
+			power = MAX_POWER;
+		}
 	}
 
 	@Override
@@ -133,7 +163,7 @@ public class Lander implements StaticObject, Renderable {
 			g.setColor(Color.GRAY);
 			g.fill(aim);
 		}
-		
+
 		g.setColor(player.getColor());
 		g.fill(gun);
 		g.fill(base);
@@ -149,22 +179,10 @@ public class Lander implements StaticObject, Renderable {
 		g.setTransform(savedXf);
 	}
 
-	@Override
-	public void collidedWith(PhysicsObject other) {
-		// do nothing
-	}
-
-	public void increasePower() {
-		power++;
-		if (power > MAX_POWER) {
-			power = MAX_POWER;
-		}
-	}
-
-	public void decreasePower() {
-		power--;
-		if (power < 0) {
-			power = 0;
+	public void rotateClockwise() {
+		gunAngle += ANGLE_INCREMENT;
+		if (gunAngle > Math.PI) {
+			gunAngle = (float) Math.PI;
 		}
 	}
 
@@ -175,46 +193,31 @@ public class Lander implements StaticObject, Renderable {
 		}
 	}
 
-	public void rotateClockwise() {
-		gunAngle += ANGLE_INCREMENT;
-		if (gunAngle > Math.PI) {
-			gunAngle = (float) Math.PI;
-		}
+	public void setAngle(float angle) {
+		this.angle = angle;
+	}
+
+	public void setCurrentPlanet(Planet planet) {
+		currentPlanet = planet;
 	}
 
 	public void setGunAngle(float gunAngle) {
 		this.gunAngle = gunAngle;
 	}
 
-	public float getGunAngle() {
-		return gunAngle;
+	public void setHealth(int health) {
+		this.health = health;
 	}
-
-	public void fireProjectile(MapManager map) {
-		// when the gun is pointing straight up from the surface it is at an angle of PI/2, so we must subtract PI/2
-		float traj = gunAngle + angle - (float) Math.PI / 2;
-
-		Vector start = position.add(Vector.polar(30, traj));
-
-		map.addProjectile(new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map));
-	}
-
-	@Override
-	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(0, 0, WIDTH + GUN_LENGTH * 2, HEIGHT + GUN_LENGTH);
-		AffineTransform xf = new AffineTransform();
-		xf.translate(position.x, position.y);
-		xf.rotate(angle);
-		shape = xf.createTransformedShape(shape);
-		return shape.getBounds2D();
-	}
-
-	private static final float WIDTH = 20;
-	private static final float HEIGHT = 8;
-	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
-	private static final float POWER_MULTIPLIER = 200f;
 
 	public void setHighlight(boolean highlight) {
 		this.highlight = highlight;
+	}
+
+	public void setPosition(Vector position) {
+		this.position = position;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
 	}
 }

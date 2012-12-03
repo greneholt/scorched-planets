@@ -1,11 +1,11 @@
 package game;
 
 public interface PhysicsObject {
-	public float getMass();
-
-	public Vector getPosition();
+	public void collidedWith(PhysicsObject other);
 
 	public float getBoundingRadius();
 
-	public void collidedWith(PhysicsObject other);
+	public float getMass();
+
+	public Vector getPosition();
 }

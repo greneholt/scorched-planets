@@ -1,14 +1,22 @@
 package game;
 
 public class Vector {
-	public float x = 0;
-	public float y = 0;
+	public static float distanceBetween(Vector a, Vector b) {
+		return a.subtract(b).magnitude();
+	}
 
 	public static Vector polar(float r, float theta) {
 		float x = r * (float) Math.cos(theta);
 		float y = r * (float) Math.sin(theta);
-		
+
 		return new Vector(x, y);
+	}
+
+	public float x = 0;
+
+	public float y = 0;
+
+	public Vector() {
 	}
 
 	public Vector(float x, float y) {
@@ -16,23 +24,12 @@ public class Vector {
 		this.y = y;
 	}
 
-	public Vector() {
-	}
-
 	public Vector add(Vector other) {
 		return new Vector(x + other.x, y + other.y);
 	}
 
-	public Vector multiply(float other) {
-		return new Vector(x * other, y * other);
-	}
-
-	public Vector subtract(Vector other) {
-		return new Vector(x - other.x, y - other.y);
-	}
-
-	public float magnitude() {
-		return (float) Math.sqrt(x * x + y * y);
+	public float angle() {
+		return (float) Math.atan2(y, x);
 	}
 
 	@Override
@@ -50,14 +47,18 @@ public class Vector {
 		return false;
 	}
 
-	public float angle() {
-		return (float) Math.atan2(y, x);
+	public float magnitude() {
+		return (float) Math.sqrt(x * x + y * y);
 	}
 
-	public static float distanceBetween(Vector a, Vector b) {
-		return a.subtract(b).magnitude();
+	public Vector multiply(float other) {
+		return new Vector(x * other, y * other);
 	}
-	
+
+	public Vector subtract(Vector other) {
+		return new Vector(x - other.x, y - other.y);
+	}
+
 	@Override
 	public String toString() {
 		return "x=" + x + " y=" + y;

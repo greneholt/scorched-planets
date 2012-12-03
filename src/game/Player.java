@@ -6,11 +6,13 @@ import java.util.Random;
 
 public class Player {
 
-	private Lander lander;
-	private int score;
-	private List<String> killsList;
-	private String name;
+	public static int KILL_BONUS = 100;
 	private Color color;
+	private List<String> killsList;
+	private Lander lander;
+	private String name;
+
+	private int score;
 
 	public Player(String name) {
 		this.name = name;
@@ -19,40 +21,12 @@ public class Player {
 		color = Color.getHSBColor(rand.nextFloat(), 1, 1);
 	}
 
-	public Lander getLander() {
-		return lander;
-	}
-	
-	public Color getColor() {
-		return color;
-	}
-
-	public void setLander(Lander lander) {
-		this.lander = lander;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
 	public void addScore(int score) {
 		this.score += score;
 	}
 
-	public List<String> getKillsList() {
-		return killsList;
-	}
-
 	public void addToKillsList(String kill) {
 		killsList.add(kill);
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void damage(int damage, Player causedBy) {
@@ -75,5 +49,31 @@ public class Player {
 		causedBy.addScore(score);
 	}
 
-	public static int KILL_BONUS = 100;
+	public Color getColor() {
+		return color;
+	}
+
+	public List<String> getKillsList() {
+		return killsList;
+	}
+
+	public Lander getLander() {
+		return lander;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setLander(Lander lander) {
+		this.lander = lander;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 }

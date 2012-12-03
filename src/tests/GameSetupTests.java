@@ -17,6 +17,29 @@ import org.junit.Test;
 public class GameSetupTests {
 
 	@Test
+	public void landerPlacementTest() {
+		List<Player> players = new LinkedList<Player>();
+		players.add(new Player("Bob"));
+		players.add(new Player("Tom"));
+		players.add(new Player("Tim"));
+		players.add(new Player("John"));
+
+		MapManager map = new MapManager(4, players);
+		List<Planet> planets = map.getPlanets();
+		List<Lander> landers = map.getLanders();
+
+		assertEquals(4, planets.size());
+		assertEquals(4, landers.size());
+
+		for (Lander lander : landers) {
+			assertTrue("more than one lander per planet", planets.contains(lander.getCurrentPlanet()));
+			planets.remove(lander.getCurrentPlanet());
+		}
+
+		assertEquals("all planets did not have a lander on them", 0, planets.size());
+	}
+
+	@Test
 	public void planetPlacementTest() {
 		MapGenerator gen = new MapGenerator();
 		List<Planet> planets = gen.generatePlanets(5);
@@ -33,29 +56,6 @@ public class GameSetupTests {
 				assertTrue("planets too close together", distance >= minDistance);
 			}
 		}
-	}
-
-	@Test
-	public void landerPlacementTest() {
-		List<Player> players = new LinkedList<Player>();
-		players.add(new Player("Bob"));
-		players.add(new Player("Tom"));
-		players.add(new Player("Tim"));
-		players.add(new Player("John"));
-		
-		MapManager map = new MapManager(4, players);
-		List<Planet> planets = map.getPlanets();
-		List<Lander> landers = map.getLanders();
-
-		assertEquals(4, planets.size());
-		assertEquals(4, landers.size());
-
-		for (Lander lander : landers) {
-			assertTrue("more than one lander per planet", planets.contains(lander.getCurrentPlanet()));
-			planets.remove(lander.getCurrentPlanet());
-		}
-
-		assertEquals("all planets did not have a lander on them", 0, planets.size());
 	}
 
 }

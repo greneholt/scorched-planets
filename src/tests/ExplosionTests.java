@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import game.Explosion;
 import game.Lander;
 import game.MapManager;
-import game.Missile;
 import game.Player;
 import game.Vector;
 
@@ -15,6 +14,69 @@ import java.util.List;
 import org.junit.Test;
 
 public class ExplosionTests {
+
+	@Test
+	public void scoreTest() {
+		List<Player> players = new LinkedList<Player>();
+		players.add(new Player("Bob"));
+		players.add(new Player("Tom"));
+
+		MapManager map = new MapManager(2, players);
+		assertTrue(map.getLanders().size() == 2);
+		assertTrue(map.getPlanets().size() == 2);
+		Lander a = map.getLanders().get(0);
+		Lander b = map.getLanders().get(1);
+		a.setPosition(new Vector(0, 0));
+		b.setPosition(new Vector(100, 0));
+
+		int initialScoreB = b.getPlayer().getScore();
+		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
+		Vector exp1 = a.getPosition().add(new Vector(5, 5));
+
+		map.addRenderable(new Explosion(b.getPlayer(), exp1, 40, 40, map));
+
+		for (int i = 0; i < 100; i++) {
+			map.runStep(0.01f);
+		}
+
+		assertTrue("player's score did not increase", b.getPlayer().getScore() > initialScoreB);
+
+		while (a.getHealth() > 0) {
+			initialScoreB = b.getPlayer().getScore();
+			map.addRenderable(new Explosion(b.getPlayer(), exp1, 40, 40, map));
+
+			for (int i = 0; i < 100; i++) {
+				map.runStep(0.01f);
+			}
+		}
+
+		assertTrue("player did not get kill bonus", Player.KILL_BONUS <= b.getPlayer().getScore() - initialScoreB);
+
+		map.addLander(a);
+
+		int initialScoreA = a.getPlayer().getScore();
+		a.setHealth(Lander.FULL_HEALTH);
+		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
+
+		map.addRenderable(new Explosion(a.getPlayer(), exp1, 40, 40, map));
+
+		for (int i = 0; i < 100; i++) {
+			map.runStep(0.01f);
+		}
+
+		assertTrue("player did not lose points for self-damage", a.getPlayer().getScore() < initialScoreA);
+
+		while (a.getHealth() > 0) {
+			initialScoreA = a.getPlayer().getScore();
+
+			map.addRenderable(new Explosion(a.getPlayer(), exp1, 40, 40, map));
+
+			for (int i = 0; i < 100; i++) {
+				map.runStep(0.01f);
+			}
+		}
+		assertTrue("player got kill bonus for suicide", Player.KILL_BONUS > a.getPlayer().getScore() - initialScoreA);
+	}
 
 	@Test
 	public void varyDamageTest() {
@@ -70,69 +132,6 @@ public class ExplosionTests {
 		}
 		// Test to make sure that same explosion location (relative) will produce same amount of damage
 		assertEquals("landers suffered different amounts of damage", a.getHealth(), b.getHealth());
-	}
-
-	@Test
-	public void scoreTest() {
-		List<Player> players = new LinkedList<Player>();
-		players.add(new Player("Bob"));
-		players.add(new Player("Tom"));
-
-		MapManager map = new MapManager(2, players);
-		assertTrue(map.getLanders().size() == 2);
-		assertTrue(map.getPlanets().size() == 2);
-		Lander a = map.getLanders().get(0);
-		Lander b = map.getLanders().get(1);
-		a.setPosition(new Vector(0, 0));
-		b.setPosition(new Vector(100, 0));
-
-		int initialScoreB = b.getPlayer().getScore();
-		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
-		Vector exp1 = a.getPosition().add(new Vector(5, 5));
-		
-		map.addRenderable(new Explosion(b.getPlayer(), exp1, 40, 40, map));
-
-		for (int i = 0; i < 100; i++) {
-			map.runStep(0.01f);
-		}
-		
-		assertTrue("player's score did not increase", b.getPlayer().getScore() > initialScoreB);
-
-		while (a.getHealth() > 0) {
-			initialScoreB = b.getPlayer().getScore();
-			map.addRenderable(new Explosion(b.getPlayer(), exp1, 40, 40, map));
-
-			for (int i = 0; i < 100; i++) {
-				map.runStep(0.01f);
-			}
-		}
-		
-		assertTrue("player did not get kill bonus", Player.KILL_BONUS <= b.getPlayer().getScore() - initialScoreB);
-
-		map.addLander(a);
-		
-		int initialScoreA = a.getPlayer().getScore();
-		a.setHealth(Lander.FULL_HEALTH);
-		assertEquals("lander not at full health", a.getHealth(), Lander.FULL_HEALTH);
-		
-		map.addRenderable(new Explosion(a.getPlayer(), exp1, 40, 40, map));
-
-		for (int i = 0; i < 100; i++) {
-			map.runStep(0.01f);
-		}
-		
-		assertTrue("player did not lose points for self-damage", a.getPlayer().getScore() < initialScoreA);
-
-		while (a.getHealth() > 0) {
-			initialScoreA = a.getPlayer().getScore();
-			
-			map.addRenderable(new Explosion(a.getPlayer(), exp1, 40, 40, map));
-
-			for (int i = 0; i < 100; i++) {
-				map.runStep(0.01f);
-			}
-		}
-		assertTrue("player got kill bonus for suicide", Player.KILL_BONUS > a.getPlayer().getScore() - initialScoreA);
 	}
 
 }

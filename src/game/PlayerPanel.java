@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,24 +25,34 @@ import javax.swing.event.ChangeListener;
 
 public class PlayerPanel extends JPanel {
 
+	private class CheckBoxListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (easyPlayButton.isSelected())
+				easyPlay = true;
+			else
+				easyPlay = false;
+		}
+	}
+
+	public boolean easyPlay;
 	private JSpinner angleSpinner;
-	private JSpinner powerSpinner;
-	private GameController gameController;
+	private JCheckBox easyPlayButton;
+
 	private JButton fireButton;
+	private GameController gameController;
 
 	private JPanel infoPanel;
-	private JLabel playerName, healthLabel, scoreLabel;
-	
 	private JPanel listPanel;
 	private List<JLabel> playerHealthLabels = null;
+
+	private JLabel playerName, healthLabel, scoreLabel;
 	private List<JLabel> playerScoreLabels = null;
 
-	private JCheckBox easyPlayButton;
-	public boolean easyPlay;
+	private JSpinner powerSpinner;
 
 	public PlayerPanel() {
 		easyPlay = false;
-		
+
 		setLayout(new GridLayout(0, 1));
 
 		fireButton = new JButton("Fire");
@@ -54,11 +63,82 @@ public class PlayerPanel extends JPanel {
 				gameController.nextPlayer();
 			}
 		});
-		
+
 		add(createPlayerListPanel());
 		add(createPlayerInfoPanel());
 		add(createGunControlsPanel());
 		add(fireButton);
+	}
+
+	public void setAngle(float angle) {
+		angleSpinner.setValue(angle * 180 / (float) Math.PI);
+	}
+
+	/*
+	 * private class ButtonListener implements ActionListener { public void actionPerformed(ActionEvent e) { if (e.getSource() == nextTurn) {
+	 * gameController.getCurrentPlayer().getLander().setAngle(getAngle()); gameController.getCurrentPlayer().getLander().setPower(getPower()); gameController.nextTurn(); } } }
+	 */
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+
+	public void setInputEnabled(boolean enabled) {
+		fireButton.setEnabled(enabled);
+		powerSpinner.setEnabled(enabled);
+		angleSpinner.setEnabled(enabled);
+	}
+
+	public void setPower(int power) {
+		powerSpinner.setValue(power);
+	}
+
+	public void updatePlayerInfo() {
+		if (gameController != null) {
+			String name = gameController.getCurrentPlayer().getName();
+			playerName.setText("Current Player: " + name);
+			int health = gameController.getCurrentPlayer().getLander().getHealth();
+			healthLabel.setText("Health: " + health + "/" + Lander.FULL_HEALTH);
+			int score = gameController.getCurrentPlayer().getScore();
+			scoreLabel.setText("Score: " + score);
+
+			setAngle(gameController.getCurrentPlayer().getLander().getGunAngle());
+			setPower(gameController.getCurrentPlayer().getLander().getPower());
+
+			updatePlayerListInfo();
+		}
+	}
+
+	public void updatePlayerListInfo() {
+		if (gameController != null) {
+			if (playerHealthLabels != null && playerScoreLabels != null) {
+				int index = 0;
+				for (Player p : gameController.getPlayers()) {
+					int health = p.getLander().getHealth();
+					playerHealthLabels.get(index).setText("" + health);
+					int score = p.getScore();
+					playerScoreLabels.get(index).setText("" + score);
+					++index;
+				}
+			} else { // add the player information
+				playerHealthLabels = new LinkedList<JLabel>();
+				playerScoreLabels = new LinkedList<JLabel>();
+				JPanel panelContent = new JPanel();
+				panelContent.setLayout(new GridLayout(0, 3));
+				for (Player p : gameController.getPlayers()) {
+					JLabel nameP = new JLabel(p.getName());
+					JLabel healthP = new JLabel("NA");
+					playerHealthLabels.add(healthP);
+					JLabel scoreP = new JLabel("NA");
+					playerScoreLabels.add(scoreP);
+
+					panelContent.add(nameP);
+					panelContent.add(healthP);
+					panelContent.add(scoreP);
+				}
+				listPanel.add(panelContent);
+			}
+		}
 	}
 
 	private JPanel createGunControlsPanel() {
@@ -94,23 +174,14 @@ public class PlayerPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		panel.add(new JLabel("Angle: "));
 		panel.add(angleSpinner);
 		panel.add(new JLabel("Power: "));
 		panel.add(powerSpinner);
-		
+
 		return panel;
 	}
-
-	public void setGameController(GameController gameController) {
-		this.gameController = gameController;
-	}
-
-	/*
-	 * private class ButtonListener implements ActionListener { public void actionPerformed(ActionEvent e) { if (e.getSource() == nextTurn) {
-	 * gameController.getCurrentPlayer().getLander().setAngle(getAngle()); gameController.getCurrentPlayer().getLander().setPower(getPower()); gameController.nextTurn(); } } }
-	 */
 
 	private JPanel createPlayerInfoPanel() {
 		infoPanel = new JPanel();
@@ -120,7 +191,7 @@ public class PlayerPanel extends JPanel {
 		healthLabel = new JLabel("Health: NA");
 		scoreLabel = new JLabel("Score: NA");
 		easyPlayButton = new JCheckBox("Easy Play");
-		
+
 		easyPlayButton.addActionListener(new CheckBoxListener());
 
 		infoPanel.add(playerName);
@@ -130,92 +201,21 @@ public class PlayerPanel extends JPanel {
 
 		return infoPanel;
 	}
-	
+
 	private JPanel createPlayerListPanel() {
 		listPanel = new JPanel();
-		listPanel.setLayout(new GridLayout(0,1));
+		listPanel.setLayout(new GridLayout(0, 1));
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
 		JPanel labels = new JPanel();
-		labels.setLayout(new GridLayout(0,3));
-		JLabel playerName = new JLabel ("Player: ");
-		JLabel healthName = new JLabel ("Health: ");
-		JLabel scoreName = new JLabel ("Score: ");
+		labels.setLayout(new GridLayout(0, 3));
+		JLabel playerName = new JLabel("Player: ");
+		JLabel healthName = new JLabel("Health: ");
+		JLabel scoreName = new JLabel("Score: ");
 		labels.add(playerName);
 		labels.add(healthName);
 		labels.add(scoreName);
 		listPanel.add(labels);
-		
+
 		return listPanel;
-	}
-	
-	private class CheckBoxListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if(easyPlayButton.isSelected())
-				easyPlay = true;
-			else
-				easyPlay = false;
-		}
-	}
-
-	public void updatePlayerInfo() {
-		if (gameController != null) {
-			String name = gameController.getCurrentPlayer().getName();
-			playerName.setText("Current Player: " + name);
-			int health = gameController.getCurrentPlayer().getLander().getHealth();
-			healthLabel.setText("Health: " + health + "/" + Lander.FULL_HEALTH);
-			int score = gameController.getCurrentPlayer().getScore();
-			scoreLabel.setText("Score: " + score);
-
-			setAngle(gameController.getCurrentPlayer().getLander().getGunAngle());
-			setPower(gameController.getCurrentPlayer().getLander().getPower());
-			
-			updatePlayerListInfo();
-		}
-	}
-	
-	public void updatePlayerListInfo() {
-		if (gameController != null) {
-			if (playerHealthLabels != null && playerScoreLabels != null) {
-				int index = 0;
-				for(Player p : gameController.getPlayers()) {
-					int health = p.getLander().getHealth();
-					playerHealthLabels.get(index).setText("" + health);
-					int score = p.getScore();
-					playerScoreLabels.get(index).setText("" + score);
-					++index;
-				}
-			} else {	// add the player information
-				playerHealthLabels = new LinkedList<JLabel>();
-				playerScoreLabels = new LinkedList<JLabel>();
-				JPanel panelContent = new JPanel();
-				panelContent.setLayout(new GridLayout(0,3));
-				for(Player p : gameController.getPlayers()) {
-					JLabel nameP = new JLabel(p.getName());
-					JLabel healthP = new JLabel("NA");
-					playerHealthLabels.add(healthP);
-					JLabel scoreP = new JLabel("NA");
-					playerScoreLabels.add(scoreP);
-					
-					panelContent.add(nameP);
-					panelContent.add(healthP);
-					panelContent.add(scoreP);
-				}
-				listPanel.add(panelContent);
-			}
-		}
-	}
-
-	public void setPower(int power) {
-		powerSpinner.setValue(power);
-	}
-
-	public void setAngle(float angle) {
-		angleSpinner.setValue(angle * 180 / (float) Math.PI);
-	}
-	
-	public void setInputEnabled(boolean enabled) {
-		fireButton.setEnabled(enabled);
-		powerSpinner.setEnabled(enabled);
-		angleSpinner.setEnabled(enabled);
 	}
 }

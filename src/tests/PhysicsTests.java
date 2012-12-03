@@ -14,6 +14,30 @@ import org.junit.Test;
 
 public class PhysicsTests {
 
+	private class MockObject extends MovableObject {
+
+		public int collissionCount = 0;
+
+		public MockObject(Vector position, Vector velocity) {
+			super(position, velocity);
+		}
+
+		@Override
+		public void collidedWith(PhysicsObject o) {
+			collissionCount++;
+		}
+
+		@Override
+		public float getBoundingRadius() {
+			return 7;
+		}
+
+		@Override
+		public float getMass() {
+			return 1;
+		}
+	}
+
 	@Test
 	public void collisionTest() {
 		PhysicsSolver physics = new PhysicsSolver();
@@ -46,29 +70,5 @@ public class PhysicsTests {
 		}
 
 		assertTrue("object was not pulled into planet", mock.collissionCount > 0);
-	}
-
-	private class MockObject extends MovableObject {
-
-		public int collissionCount = 0;
-
-		public MockObject(Vector position, Vector velocity) {
-			super(position, velocity);
-		}
-
-		@Override
-		public float getMass() {
-			return 1;
-		}
-
-		@Override
-		public float getBoundingRadius() {
-			return 7;
-		}
-
-		@Override
-		public void collidedWith(PhysicsObject o) {
-			collissionCount++;
-		}
 	}
 }
