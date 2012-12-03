@@ -14,7 +14,7 @@ import javax.swing.Timer;
 
 public class GameController implements KeyListener {
 	private static final int ANIMATION_INTERVAL = 20;
-	private static final int BOREDOM_INTERVAL = 20000; // 20 seconds
+	private static final int BOREDOM_INTERVAL = 30000; // 30 seconds
 	private static final int KEY_REPEAT_INTERVAL = 50;
 	private static final float TIME_STEP = 0.0005f;
 	private Timer boredomTimer;
