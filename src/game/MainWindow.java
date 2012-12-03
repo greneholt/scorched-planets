@@ -54,6 +54,12 @@ public class MainWindow extends JFrame {
 				JOptionPane.showMessageDialog(this, "Invalid number", "Error", JOptionPane.ERROR_MESSAGE);
 				continue;
 			}
+			
+			if (playerCount < 2) {
+				JOptionPane.showMessageDialog(this, "There must be at least two players", "Error", JOptionPane.ERROR_MESSAGE);
+				continue;
+			}
+			
 			break;
 		}
 		

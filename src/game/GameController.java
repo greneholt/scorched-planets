@@ -4,11 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class GameController implements KeyListener {
@@ -16,7 +17,8 @@ public class GameController implements KeyListener {
 	private List<Player> players;
 	private SceneComponent sceneComponent;
 	private PlayerPanel playerPanel;
-	private int currentPlayerIndex;
+	private Player currentPlayer;
+	private Iterator<Player> playerIterator;
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
 	private Timer simulationTimer;
 	private boolean enableInput = true;
@@ -35,20 +37,20 @@ public class GameController implements KeyListener {
 			players.add(new Player("Player " + (i + 1)));
 		}
 
-		map = new MapManager(playerCount + 3, players);
+		playerPanel.setGameController(this);
+
+		makeTimers();
+
+		newGame();
+	}
+
+	private void newGame() {
+		map = new MapManager(players.size() + 3, players);
 
 		sceneComponent.setScene(map.getScene());
 		sceneComponent.setKeyListener(this);
 
-		playerPanel.setGameController(this);
-
-		currentPlayerIndex = 0;
-
-		updateCurrentPlayer();
-
-		sceneComponent.repaint();
-
-		makeTimers();
+		startTurn();
 	}
 
 	private void makeTimers() {
@@ -100,32 +102,68 @@ public class GameController implements KeyListener {
 				boolean cont = map.runStep(TIME_STEP);
 				if (!cont) {
 					simulationTimer.stop();
-					enableInput = true;
-					updateCurrentPlayer();
+					setInputEnabled(true);
+					startTurn();
 				}
 			}
 		});
 	}
 
-	public void nextPlayer() {
-		getCurrentPlayer().getLander().setHighlight(false);
+	private void startTurn() {
+		LinkedList<Player> activePlayers = new LinkedList<Player>();
 
-		do {
-			currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-		} while (getCurrentPlayer().getLander().getHealth() <= 0);
-
-		if (currentPlayerIndex == 0) {
-			enableInput = false;
-			runSimulation();
-		} else {
-			getCurrentPlayer().getLander().setHighlight(true);
-			playerPanel.updatePlayerInfo();
+		for (Player player : players) {
+			if (player.getLander().getHealth() > 0) {
+				activePlayers.add(player);
+			}
 		}
+
+		if (activePlayers.size() <= 1) {
+			String message;
+
+			if (activePlayers.size() == 1) {
+				message = activePlayers.getFirst().getName() + " wins! Continue?";
+			} else {
+				message = "No winner. Continue?";
+			}
+
+			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION);
+
+			// if they say yes
+			if (n == 0) {
+				newGame();
+				return;
+			} else {
+				System.exit(0);
+			}
+		}
+
+		playerIterator = activePlayers.iterator();
+		currentPlayer = playerIterator.next();
+		updateCurrentPlayer();
+	}
+
+	public void nextPlayer() {
+		currentPlayer.getLander().setHighlight(false);
+
+		if (playerIterator.hasNext()) {
+			currentPlayer = playerIterator.next();
+			updateCurrentPlayer();
+		} else {
+			setInputEnabled(false);
+			runSimulation();
+		}
+	}
+
+	private void setInputEnabled(boolean enabled) {
+		playerPanel.setEnabled(enabled);
+		enableInput = enabled;
 	}
 
 	private void updateCurrentPlayer() {
 		getCurrentPlayer().getLander().setHighlight(true);
 		playerPanel.updatePlayerInfo();
+		repaint();
 	}
 
 	public void runSimulation() {
@@ -138,7 +176,7 @@ public class GameController implements KeyListener {
 	}
 
 	public Player getCurrentPlayer() {
-		return players.get(currentPlayerIndex);
+		return currentPlayer;
 	}
 
 	public List<Player> getPlayers() {

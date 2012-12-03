@@ -51,9 +51,7 @@ public class PlayerPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(gameController.getEnableInput()) {
-					gameController.nextPlayer();
-				}
+				gameController.nextPlayer();
 			}
 		});
 		
@@ -140,7 +138,7 @@ public class PlayerPanel extends JPanel {
 		JPanel labels = new JPanel();
 		labels.setLayout(new GridLayout(3,0));
 		JLabel playerName = new JLabel ("Player:");
-		JLabel healthName = new JLabel ("Health ( /" + Lander.FULL_HEALTH + "):");
+		JLabel healthName = new JLabel ("Health:");
 		JLabel scoreName = new JLabel ("Score:");
 		labels.add(playerName);
 		labels.add(healthName);
@@ -216,5 +214,11 @@ public class PlayerPanel extends JPanel {
 
 	public void setAngle(float angle) {
 		angleSpinner.setValue(angle * 180 / (float) Math.PI);
+	}
+	
+	public void setInputEnabled(boolean enabled) {
+		fireButton.setEnabled(enabled);
+		powerSpinner.setEnabled(enabled);
+		angleSpinner.setEnabled(enabled);
 	}
 }
