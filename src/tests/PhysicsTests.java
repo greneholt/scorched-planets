@@ -22,7 +22,7 @@ public class PhysicsTests {
 		MockObject mock2 = new MockObject(new Vector(100, 105), new Vector(0, 0));
 		physics.addObject(mock1);
 		physics.addObject(mock2);
-		physics.simulateStep(1);
+		physics.simulateStep(0.0005f);
 
 		assertTrue(mock1.collissionCount > 0);
 		assertTrue(mock2.collissionCount > 0);
@@ -42,7 +42,7 @@ public class PhysicsTests {
 		physics.addObject(mock);
 
 		for (int i = 0; i < 1000; i++) {
-			physics.simulateStep(1);
+			physics.simulateStep(0.0005f);
 		}
 
 		assertTrue("object was not pulled into planet", mock.collissionCount > 0);
@@ -58,7 +58,7 @@ public class PhysicsTests {
 
 		@Override
 		public float getMass() {
-			return 5;
+			return 1;
 		}
 
 		@Override

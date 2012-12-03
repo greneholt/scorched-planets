@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import game.Lander;
 import game.MapGenerator;
+import game.MapManager;
 import game.Planet;
 import game.Vector;
 
@@ -34,9 +35,9 @@ public class GameSetupTests {
 
 	@Test
 	public void landerPlacementTest() {
-		MapGenerator gen = new MapGenerator();
-		List<Planet> planets = gen.generatePlanets(4);
-		List<Lander> landers = gen.generateLanders(planets, 4);
+		MapManager map = new MapManager(4, 4);
+		List<Planet> planets = map.getPlanets();
+		List<Lander> landers = map.getLanders();
 
 		assertEquals(4, planets.size());
 		assertEquals(4, landers.size());

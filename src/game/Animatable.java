@@ -1,6 +1,5 @@
 package game;
 
-public interface Animatable {
+public interface Animatable extends Renderable {
 	public void animationTick();
-	public boolean animationDone();
 }

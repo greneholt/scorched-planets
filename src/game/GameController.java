@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Timer;
@@ -34,7 +35,14 @@ public class GameController implements KeyListener {
 			players.add(new Player("Player " + (i + 1)));
 		}
 
-		map = new MapManager(playerCount + 3, players);
+		map = new MapManager(playerCount + 3, players.size());
+		
+		Iterator<Player> iter = players.iterator();
+		for (Lander lander : map.getLanders()) {
+			Player player = iter.next();
+			player.setLander(lander);
+			lander.setPlayer(player);
+		}
 
 		sceneComponent.setScene(map.getScene());
 		sceneComponent.setKeyListener(this);
@@ -130,8 +138,7 @@ public class GameController implements KeyListener {
 	public void runSimulation() {
 		// create projectiles for each lander
 		for (Lander lander : map.getLanders()) {
-			Projectile projectile = lander.fireProjectile(map);
-			map.addProjectile(projectile);
+			lander.fireProjectile(map);
 		}
 
 		simulationTimer.start();
@@ -210,7 +217,7 @@ public class GameController implements KeyListener {
 			repaint();
 		}
 	}
-	
+
 	public boolean getEnableInput() {
 		return enableInput;
 	}

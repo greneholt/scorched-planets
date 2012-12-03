@@ -39,23 +39,18 @@ public class Scene {
 
 		g.transform(xf);
 
-		for (Renderable object : renderables) {
+		List<Renderable> renderablesTemp = new LinkedList<Renderable>(renderables);
+		for (Renderable object : renderablesTemp) {
 			object.render(g);
 		}
 
 		g.setTransform(savedXf);
 	}
 
-	public void animationTick() {
-		Iterator<Animatable> iter = animations.iterator();
-		while (iter.hasNext()) {
-			Animatable object = iter.next();
+	public void animationTick() {	
+		List<Animatable> animationsTemp = new LinkedList<Animatable>(animations);
+		for (Animatable object : animationsTemp) {
 			object.animationTick();
-			
-			if (object.animationDone()) {
-				renderables.remove(object);
-				iter.remove();
-			}
 		}
 	}
 

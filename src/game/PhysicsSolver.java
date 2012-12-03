@@ -56,7 +56,8 @@ public class PhysicsSolver {
 	public void simulateStep(float timeStep) {
 		Set<Collission> collissions = new HashSet<Collission>();
 
-		for (DynamicObject object : dynamicObjects) {
+		List<DynamicObject> dynamicObjectsTemp = new LinkedList<DynamicObject>(dynamicObjects);
+		for (DynamicObject object : dynamicObjectsTemp) {
 			Vector totalForce = sumForcesOn(object);
 
 			object.simulateStep(totalForce, timeStep);

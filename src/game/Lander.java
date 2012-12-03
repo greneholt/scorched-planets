@@ -8,6 +8,8 @@ import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
+	private static final int DESTROYED_YIELD = 30;
+	private static final int DESTROYED_BLAST_RADIUS = 70;
 	private static final int GUN_LENGTH = 30;
 
 	public void setPosition(Vector position) {
@@ -25,14 +27,16 @@ public class Lander implements StaticObject, Renderable {
 	private float gunAngle;
 	private Player player;
 	private boolean highlight;
+	private MapManager mapManager;
 
-	public Lander(Planet planet, Vector position, float angle) {
+	public Lander(Planet planet, Vector position, float angle, MapManager mapManager) {
 		this.currentPlanet = planet;
 		this.position = position;
 		this.health = FULL_HEALTH;
 		this.angle = angle;
 		this.power = MAX_POWER / 2;
 		this.gunAngle = (float) Math.PI / 2;
+		this.mapManager = mapManager;
 	}
 
 	public Player getPlayer() {
@@ -63,8 +67,14 @@ public class Lander implements StaticObject, Renderable {
 		this.angle = angle;
 	}
 
-	public void damage(int damage) {
+	public void damage(int damage, Player causedBy) {
 		health -= damage;
+		player.damage(damage, causedBy);
+		
+		if (health <= 0) {
+			mapManager.addRenderable(new Explosion(getPlayer(), position, DESTROYED_BLAST_RADIUS, DESTROYED_YIELD, mapManager));
+			mapManager.removeLander(this);
+		}
 	}
 
 	public int getPower() {
@@ -162,13 +172,13 @@ public class Lander implements StaticObject, Renderable {
 		return gunAngle;
 	}
 
-	public Projectile fireProjectile(MapManager map) {
+	public void fireProjectile(MapManager map) {
 		// when the gun is pointing straight up from the surface it is at an angle of PI/2, so we must subtract PI/2
 		float traj = gunAngle + angle - (float) Math.PI / 2;
 
 		Vector start = position.add(Vector.polar(30, traj));
 
-		return new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map);
+		map.addProjectile(new Missile(this, start, Vector.polar(power * POWER_MULTIPLIER, traj), map));
 	}
 
 	@Override

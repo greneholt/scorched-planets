@@ -6,19 +6,26 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.LinkedList;
+import java.util.List;
 
 /*
  * Explosions are created at the point of impact and added to the scene. They render the animation of the explosion, and cause damage.
  */
-public class Explosion implements Renderable, Animatable {
+public class Explosion implements Animatable {
 	private int animationStep = 0;
 	private Vector position;
 	private MapManager mapManager;
 	private float blastRadius;
+	private float yield;
+	private Player causedBy;
 
-	public Explosion(Vector position, float blastRadius) {
+	public Explosion(Player causedBy, Vector position, float blastRadius, float yield, MapManager mapManager) {
+		this.causedBy = causedBy;
 		this.position = position;
 		this.blastRadius = blastRadius;
+		this.yield = yield;
+		this.mapManager = mapManager;
 	}
 
 	@Override
@@ -55,11 +62,23 @@ public class Explosion implements Renderable, Animatable {
 	@Override
 	public void animationTick() {
 		animationStep++;
-	}
+		
+		if (animationStep == EXPAND_STEPS) {
+			List<Lander> landersTemp = new LinkedList<Lander>(mapManager.getLanders());
+			for (Lander lander : landersTemp) {
+				float distance = Vector.distanceBetween(lander.getPosition(), position);
+				
+				if (distance < blastRadius) {
+					int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
 
-	@Override
-	public boolean animationDone() {
-		return animationStep >= 100;
+					lander.damage(damage, causedBy);
+				}
+			}
+		}
+		
+		if (animationStep == EXPAND_STEPS + CONTRACT_STEPS) {
+			mapManager.removeRenderable(this);
+		}
 	}
 	
 	private static final int EXPAND_STEPS = 10;

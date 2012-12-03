@@ -5,12 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MapManager {
-	private Scene scene;
-	private PhysicsSolver physicsSolver;
-	private List<Planet> planets;
-	private List<Lander> landers;
-	private List<Projectile> projectiles;
-	public static int KILL_BONUS = 1000;
+	private Scene scene = new Scene();
+	private PhysicsSolver physicsSolver = new PhysicsSolver();
+	private List<Planet> planets = new LinkedList<Planet>();
+	private List<Lander> landers = new LinkedList<Lander>();
+	private List<Projectile> projectiles = new LinkedList<Projectile>();
 
 	public Scene getScene() {
 		return scene;
@@ -32,71 +31,18 @@ public class MapManager {
 		return projectiles;
 	}
 
-	public MapManager(int planetCount, List<Player> players) {
-		scene = new Scene();
-		physicsSolver = new PhysicsSolver();
-
+	public MapManager(int planetCount, int playerCount) {
 		MapGenerator gen = new MapGenerator();
-		planets = gen.generatePlanets(planetCount);
-		landers = gen.generateLanders(planets, players.size());
-		projectiles = new LinkedList<Projectile>();
+		List<Planet> planets = gen.generatePlanets(planetCount);
+		List<Lander> landers = gen.generateLanders(planets, playerCount, this);
 
 		for (Planet planet : planets) {
-			addRenderable(planet);
-			addPhysicsObject(planet);
+			addPlanet(planet);
 		}
 
-		Iterator<Player> iter = players.iterator();
 		for (Lander lander : landers) {
-			Player player = iter.next();
-			player.setLander(lander);
-			lander.setPlayer(player);
-			addRenderable(lander);
-			addPhysicsObject(lander);
+			addLander(lander);
 		}
-	}
-
-	public void makeExplosion(Player player, Vector position, float blastRadius, float yield) {
-		// add explosion to scene
-		addRenderable(new Explosion(position, blastRadius));
-		
-		// calculate and then apply damages
-		int score = 0;
-		
-		Iterator<Lander> iter = landers.iterator();
-		while (iter.hasNext()) {
-			Lander lander = iter.next();
-			float distance = Vector.distanceBetween(lander.getPosition(), position);
-			if (distance < blastRadius) {
-				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
-
-				lander.damage(damage);
-
-				// apply kill bonus
-				if (lander.getHealth() <= 0) {
-					addRenderable(new Explosion(lander.getPosition(), 20)); // just for fun
-					
-					iter.remove();
-					removeRenderable(lander);
-					removePhysicsObject(lander);
-					
-					if (!lander.getPlayer().equals(player)) {
-						score += KILL_BONUS;
-					}
-				}
-
-				// give negative score for hitting yourself, or just add damage to score if you hit someone else
-				if (lander.getPlayer().equals(player)) {
-					score -= damage;
-				} else {
-					score += damage;
-				}
-			}
-		}
-		
-		// apply score
-		score += player.getScore();
-		player.setScore(score);
 	}
 
 	// returns true if the simulation needs to continue
@@ -112,11 +58,29 @@ public class MapManager {
 		addRenderable(projectile);
 		addPhysicsObject(projectile);
 	}
-
+	
 	public void removeProjectile(Projectile projectile) {
 		projectiles.remove(projectile);
 		removeRenderable(projectile);
 		removePhysicsObject(projectile);
+	}
+	
+	public void addPlanet(Planet planet) {
+		planets.add(planet);
+		addRenderable(planet);
+		addPhysicsObject(planet);
+	}
+	
+	public void addLander(Lander lander) {
+		landers.add(lander);
+		addRenderable(lander);
+		addPhysicsObject(lander);
+	}
+	
+	public void removeLander(Lander lander) {
+		landers.remove(lander);
+		removeRenderable(lander);
+		removePhysicsObject(lander);
 	}
 
 	public void addRenderable(Renderable object) {

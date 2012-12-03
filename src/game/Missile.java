@@ -7,6 +7,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 public class Missile extends Projectile {
 	public static final float MASS = 1;
@@ -53,8 +54,12 @@ public class Missile extends Projectile {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-		mapManager.makeExplosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD);
+		explode();
+	}
+
+	public void explode() {
 		mapManager.removeProjectile(this);
+		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
 	}
 
 	@Override
