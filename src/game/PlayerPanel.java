@@ -36,7 +36,9 @@ public class PlayerPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameController.nextPlayer();
+				if(gameController.getEnableInput()) {
+					gameController.nextPlayer();
+				}
 			}
 		});
 

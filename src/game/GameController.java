@@ -210,4 +210,8 @@ public class GameController implements KeyListener {
 			repaint();
 		}
 	}
+	
+	public boolean getEnableInput() {
+		return enableInput;
+	}
 }
