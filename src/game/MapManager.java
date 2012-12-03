@@ -100,4 +100,11 @@ public class MapManager {
 	public void removePhysicsObject(PhysicsObject object) {
 		physicsSolver.removeObject(object);
 	}
+
+	public void explodeProjectiles() {
+		List<Projectile> projectilesTemp = new LinkedList<Projectile>(projectiles);
+		for (Projectile projectile : projectilesTemp) {
+			projectile.explode();
+		}
+	}
 }

@@ -21,11 +21,13 @@ public class GameController implements KeyListener {
 	private Iterator<Player> playerIterator;
 	private Timer upTimer, downTimer, rightTimer, leftTimer;
 	private Timer simulationTimer;
+	private Timer boredomTimer;
 	private boolean enableInput = true;
 
 	private static final int KEY_REPEAT_INTERVAL = 50;
 	private static final int ANIMATION_INTERVAL = 20;
 	private static final float TIME_STEP = 0.0005f;
+	private static final int BOREDOM_INTERVAL = 40000; // 40 seconds
 
 	public GameController(int playerCount, SceneComponent sceneComponent, PlayerPanel playerPanel) {
 		this.sceneComponent = sceneComponent;
@@ -103,9 +105,18 @@ public class GameController implements KeyListener {
 				
 				if (!map.nextStepNeeded()) {
 					simulationTimer.stop();
+					boredomTimer.stop();
 					setInputEnabled(true);
 					startTurn();
 				}
+			}
+		});
+		
+		boredomTimer = new Timer(BOREDOM_INTERVAL, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				map.explodeProjectiles();
 			}
 		});
 	}
@@ -174,6 +185,7 @@ public class GameController implements KeyListener {
 		}
 
 		simulationTimer.start();
+		boredomTimer.start();
 	}
 
 	public Player getCurrentPlayer() {

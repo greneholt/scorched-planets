@@ -55,6 +55,7 @@ public class Missile extends Projectile {
 		explode();
 	}
 
+	@Override
 	public void explode() {
 		mapManager.removeProjectile(this);
 		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
