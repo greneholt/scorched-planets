@@ -12,7 +12,7 @@ public class Lander implements StaticObject, Renderable {
 
 	private static final int DESTROYED_YIELD = 30;
 	private static final int DESTROYED_BLAST_RADIUS = 30;
-	private static final int GUN_LENGTH = 30;
+	private static final int GUN_LENGTH = 40;
 
 	public void setPosition(Vector position) {
 		this.position = position;
@@ -102,13 +102,6 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Shape base = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
-
-		Shape gun = new Rectangle2D.Float(0, -1.5f, GUN_LENGTH, 3);
-		AffineTransform xf = new AffineTransform();
-		xf.rotate(gunAngle);
-		gun = xf.createTransformedShape(gun);
-
 		AffineTransform savedXf = g.getTransform();
 
 		g.translate(position.x, position.y);
@@ -116,24 +109,38 @@ public class Lander implements StaticObject, Renderable {
 		g.rotate(angle - Math.PI / 2);
 
 		if (highlight) {
-			g.setColor(Color.WHITE);
+			g.setColor(Color.GRAY);
 
 			Shape arc = new Arc2D.Float(-GUN_LENGTH, -GUN_LENGTH, GUN_LENGTH * 2, GUN_LENGTH * 2, 180, 180, Arc2D.OPEN);
 			g.setStroke(new BasicStroke(3));
 			g.draw(arc);
 		}
+
+		Shape base = new Rectangle2D.Float(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
+
+		Shape gun = new Rectangle2D.Float(0, -1.5f, GUN_LENGTH * power / MAX_POWER, 3);
+		AffineTransform xf = new AffineTransform();
+		xf.rotate(gunAngle);
+		gun = xf.createTransformedShape(gun);
+
+		if (highlight) {
+			Shape aim = new Rectangle2D.Float(0, -1.5f, GUN_LENGTH, 3);
+			aim = xf.createTransformedShape(aim);
+			g.setColor(Color.GRAY);
+			g.fill(aim);
+		}
 		
 		g.setColor(player.getColor());
-		g.fill(base);
 		g.fill(gun);
+		g.fill(base);
 
-		Shape health = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH, 5);
+		Shape healthBar = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH, 5);
 		g.setColor(Color.GREEN);
-		g.fill(health);
+		g.fill(healthBar);
 
-		Shape damage = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH * (FULL_HEALTH - this.health) / FULL_HEALTH, 5);
+		Shape damageBar = new Rectangle2D.Float(-WIDTH / 2, -15, WIDTH * (FULL_HEALTH - this.health) / FULL_HEALTH, 5);
 		g.setColor(Color.RED);
-		g.fill(damage);
+		g.fill(damageBar);
 
 		g.setTransform(savedXf);
 	}

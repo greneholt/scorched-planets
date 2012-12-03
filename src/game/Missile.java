@@ -33,9 +33,7 @@ public class Missile extends Projectile {
 		g.translate(position.x, position.y);
 		g.rotate(getAngle());
 
-		// Shape shape = new Rectangle2D.Float(-HEIGHT/2, -WIDTH/2, HEIGHT, WIDTH);
-		g.setColor(Color.YELLOW);
-		// g.fill(shape);
+		g.setColor(Color.WHITE);
 
 		Path2D.Float path = new Path2D.Float();
 		path.moveTo(HEIGHT / 2 - 8, -WIDTH / 2 + 5);
