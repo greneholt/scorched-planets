@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -36,6 +37,9 @@ public class PlayerPanel extends JPanel {
 	private JPanel listPanel;
 	private List<JLabel> playerHealthLabels = null;
 	private List<JLabel> playerScoreLabels = null;
+
+	private JCheckBox easyPlayButton;
+	public boolean easyPlay;
 
 	public PlayerPanel() {
 		setLayout(new GridLayout(0, 1));
@@ -109,10 +113,14 @@ public class PlayerPanel extends JPanel {
 		playerName = new JLabel("Current Player: None");
 		healthLabel = new JLabel("Health: NA");
 		scoreLabel = new JLabel("Score: NA");
+		easyPlayButton = new JCheckBox("Easy Play");
+		
+		easyPlayButton.addActionListener(new CheckBoxListener());
 
 		infoPanel.add(playerName);
 		infoPanel.add(healthLabel);
 		infoPanel.add(scoreLabel);
+		infoPanel.add(easyPlayButton);
 
 		return infoPanel;
 	}
@@ -132,6 +140,15 @@ public class PlayerPanel extends JPanel {
 		listPanel.add(labels);
 		
 		return listPanel;
+	}
+	
+	private class CheckBoxListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if(easyPlayButton.isSelected())
+				easyPlay = true;
+			else
+				easyPlay = false;
+		}
 	}
 
 	public void updatePlayerInfo() {
