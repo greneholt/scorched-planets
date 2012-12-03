@@ -160,8 +160,6 @@ public class MainWindow extends JFrame {
 		helpMessage[8] = "To make the game easier, use the check"
 			+"box on the right, and the players will be able to"
 			+" see where the rocket will go";
-			
-		
 	}
 
 	public static void main(String[] args) {

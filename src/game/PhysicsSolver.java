@@ -30,25 +30,35 @@ public class PhysicsSolver {
 			staticObjects.remove((StaticObject) object);
 		}
 	}
+	
+	/*
+	 * This needs to be fixed, somehow run through multiple steps
+	 * and add the lines to the drawing.  Maybe add some kind of
+	 * line class?
+	 */
+	public void showMissileDirection(Lander l, float timeStep) {
+		Vector position = l.getPosition();
+		for(int i=0; i<1000; i++) {
+			Vector totalForce = new Vector();
+			for (StaticObject b : staticObjects) {
+				totalForce = totalForce.add(gravitationalForce(position, b));
+			}
+			
+			/*Vector dragForce = velocity.multiply(-DRAG_COEFFICIENT);
+			Vector acceleration = new Vector(force.x / getMass(), force.y / getMass());
+
+			velocity = velocity.add(acceleration.multiply(timeStep));
+			position = position.add(velocity.multiply(timeStep));
+			*/
+		}
+	}
 
 	public void simulateStep(float timeStep) {
 		Set<Collission> collissions = new HashSet<Collission>();
 
 		for (DynamicObject object : dynamicObjects) {
 			// sum force on them
-			Vector totalForce = new Vector();
-
-			for (DynamicObject b : dynamicObjects) {
-				if (object == b) {
-					continue;
-				}
-
-				totalForce.add(gravitationalForce(object, b));
-			}
-
-			for (StaticObject b : staticObjects) {
-				totalForce = totalForce.add(gravitationalForce(object, b));
-			}
+			Vector totalForce = sumVectors(object);
 
 			object.simulateStep(totalForce, timeStep);
 		}
@@ -62,6 +72,23 @@ public class PhysicsSolver {
 			collission.a.collidedWith(collission.b);
 			collission.b.collidedWith(collission.a);
 		}
+	}
+	
+	private Vector sumVectors(DynamicObject object) {
+		Vector totalForce = new Vector();
+
+		for (DynamicObject b : dynamicObjects) {
+			if (object == b) {
+				continue;
+			}
+
+			totalForce.add(gravitationalForce(object, b));
+		}
+
+		for (StaticObject b : staticObjects) {
+			totalForce = totalForce.add(gravitationalForce(object, b));
+		}
+		return totalForce;
 	}
 
 	private void checkCollisions(Set<Collission> collissions, DynamicObject object, List<? extends PhysicsObject> objects) {
@@ -113,6 +140,14 @@ public class PhysicsSolver {
 		float distance = direction.magnitude();
 
 		return direction.multiply(G * target.getMass() * source.getMass() / (distance * distance * distance));
+	}
+	
+	// Overload previous function for use of easy function
+	private Vector gravitationalForce(Vector place, PhysicsObject source) {
+		Vector direction = source.getPosition().subtract(place);
+		float distance = direction.magnitude();
+		
+		return direction.multiply(G * Missile.MASS * source.getMass() / (distance * distance * distance));
 	}
 
 	public static final float G = 2E7f;

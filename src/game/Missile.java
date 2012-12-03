@@ -9,13 +9,15 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 public class Missile extends Projectile {
+	public static final float MASS = 20;
+	
 	public Missile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
 	}
 
 	@Override
 	public float getMass() {
-		return 20;
+		return MASS;
 	}
 
 	@Override

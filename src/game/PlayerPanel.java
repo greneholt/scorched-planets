@@ -32,6 +32,8 @@ public class PlayerPanel extends JPanel {
 	public boolean easyPlay;
 
 	public PlayerPanel() {
+		easyPlay = false;
+		
 		setLayout(new GridLayout(0, 1));
 
 		fireButton = new JButton("Fire");
@@ -62,6 +64,9 @@ public class PlayerPanel extends JPanel {
 				if (gameController != null) {
 					gameController.changeCurrentGunAngle(angle / 180 * (float) Math.PI);
 				}
+				if (easyPlay) {
+					// Write those lines!
+				}
 			}
 		});
 
@@ -74,6 +79,9 @@ public class PlayerPanel extends JPanel {
 
 				if (gameController != null) {
 					gameController.changeCurrentPower(power);
+				}
+				if (easyPlay) {
+					// Write those lines!
 				}
 			}
 		});
