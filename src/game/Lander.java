@@ -55,6 +55,10 @@ public class Lander implements StaticObject, Renderable {
 	public Planet getCurrentPlanet() {
 		return currentPlanet;
 	}
+	
+	public void setCurrentPlanet(Planet planet) {
+		currentPlanet = planet;
+	}
 
 	public double getAngle() {
 		return angle;
