@@ -107,10 +107,9 @@ public class MainWindow extends JFrame {
 			public MenuItemListener(MainWindow mw) {
 				this.mw = mw;
 				helpMessage = mw.getHelpMessage();
-				options = new String[3];
-				options[0] = "Close";
-				options[1] = "Next";
-				options[2] = "Previous";
+				options = new String[2];
+				options[0] = "Next";
+				options[1] = "Previous";
 
 				count = 0;
 			}
@@ -118,16 +117,17 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int change;
 				do {
-					change = JOptionPane.showOptionDialog(mw, helpMessage[count], "Game Directions", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-					;
-					if (change == JOptionPane.YES_OPTION + 1)
+					change = JOptionPane.showOptionDialog(mw, helpMessage[count], 
+							"Game Directions", JOptionPane.YES_NO_OPTION, 
+							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					if (change == JOptionPane.YES_OPTION)
 						count = (count + 1) % helpMessage.length;
-					if (change == JOptionPane.NO_OPTION + 1)
+					if (change == JOptionPane.NO_OPTION)
 						if (count == 0)
 							count = helpMessage.length - 1;
 						else
 							count = (count - 1) % helpMessage.length;
-				} while (change >= JOptionPane.CLOSED_OPTION + 1);
+				} while (change != JOptionPane.CLOSED_OPTION);
 			}
 		}
 		item.addActionListener(new MenuItemListener(this));
