@@ -1,7 +1,6 @@
 package game;
 
 import game.Lander.ProjectileType;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,13 +11,19 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import javax.swing.JRadioButton;
+
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /*
  *  Displays the angle, power, and allow the user to
@@ -39,6 +44,11 @@ public class PlayerPanel extends JPanel {
 
 	private JLabel playerName, healthLabel, scoreLabel;
 	private List<JLabel> playerScoreLabels = null;
+	
+	private JTable table;
+	private TableModel tableModel;
+	private List<String[]> playerInfoList = null;
+
 	private JRadioButton missile;
 	private JRadioButton teleporter;
 
@@ -110,10 +120,39 @@ public class PlayerPanel extends JPanel {
 			updatePlayerListInfo();
 		}
 	}
-
+	
 	public void updatePlayerListInfo() {
 		if (gameController != null) {
-			if (playerHealthLabels != null && playerScoreLabels != null) {
+			if (playerInfoList != null) {
+				int index = 0;
+				for (Player p : gameController.getPlayers()) {
+					int health = p.getLander().getHealth();
+					((DefaultTableModel) tableModel).setValueAt(("" + health), index + 1, 1);
+					int score = p.getScore();
+					((DefaultTableModel) tableModel).setValueAt(("" + score), index + 1, 2);
+					++index;
+				}
+				
+				
+			} else { // Load initial info
+				playerInfoList = new LinkedList<String[]>();
+				int index = 0;
+				for(Player p : gameController.getPlayers()) {
+					// get the name, health, and score
+					int health = p.getLander().getHealth();
+					int score = p.getScore();
+					String [] pInfo = {p.getName(), ("" + health), ("" + score)};
+					
+					((DefaultTableModel) tableModel).addRow(pInfo);
+					++index;
+					
+					//change color of row
+					
+				}
+			}
+			
+			
+			/*if (playerHealthLabels != null && playerScoreLabels != null) {
 				int index = 0;
 				for (Player p : gameController.getPlayers()) {
 					int health = p.getLander().getHealth();
@@ -139,7 +178,7 @@ public class PlayerPanel extends JPanel {
 					panelContent.add(scoreP);
 				}
 				listPanel.add(panelContent);
-			}
+			}*/
 		}
 	}
 
@@ -223,10 +262,20 @@ public class PlayerPanel extends JPanel {
 	}
 
 	private JPanel createPlayerListPanel() {
+		String [] headers = {"Player:", "Health:", "Score:"};
+		String [] [] data = {headers};
+		tableModel = new DefaultTableModel(data, headers);
+		table = new JTable(tableModel) {
+			public boolean isCellEditable(int rowIndex, int colIndex) {
+		        return false;   //Disallow the editing of any cell
+		    }
+		};
+		
+		
 		listPanel = new JPanel();
-		listPanel.setLayout(new GridLayout(0, 1));
+		//listPanel.setLayout(new GridLayout(0, 1));
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
-		JPanel labels = new JPanel();
+		/*JPanel labels = new JPanel();
 		labels.setLayout(new GridLayout(0, 3));
 		JLabel playerName = new JLabel("Player: ");
 		JLabel healthName = new JLabel("Health: ");
@@ -234,7 +283,8 @@ public class PlayerPanel extends JPanel {
 		labels.add(playerName);
 		labels.add(healthName);
 		labels.add(scoreName);
-		listPanel.add(labels);
+		listPanel.add(labels);*/
+		listPanel.add(table);
 
 		return listPanel;
 	}
