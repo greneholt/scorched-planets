@@ -44,7 +44,7 @@ public class PlayerPanel extends JPanel {
 
 	private JLabel playerName, healthLabel, scoreLabel;
 	private List<JLabel> playerScoreLabels = null;
-	
+
 	private JTable table;
 	private TableModel tableModel;
 	private List<String[]> playerInfoList = null;
@@ -90,18 +90,20 @@ public class PlayerPanel extends JPanel {
 		fireButton.setEnabled(enabled);
 		powerSpinner.setEnabled(enabled);
 		angleSpinner.setEnabled(enabled);
+		missile.setEnabled(enabled);
+		teleporter.setEnabled(enabled);
 	}
 
 	public void setPower(int power) {
 		powerSpinner.setValue(power);
 	}
-	
+
 	public void setProjectileType(ProjectileType pt) {
-		if(pt == Lander.ProjectileType.MISSILE) 
+		if (pt == Lander.ProjectileType.MISSILE) {
 			missile.setSelected(true);
-		else
+		} else {
 			teleporter.setSelected(true);
-			
+		}
 	}
 
 	public void updatePlayerInfo() {
@@ -120,7 +122,7 @@ public class PlayerPanel extends JPanel {
 			updatePlayerListInfo();
 		}
 	}
-	
+
 	public void updatePlayerListInfo() {
 		if (gameController != null) {
 			if (playerInfoList != null) {
@@ -132,53 +134,33 @@ public class PlayerPanel extends JPanel {
 					((DefaultTableModel) tableModel).setValueAt(("" + score), index + 1, 2);
 					++index;
 				}
-				
-				
+
 			} else { // Load initial info
 				playerInfoList = new LinkedList<String[]>();
 				int index = 0;
-				for(Player p : gameController.getPlayers()) {
+				for (Player p : gameController.getPlayers()) {
 					// get the name, health, and score
 					int health = p.getLander().getHealth();
 					int score = p.getScore();
-					String [] pInfo = {p.getName(), ("" + health), ("" + score)};
-					
+					String[] pInfo = { p.getName(), ("" + health), ("" + score) };
+
 					((DefaultTableModel) tableModel).addRow(pInfo);
 					++index;
-					
-					//change color of row
-					
+
+					// change color of row
+
 				}
 			}
-			
-			
-			/*if (playerHealthLabels != null && playerScoreLabels != null) {
-				int index = 0;
-				for (Player p : gameController.getPlayers()) {
-					int health = p.getLander().getHealth();
-					playerHealthLabels.get(index).setText("  " + health);
-					int score = p.getScore();
-					playerScoreLabels.get(index).setText(" " + score);
-					++index;
-				}
-			} else { // add the player information
-				playerHealthLabels = new LinkedList<JLabel>();
-				playerScoreLabels = new LinkedList<JLabel>();
-				JPanel panelContent = new JPanel();
-				panelContent.setLayout(new GridLayout(0, 3));
-				for (Player p : gameController.getPlayers()) {
-					JLabel nameP = new JLabel(p.getName());
-					JLabel healthP = new JLabel("  100");
-					playerHealthLabels.add(healthP);
-					JLabel scoreP = new JLabel(" 0");
-					playerScoreLabels.add(scoreP);
 
-					panelContent.add(nameP);
-					panelContent.add(healthP);
-					panelContent.add(scoreP);
-				}
-				listPanel.add(panelContent);
-			}*/
+			/*
+			 * if (playerHealthLabels != null && playerScoreLabels != null) { int index = 0; for (Player p : gameController.getPlayers()) { int health = p.getLander().getHealth();
+			 * playerHealthLabels.get(index).setText("  " + health); int score = p.getScore(); playerScoreLabels.get(index).setText(" " + score); ++index; } } else { // add the player information
+			 * playerHealthLabels = new LinkedList<JLabel>(); playerScoreLabels = new LinkedList<JLabel>(); JPanel panelContent = new JPanel(); panelContent.setLayout(new GridLayout(0, 3)); for
+			 * (Player p : gameController.getPlayers()) { JLabel nameP = new JLabel(p.getName()); JLabel healthP = new JLabel("  100"); playerHealthLabels.add(healthP); JLabel scoreP = new
+			 * JLabel(" 0"); playerScoreLabels.add(scoreP);
+			 * 
+			 * panelContent.add(nameP); panelContent.add(healthP); panelContent.add(scoreP); } listPanel.add(panelContent); }
+			 */
 		}
 	}
 
@@ -209,15 +191,23 @@ public class PlayerPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		missile = new JRadioButton("Missile");
 		teleporter = new JRadioButton("Teleporter");
 		missile.setSelected(true);
 		ButtonGroup projectileType = new ButtonGroup();
 		projectileType.add(missile);
 		projectileType.add(teleporter);
-		
-		RadioListener listener = new RadioListener();
+
+		ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (missile.isSelected()) {
+					gameController.setProjectileType(ProjectileType.MISSILE);
+				} else {
+					gameController.setProjectileType(ProjectileType.TELEPORTER);
+				}
+			}
+		};
 		missile.addActionListener(listener);
 		teleporter.addActionListener(listener);
 
@@ -229,21 +219,6 @@ public class PlayerPanel extends JPanel {
 		panel.add(teleporter);
 
 		return panel;
-	}
-	
-	private class RadioListener implements ActionListener {
-		  public void actionPerformed(ActionEvent e)
-		  {
-		    if (missile.isSelected()) {
-		    	gameController.getCurrentPlayer().getLander()
-		    		.setProjectileType(ProjectileType.MISSILE);
-		    }
-		    else {
-		    	gameController.getCurrentPlayer().getLander()
-	    			.setProjectileType(ProjectileType.TELEPORTER);
-		    }
-		      
-		  }
 	}
 
 	private JPanel createPlayerInfoPanel() {
@@ -262,28 +237,22 @@ public class PlayerPanel extends JPanel {
 	}
 
 	private JPanel createPlayerListPanel() {
-		String [] headers = {"Player:", "Health:", "Score:"};
-		String [] [] data = {headers};
+		String[] headers = { "Player:", "Health:", "Score:" };
+		String[][] data = { headers };
 		tableModel = new DefaultTableModel(data, headers);
 		table = new JTable(tableModel) {
 			public boolean isCellEditable(int rowIndex, int colIndex) {
-		        return false;   //Disallow the editing of any cell
-		    }
+				return false; // Disallow the editing of any cell
+			}
 		};
-		
-		
+
 		listPanel = new JPanel();
-		//listPanel.setLayout(new GridLayout(0, 1));
+		// listPanel.setLayout(new GridLayout(0, 1));
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
-		/*JPanel labels = new JPanel();
-		labels.setLayout(new GridLayout(0, 3));
-		JLabel playerName = new JLabel("Player: ");
-		JLabel healthName = new JLabel("Health: ");
-		JLabel scoreName = new JLabel("Score: ");
-		labels.add(playerName);
-		labels.add(healthName);
-		labels.add(scoreName);
-		listPanel.add(labels);*/
+		/*
+		 * JPanel labels = new JPanel(); labels.setLayout(new GridLayout(0, 3)); JLabel playerName = new JLabel("Player: "); JLabel healthName = new JLabel("Health: "); JLabel scoreName = new
+		 * JLabel("Score: "); labels.add(playerName); labels.add(healthName); labels.add(scoreName); listPanel.add(labels);
+		 */
 		listPanel.add(table);
 
 		return listPanel;

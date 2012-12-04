@@ -62,22 +62,18 @@ public class Scene {
 	public void render(Graphics2D g, Dimension dimension) {
 		Rectangle2D bounds = getBounds();
 
-		AffineTransform xf = new AffineTransform();
-
-		double scaleX = (dimension.getWidth() - MARGIN * 2) / bounds.getWidth();
-		double scaleY = (dimension.getHeight() - MARGIN * 2) / bounds.getHeight();
-
-		if (scaleX < scaleY) {
-			xf.scale(scaleX, scaleX);
-		} else {
-			xf.scale(scaleY, scaleY);
-		}
-
-		xf.translate(MARGIN - bounds.getMinX(), MARGIN - bounds.getMinY());
-
 		AffineTransform savedXf = g.getTransform();
 
-		g.transform(xf);
+		double scaleX = dimension.getWidth() / (bounds.getWidth() + MARGIN * 2);
+		double scaleY = dimension.getHeight() / (bounds.getHeight() + MARGIN * 2);
+
+		if (scaleX < scaleY) {
+			g.scale(scaleX, scaleX);
+		} else {
+			g.scale(scaleY, scaleY);
+		}
+
+		g.translate(MARGIN - bounds.getMinX(), MARGIN - bounds.getMinY());
 
 		List<Renderable> renderablesTemp = new LinkedList<Renderable>(renderables);
 		for (Renderable object : renderablesTemp) {
