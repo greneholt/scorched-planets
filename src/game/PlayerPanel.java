@@ -90,7 +90,7 @@ public class PlayerPanel extends JPanel {
 		if(pt == Lander.ProjectileType.MISSILE) 
 			missile.setSelected(true);
 		else
-			teleporter.setSelected(false);
+			teleporter.setSelected(true);
 			
 	}
 

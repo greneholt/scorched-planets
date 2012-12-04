@@ -40,7 +40,15 @@ public class Lander implements StaticObject, Renderable {
 	
 	public enum ProjectileType {MISSILE, TELEPORTER }
 	
-	
+	public Lander(Player player, Planet planet, MapManager mapManager) {
+		this.player = player;
+		this.currentPlanet = planet;
+		this.health = FULL_HEALTH;
+		this.power = MAX_POWER / 2;
+		this.gunAngle = (float) Math.PI / 2;
+		this.mapManager = mapManager;
+		projectileType = ProjectileType.MISSILE;
+	}
 
 	public Lander(Player player, Planet planet, Vector position, float angle, MapManager mapManager) {
 		this.player = player;
@@ -242,5 +250,12 @@ public class Lander implements StaticObject, Renderable {
 	
 	public void setProjectileType(ProjectileType pt) {
 		projectileType = pt;
+	}
+	
+	public void setAngleAndPosition(float angle, Planet planet) {
+		float x = (float) Math.cos(angle) * planet.getRadius() + planet.getPosition().x;
+		float y = (float) Math.sin(angle) * planet.getRadius() + planet.getPosition().y;
+		setAngle(angle);
+		setPosition(new Vector(x,y));
 	}
 }

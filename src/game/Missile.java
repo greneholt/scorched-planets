@@ -56,7 +56,7 @@ public class Missile extends Projectile {
 		g.translate(position.x, position.y);
 		g.rotate(getAngle());
 
-		g.setColor(Color.WHITE);
+		g.setColor(Color.RED);
 
 		Path2D.Float path = new Path2D.Float();
 		path.moveTo(HEIGHT / 2 - 8, -WIDTH / 2 + 5);

@@ -29,9 +29,8 @@ public class MapGenerator {
 
 			float angleOnPlanet = rand.nextFloat() * 2 * (float) Math.PI;
 
-			float x = (float) Math.cos(angleOnPlanet) * planet.getRadius() + planet.getPosition().x;
-			float y = (float) Math.sin(angleOnPlanet) * planet.getRadius() + planet.getPosition().y;
-			Lander lander = new Lander(player, planet, new Vector(x, y), angleOnPlanet, mapManager);
+			Lander lander = new Lander(player, planet, mapManager);
+			lander.setAngleAndPosition(angleOnPlanet, planet);
 			player.setLander(lander);
 			landers.add(lander);
 		}

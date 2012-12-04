@@ -86,14 +86,15 @@ public class PhysicsSolver {
 		}
 	}
 
-	private void checkCollisions(Set<Collission> collissions, DynamicObject object, List<? extends PhysicsObject> objects) {
+	private void checkCollisions(Set<Collission> collissions, DynamicObject dynamicObject, List<? extends PhysicsObject> objects) {
 		for (PhysicsObject b : objects) {
-			if (object == b) {
+			if (dynamicObject == b) {
 				continue;
 			}
 
-			if (Vector.distanceBetween(object.getPosition(), b.getPosition()) <= (object.getBoundingRadius() + b.getBoundingRadius())) {
-				collissions.add(new Collission(object, b));
+			if (Vector.distanceBetween(dynamicObject.getPosition(), b.getPosition())
+					<= (dynamicObject.getBoundingRadius() + b.getBoundingRadius())) {
+				collissions.add(new Collission(dynamicObject, b));
 			}
 		}
 	}
