@@ -15,22 +15,20 @@ public class Teleporter extends Rocket {
 
 		// change lander location if it hits a planet
 		if (other instanceof Planet) {
-			firedBy.setCurrentPlanet((Planet) other);
+			getFiredBy().setCurrentPlanet((Planet) other);
 
-			Vector newPosition = position.subtract(other.getPosition());
+			Vector newPosition = getPosition().subtract(other.getPosition());
 			float angleOnPlanet = (float) (Math.atan2(newPosition.y, newPosition.x));
 
-			firedBy.setAngleAndPosition(angleOnPlanet, (Planet) other);
+			getFiredBy().setAngleAndPosition(angleOnPlanet, (Planet) other);
 		}
-		mapManager.removeProjectile(this);
-
+		getMapManager().removeProjectile(this);
 	}
 
 	@Override
 	public void explode() {
-		mapManager.removeProjectile(this);
-		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
-
+		getMapManager().removeProjectile(this);
+		getMapManager().addRenderable(new Explosion(getFiredBy().getPlayer(), getPosition(), BLAST_RADIUS, YIELD, getMapManager()));
 	}
 
 	@Override

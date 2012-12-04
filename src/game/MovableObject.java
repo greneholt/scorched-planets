@@ -2,8 +2,8 @@ package game;
 
 public abstract class MovableObject implements DynamicObject {
 
-	protected Vector position;
-	protected Vector velocity;
+	private Vector position;
+	private Vector velocity;
 
 	public MovableObject(Vector position, Vector velocity) {
 		this.position = position;

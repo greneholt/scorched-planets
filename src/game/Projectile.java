@@ -1,10 +1,8 @@
 package game;
 
 public abstract class Projectile extends MovableObject implements Renderable {
-
-	protected Lander firedBy;
-
-	protected MapManager mapManager;
+	private Lander firedBy;
+	private MapManager mapManager;
 
 	public Projectile(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(position, velocity);
@@ -16,5 +14,9 @@ public abstract class Projectile extends MovableObject implements Renderable {
 
 	public Lander getFiredBy() {
 		return firedBy;
+	}
+
+	public MapManager getMapManager() {
+		return mapManager;
 	}
 }

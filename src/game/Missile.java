@@ -17,8 +17,8 @@ public class Missile extends Rocket {
 
 	@Override
 	public void explode() {
-		mapManager.removeProjectile(this);
-		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
+		getMapManager().removeProjectile(this);
+		getMapManager().addRenderable(new Explosion(getFiredBy().getPlayer(), getPosition(), BLAST_RADIUS, YIELD, getMapManager()));
 	}
 
 	@Override
