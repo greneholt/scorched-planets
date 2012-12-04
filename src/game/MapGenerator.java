@@ -29,8 +29,7 @@ public class MapGenerator {
 
 			float angleOnPlanet = rand.nextFloat() * 2 * (float) Math.PI;
 
-			Lander lander = new Lander(player, planet, mapManager);
-			lander.setAngleAndPosition(angleOnPlanet, planet);
+			Lander lander = new Lander(player, planet, angleOnPlanet, mapManager);
 			player.setLander(lander);
 			landers.add(lander);
 		}

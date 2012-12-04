@@ -6,8 +6,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
-import java.util.List;
 
 public abstract class Shockwave implements Animatable {
 	private int animationStep = 0;
