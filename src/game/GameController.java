@@ -21,6 +21,7 @@ public class GameController implements KeyListener {
 	private static final int BOREDOM_INTERVAL = 30000; // 30 seconds
 	private static final int KEY_REPEAT_INTERVAL = 50;
 	private static final float TIME_STEP = 0.0005f;
+	private static final int WIN_BONUS = 100;
 	private Timer boredomTimer;
 	private Player currentPlayer;
 	private boolean enableInput = true;
@@ -245,16 +246,15 @@ public class GameController implements KeyListener {
 			String message;
 
 			if (activePlayers.size() == 1) {
-				message = activePlayers.getFirst().getName() + " wins! New game?";
-			} else {
-				Player winner = players.get(0);
-				for (Player p : players) {
-					if(winner.getScore() < p.getScore())
-						winner = p;
-				}
+				Player winner = activePlayers.getFirst();
+				winner.addScore(WIN_BONUS);
 				message = winner.getName() + " wins! New game?";
+			} else {
+				message = "No winner. Continue?";
 			}
 
+			playerPanel.updatePlayerListInfo();
+			
 			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 			// if they say yes
