@@ -147,38 +147,34 @@ public class MainWindow extends JFrame {
 	}
 
 	private void setHelpMessage() {
-		helpMessage = new String[14];
-		helpMessage[0] = "Each Lander is controlled by a seperate player.";
-		helpMessage[1] = "The current players Lander is seen by the angle arc" +
-				" above the current players Lander.";
-		helpMessage[2] = "All of the current players info is on the right of" +
-				" the screen.";
-		helpMessage[3] = "To change the angle, use the box on the right labeled" +
-				" angle, by pressing up or down to change the angle, or typing in" +
-				" a new angle";
-		helpMessage[4] = "To change the power, use the box on the right labeled" +
-				" power, by pressing up or down to change the power, or typing in" +
-				" a new power";
-		helpMessage[5] = "Use integers (regular numbers, no decimals) for the" +
-				" angle and power!";
-		helpMessage[6] = "You can fire either a missile or a transporter!";
-		helpMessage[7] = "A missile will create an explosion that will damage a" +
-				" Lander that is too close to the missile when it hits a planet.";
-		helpMessage[8] = "A teleporter will move your Lander to a new location," +
-				" wherever it hits a planet (you will not move if it fails to hit" +
-				" a planet.";
-		helpMessage[9] = "After you have adjusted the angle and power to what you" +
-				" would like, and chosen your projectile type, end your turn by" +
-				" pressing the fire button.";
-		helpMessage[10] = "The rockets will not fire until ever player has set their" +
-				" angle, power and projectile type, and after the last player has pressed the fire" +
-				" button, all the missiles will fire at once.";
-		helpMessage[11] = "Points are scored based on damage done to another players" +
-				" lander, and extra points are rewarded for finishing that players Lander";
-		helpMessage[12] = "The game ends when their is only one player left, or if" +
-				" all players have been destroyed";
-		helpMessage[13] = "The last player alive wins! If there is no one left," +
-				" the player with the most points wins! Good luck!";
+		helpMessage = new String[13];
+		helpMessage[0] = "Every player has their own Lander, which is the base" +
+				" of operations.";
+		helpMessage[1] = "The different Landers are color coded according to" +
+				" each player, as seen on the right of the screen.";
+		helpMessage[2] = "The information for the current player is directly" +
+				" below that.";
+		helpMessage[3] = "The goal of the game is to destroy the other players" +
+				" Landers while protecting your own.";
+		helpMessage[4] = "Each player takes a turn setting the desired angle," +
+				" power, and which type of projectile to use.";
+		helpMessage[5] = "A missile will hurt other Landers, but a teleporter" +
+				" will transport your Lander to the planet that it hits.";
+		helpMessage[6] = "To end a players turn, press the fire button." +
+				" This will move to the next players turn until everyone" +
+				" has input their own values.";
+		helpMessage[7] = "When the last player has hit the fire button, all" +
+				" the projectiles will fire at once!";
+		helpMessage[8] = "Missiles can destroy each other in midair, so use" +
+				" them defensively as well as offensively!";
+		helpMessage[9] = "The game continues until there is only one Lander" +
+				" left, or if all the Landers have been destroyed on the same turn";
+		helpMessage[10] = "The player that has a Lander left at the end of the" +
+				" game automatically wins!";
+		helpMessage[11] = "If there are no Landers left, the player with the most" +
+				" points wins the game.";
+		helpMessage[12] = "Points are scored based on damage done to another player's" +
+				" lander, and extra points are rewarded for destroying a player's Lander";
 			
 	}
 }
