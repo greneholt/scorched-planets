@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -125,25 +126,28 @@ public class PlayerPanel extends JPanel {
 				int index = 0;
 				for (Player p : gameController.getPlayers()) {
 					int health = p.getLander().getHealth();
-					if(health < 0)
-						health = 0;
-					((DefaultTableModel) tableModel).setValueAt(("" + health), index + 1, 1);
+					String healthString;
+					if(health < 0) {
+						healthString = "Dead";
+					}
+					else {
+						healthString = Integer.toString(health);
+					}
+					((DefaultTableModel) tableModel).setValueAt(healthString, index, 1);
 					int score = p.getScore();
-					((DefaultTableModel) tableModel).setValueAt(("" + score), index + 1, 2);
+					((DefaultTableModel) tableModel).setValueAt(Integer.toString(score), index, 2);
 					++index;
 				}
 
 			} else { // Load initial info
 				playerInfoList = new LinkedList<String[]>();
-				int index = 0;
 				for (Player p : gameController.getPlayers()) {
 					// get the name, health, and score
 					int health = p.getLander().getHealth();
 					int score = p.getScore();
-					String[] pInfo = { p.getName(), ("" + health), ("" + score) };
+					String[] pInfo = { p.getName(), Integer.toString(health), Integer.toString(score) };
 
 					((DefaultTableModel) tableModel).addRow(pInfo);
-					++index;
 				}
 			}
 		}
@@ -226,8 +230,7 @@ public class PlayerPanel extends JPanel {
 
 	private JPanel createPlayerListPanel() {
 		String[] headers = { "Player:", "Health:", "Score:" };
-		String[][] data = { headers };
-		tableModel = new DefaultTableModel(data, headers);
+		tableModel = new DefaultTableModel(headers, 0);
 		table = new JTable(tableModel) {
 			public boolean isCellEditable(int rowIndex, int colIndex) {
 				return false; // Disallow the editing of any cell
@@ -250,9 +253,10 @@ public class PlayerPanel extends JPanel {
 			}
 		};
 
-		listPanel = new JPanel();
+		listPanel = new JPanel(new GridLayout());
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
-		listPanel.add(table);
+		JScrollPane scrollPane = new JScrollPane(table);
+		listPanel.add(scrollPane);
 
 		return listPanel;
 	}
