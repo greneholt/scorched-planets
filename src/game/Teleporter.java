@@ -8,12 +8,12 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 public class Teleporter extends Projectile {
-	public static final float MASS = 1;
+	private static final float MASS = 1;
 	private static final float BOUNDING_RADIUS = 4;
-
 	private static final float HEIGHT = 30;
-
 	private static final float WIDTH = 14;
+	private static final float BLAST_RADIUS = 20;
+	private static final float YIELD = 10;
 
 	public Teleporter(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
@@ -38,7 +38,7 @@ public class Teleporter extends Projectile {
 	@Override
 	public void explode() {
 		mapManager.removeProjectile(this);
-		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, Missile.BLAST_RADIUS, YIELD, mapManager));
+		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
 
 	}
 
@@ -49,8 +49,9 @@ public class Teleporter extends Projectile {
 
 	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(-HEIGHT / 2, -WIDTH / 2, HEIGHT, WIDTH);
 		AffineTransform xf = new AffineTransform();
+		xf.translate(position.x, position.y);
 		xf.rotate(getAngle());
 		shape = xf.createTransformedShape(shape);
 		return shape.getBounds2D();
@@ -63,13 +64,6 @@ public class Teleporter extends Projectile {
 
 	@Override
 	public void render(Graphics2D g) {
-		/*Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
-		AffineTransform xf = new AffineTransform();
-		xf.rotate(getAngle());
-		shape = xf.createTransformedShape(shape);
-		g.setColor(Color.BLUE);
-		g.fill(shape);
-		*/
 		AffineTransform savedXf = g.getTransform();
 
 		g.translate(position.x, position.y);

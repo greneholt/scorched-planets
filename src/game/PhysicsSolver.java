@@ -107,14 +107,6 @@ public class PhysicsSolver {
 		return direction.multiply(G * target.getMass() * source.getMass() / (distance * distance * distance));
 	}
 
-	// Overload previous function for use of easy function
-	private Vector gravitationalForce(Vector place, PhysicsObject source) {
-		Vector direction = source.getPosition().subtract(place);
-		float distance = direction.magnitude();
-
-		return direction.multiply(G * Missile.MASS * source.getMass() / (distance * distance * distance));
-	}
-
 	private Vector sumForcesOn(DynamicObject object) {
 		Vector totalForce = new Vector();
 
