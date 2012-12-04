@@ -14,9 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import javax.swing.JRadioButton;
-
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -24,7 +22,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -243,11 +240,13 @@ public class PlayerPanel extends JPanel {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 
+				c.setBackground(Color.WHITE);
+				
 				if (!isRowSelected(row)) {
+					int modelRow = convertRowIndexToModel(row);
+					String name = (String)getModel().getValueAt(modelRow, 0);
 					for(Player p : gameController.getPlayers()) {
-						int modelRow = convertRowIndexToModel(row);
-						String type = (String)getModel().getValueAt(modelRow, 0);
-						if (p.getName().equals(type)) {
+						if (p.getName().equals(name)) {
 							c.setBackground(p.getColor());
 						}
 					}

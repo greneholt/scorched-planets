@@ -2,6 +2,7 @@ package game;
 
 import game.Lander.ProjectileType;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -37,8 +39,10 @@ public class GameController implements KeyListener {
 
 		players = new ArrayList<Player>(playerCount);
 
+		Random rand = new Random();
 		for (int i = 0; i < playerCount; i++) {
-			players.add(new Player("Player " + (i + 1)));
+			Color color = Color.getHSBColor((float) i / playerCount, 1, rand.nextFloat()*0.5f + 0.5f);
+			players.add(new Player("Player " + (i + 1), color));
 		}
 
 		playerPanel.setGameController(this);

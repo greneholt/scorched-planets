@@ -20,6 +20,11 @@ public class Player {
 		Random rand = new Random();
 		color = Color.getHSBColor(rand.nextFloat(), 1, 1);
 	}
+	
+	public Player(String name, Color color) {
+		this.name = name;
+		this.color = color;
+	}
 
 	public void addScore(int score) {
 		this.score += score;
