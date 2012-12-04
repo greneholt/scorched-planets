@@ -30,11 +30,6 @@ public class Missile extends Projectile {
 	}
 
 	@Override
-	public float getBoundingRadius() {
-		return 4;
-	}
-
-	@Override
 	public Rectangle2D getBounds() {
 		Shape shape = new Rectangle2D.Float(-HEIGHT / 2, -WIDTH / 2, HEIGHT, WIDTH);
 		AffineTransform xf = new AffineTransform();
@@ -54,7 +49,7 @@ public class Missile extends Projectile {
 		AffineTransform savedXf = g.getTransform();
 
 		g.translate(position.x, position.y);
-		g.rotate(getAngle());
+		g.rotate(super.getAngle());
 
 		g.setColor(Color.RED);
 
@@ -73,7 +68,5 @@ public class Missile extends Projectile {
 		g.setTransform(savedXf);
 	}
 
-	private float getAngle() {
-		return velocity.angle();
-	}
+	
 }

@@ -5,6 +5,7 @@ public abstract class Projectile extends MovableObject implements Renderable {
 	
 	protected static final float BLAST_RADIUS = 50;
 	protected static final float YIELD = 40;
+	private static final float BOUNDING_RADIUS = 4;
 	
 	protected Lander firedBy;
 
@@ -21,10 +22,18 @@ public abstract class Projectile extends MovableObject implements Renderable {
 	public Lander getFiredBy() {
 		return firedBy;
 	}
+	
+	public float getBoundingRadius() {
+		return BOUNDING_RADIUS;
+	}
 
 	@Override
 	public void simulateStep(Vector force, float timeStep) {
 		Vector dragForce = velocity.multiply(-DRAG_COEFFICIENT);
 		super.simulateStep(force.add(dragForce), timeStep);
+	}
+	
+	protected float getAngle() {
+		return velocity.angle();
 	}
 }

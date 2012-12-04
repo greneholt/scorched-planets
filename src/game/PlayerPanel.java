@@ -109,6 +109,8 @@ public class PlayerPanel extends JPanel {
 			String name = gameController.getCurrentPlayer().getName();
 			playerName.setText("Current Player: " + name);
 			int health = gameController.getCurrentPlayer().getLander().getHealth();
+			if(health < 0)
+				health = 0;
 			healthLabel.setText("Health: " + health + "/" + Lander.FULL_HEALTH);
 			int score = gameController.getCurrentPlayer().getScore();
 			scoreLabel.setText("Score: " + score);
@@ -127,6 +129,8 @@ public class PlayerPanel extends JPanel {
 				int index = 0;
 				for (Player p : gameController.getPlayers()) {
 					int health = p.getLander().getHealth();
+					if(health < 0)
+						health = 0;
 					((DefaultTableModel) tableModel).setValueAt(("" + health), index + 1, 1);
 					int score = p.getScore();
 					((DefaultTableModel) tableModel).setValueAt(("" + score), index + 1, 2);

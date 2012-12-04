@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Teleporter extends Projectile {
 	public static final float MASS = 1;
-	private static final float BOUNDING_RADIUS = 4;
+	
 
 	private static final float HEIGHT = 30;
 
@@ -43,15 +43,11 @@ public class Teleporter extends Projectile {
 	}
 
 	@Override
-	public float getBoundingRadius() {
-		return BOUNDING_RADIUS;
-	}
-
-	@Override
 	public Rectangle2D getBounds() {
-		Shape shape = new Rectangle2D.Float(position.x, position.y, WIDTH, HEIGHT);
+		Shape shape = new Rectangle2D.Float(-HEIGHT/2, -WIDTH/2, HEIGHT, WIDTH);
 		AffineTransform xf = new AffineTransform();
-		xf.rotate(getAngle());
+		xf.translate(position.x, position.y);
+		xf.rotate(position.x, position.y);
 		shape = xf.createTransformedShape(shape);
 		return shape.getBounds2D();
 	}
@@ -90,9 +86,5 @@ public class Teleporter extends Projectile {
 		g.fill(path);
 
 		g.setTransform(savedXf);
-	}
-
-	private double getAngle() {
-		return Math.atan2(velocity.y, velocity.x);
 	}
 }
