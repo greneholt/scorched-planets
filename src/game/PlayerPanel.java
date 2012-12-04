@@ -4,6 +4,7 @@ import game.Lander.ProjectileType;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -252,10 +253,11 @@ public class PlayerPanel extends JPanel {
 				return c;
 			}
 		};
-
+		
 		listPanel = new JPanel(new GridLayout());
 		listPanel.setBorder(new TitledBorder(new EtchedBorder(), "Player Info"));
 		JScrollPane scrollPane = new JScrollPane(table);
+		listPanel.setPreferredSize(new Dimension(220, 200));
 		listPanel.add(scrollPane);
 
 		return listPanel;
