@@ -84,14 +84,12 @@ public class MainWindow extends JFrame {
 	}
 
 	private JMenuItem createFileExitItem() {
-
 		JMenuItem item = new JMenuItem("Exit");
-		class MenuItemListener implements ActionListener {
+		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
-		}
-		item.addActionListener(new MenuItemListener());
+		});
 		return item;
 	}
 
@@ -117,9 +115,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int change;
 				do {
-					change = JOptionPane.showOptionDialog(mw, helpMessage[count], 
-							"Game Directions", JOptionPane.YES_NO_OPTION, 
-							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					change = JOptionPane.showOptionDialog(mw, helpMessage[count], "Game Directions", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 					if (change == JOptionPane.YES_OPTION)
 						count = (count + 1) % helpMessage.length;
 					if (change == JOptionPane.NO_OPTION)
@@ -137,8 +133,8 @@ public class MainWindow extends JFrame {
 	private JMenu createFileMenu() {
 
 		JMenu menu = new JMenu("File");
-		menu.add(createFileExitItem());
 		menu.add(createFileHelpItem());
+		menu.add(createFileExitItem());
 		return menu;
 	}
 
@@ -148,33 +144,18 @@ public class MainWindow extends JFrame {
 
 	private void setHelpMessage() {
 		helpMessage = new String[13];
-		helpMessage[0] = "Every player has their own Lander, which is the base" +
-				" of operations.";
-		helpMessage[1] = "The different Landers are color coded according to" +
-				" each player, as seen on the right of the screen.";
-		helpMessage[2] = "The information for the current player is directly" +
-				" below that.";
-		helpMessage[3] = "The goal of the game is to destroy the other players" +
-				" Landers while protecting your own.";
-		helpMessage[4] = "Each player takes a turn setting the desired angle," +
-				" power, and which type of projectile to use.";
-		helpMessage[5] = "A missile will hurt other Landers, but a teleporter" +
-				" will transport your Lander to the planet that it hits.";
-		helpMessage[6] = "To end a players turn, press the fire button." +
-				" This will move to the next players turn until everyone" +
-				" has input their own values.";
-		helpMessage[7] = "When the last player has hit the fire button, all" +
-				" the projectiles will fire at once!";
-		helpMessage[8] = "Missiles can destroy each other in midair, so use" +
-				" them defensively as well as offensively!";
-		helpMessage[9] = "The game continues until there is only one Lander" +
-				" left, or if all the Landers have been destroyed on the same turn";
-		helpMessage[10] = "The player that has a Lander left at the end of the" +
-				" game automatically wins!";
-		helpMessage[11] = "If there are no Landers left, the player with the most" +
-				" points wins the game.";
-		helpMessage[12] = "Points are scored based on damage done to another player's" +
-				" lander, and extra points are rewarded for destroying a player's Lander";
-			
+		helpMessage[0] = "Every player has their own Lander, which is the base" + " of operations.";
+		helpMessage[1] = "The different Landers are color coded according to" + " each player, as seen on the right of the screen.";
+		helpMessage[2] = "The information for the current player is directly" + " below that.";
+		helpMessage[3] = "The goal of the game is to destroy the other players" + " Landers while protecting your own.";
+		helpMessage[4] = "Each player takes a turn setting the desired angle," + " power, and which type of projectile to use.";
+		helpMessage[5] = "A missile will hurt other Landers, but a teleporter" + " will transport your Lander to the planet that it hits.";
+		helpMessage[6] = "To end a players turn, press the fire button." + " This will move to the next players turn until everyone" + " has input their own values.";
+		helpMessage[7] = "When the last player has hit the fire button, all" + " the projectiles will fire at once!";
+		helpMessage[8] = "Missiles can destroy each other in midair, so use" + " them defensively as well as offensively!";
+		helpMessage[9] = "The game continues until there is only one Lander" + " left, or if all the Landers have been destroyed on the same turn";
+		helpMessage[10] = "The player that has a Lander left at the end of the" + " game automatically wins!";
+		helpMessage[11] = "If there are no Landers left, there is no winner.";
+		helpMessage[12] = "Points are scored based on damage done to another player's" + " lander, and extra points are rewarded for destroying a player's Lander or winning a round.";
 	}
 }
