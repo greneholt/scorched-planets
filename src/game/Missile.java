@@ -22,6 +22,7 @@ public class Missile extends Rocket {
 	}
 
 	@Override
+
 	protected Color getColor() {
 		return Color.RED;
 	}

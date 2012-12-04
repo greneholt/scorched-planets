@@ -241,9 +241,14 @@ public class GameController implements KeyListener {
 			String message;
 
 			if (activePlayers.size() == 1) {
-				message = activePlayers.getFirst().getName() + " wins! Continue?";
+				message = activePlayers.getFirst().getName() + " wins! New game?";
 			} else {
-				message = "No winner. Continue?";
+				Player winner = players.get(0);
+				for (Player p : players) {
+					if(winner.getScore() < p.getScore())
+						winner = p;
+				}
+				message = winner.getName() + " wins! New game?";
 			}
 
 			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
