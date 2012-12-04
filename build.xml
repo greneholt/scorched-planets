@@ -1,0 +1,15 @@
+<project default="jar">
+  <target name="compile">
+    <delete dir="bin" />
+    <mkdir dir="bin" />
+    <javac srcdir="src" destdir="bin" excludes="tests/**" />
+  </target>
+  <target name="jar" depends="compile">
+    <jar destfile="Scorched Planets.jar"
+         basedir="bin">
+      <manifest>
+        <attribute name="Main-Class" value="game.MainWindow" />
+      </manifest>
+    </jar>
+  </target>
+</project>
