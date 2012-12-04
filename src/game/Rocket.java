@@ -11,8 +11,8 @@ public abstract class Rocket extends Projectile {
 	private static final int BOUNDING_RADIUS = 4;
 	private static final float DRAG_COEFFICIENT = 5f;
 	private static final float MASS = 1;
-	static final float HEIGHT = 30;
-	static final float WIDTH = 14;
+	private static final float HEIGHT = 30;
+	private static final float WIDTH = 14;
 
 	public Rocket(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
@@ -27,7 +27,7 @@ public abstract class Rocket extends Projectile {
 	public Rectangle2D getBounds() {
 		Shape shape = new Rectangle2D.Float(-HEIGHT / 2, -WIDTH / 2, HEIGHT, WIDTH);
 		AffineTransform xf = new AffineTransform();
-		xf.translate(position.x, position.y);
+		xf.translate(getPosition().x, getPosition().y);
 		xf.rotate(getAngle());
 		shape = xf.createTransformedShape(shape);
 		return shape.getBounds2D();
@@ -42,7 +42,7 @@ public abstract class Rocket extends Projectile {
 	public void render(Graphics2D g) {
 		AffineTransform savedXf = g.getTransform();
 
-		g.translate(position.x, position.y);
+		g.translate(getPosition().x, getPosition().y);
 		g.rotate(getAngle());
 
 		g.setColor(getColor());
@@ -64,12 +64,12 @@ public abstract class Rocket extends Projectile {
 
 	@Override
 	public void simulateStep(Vector force, float timeStep) {
-		Vector dragForce = velocity.multiply(-DRAG_COEFFICIENT);
+		Vector dragForce = getVelocity().multiply(-DRAG_COEFFICIENT);
 		super.simulateStep(force.add(dragForce), timeStep);
 	}
 
 	private float getAngle() {
-		return velocity.angle();
+		return getVelocity().angle();
 	}
 
 	protected abstract Color getColor();

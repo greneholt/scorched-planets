@@ -5,6 +5,7 @@ import java.awt.Color;
 public class Teleporter extends Rocket {
 	private static final float BLAST_RADIUS = 20;
 	private static final float YIELD = 10;
+	private static final Color COLOR = new Color(0x42E0FF);
 
 	public Teleporter(Lander firedBy, Vector position, Vector velocity, MapManager mapManager) {
 		super(firedBy, position, velocity, mapManager);
@@ -12,29 +13,29 @@ public class Teleporter extends Rocket {
 
 	@Override
 	public void collidedWith(PhysicsObject other) {
-
 		// change lander location if it hits a planet
 		if (other instanceof Planet) {
-			firedBy.setCurrentPlanet((Planet) other);
-
-			Vector newPosition = position.subtract(other.getPosition());
-			float angleOnPlanet = (float) (Math.atan2(newPosition.y, newPosition.x));
-
-			firedBy.setAngleAndPosition(angleOnPlanet, (Planet) other);
+			getMapManager().addRenderable(new TeleporterSource(getFiredBy().getPosition(), getMapManager()));
+			getMapManager().addRenderable(new TeleporterDestination(getFiredBy(), (Planet) other, getPosition(), getMapManager()));
 		}
-		mapManager.removeProjectile(this);
-
+		else {
+			makeExplosion();
+		}
+		getMapManager().removeProjectile(this);
 	}
 
 	@Override
 	public void explode() {
-		mapManager.removeProjectile(this);
-		mapManager.addRenderable(new Explosion(firedBy.getPlayer(), position, BLAST_RADIUS, YIELD, mapManager));
+		getMapManager().removeProjectile(this);
+		makeExplosion();
+	}
 
+	private void makeExplosion() {
+		getMapManager().addRenderable(new Explosion(getFiredBy().getPlayer(), getPosition(), BLAST_RADIUS, YIELD, getMapManager()));
 	}
 
 	@Override
 	protected Color getColor() {
-		return Color.GREEN;
+		return COLOR;
 	}
 }

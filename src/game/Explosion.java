@@ -1,86 +1,59 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
+
 
 /*
  * Explosions are created at the point of impact and added to the scene. They render the animation of the explosion, and cause damage.
  */
-public class Explosion implements Animatable {
-	private static final int CONTRACT_STEPS = 30;
-	private static final int EXPAND_STEPS = 10;
-	private int animationStep = 0;
-	private float blastRadius;
+public class Explosion extends Shockwave {
+	static final Color COLOR = new Color(0xFC410D);
+	static final int CONTRACT_STEPS = 30;
+	static final int EXPAND_STEPS = 10;
 	private Player causedBy;
-	private MapManager mapManager;
-
-	private Vector position;
-
+	private float blastRadius;
 	private float yield;
 
 	public Explosion(Player causedBy, Vector position, float blastRadius, float yield, MapManager mapManager) {
+		super(position, mapManager);
 		this.causedBy = causedBy;
-		this.position = position;
 		this.blastRadius = blastRadius;
 		this.yield = yield;
-		this.mapManager = mapManager;
 	}
 
 	@Override
-	public void animationTick() {
-		animationStep++;
+	protected float getBlastRadius() {
+		return blastRadius;
+	}
 
-		if (animationStep == EXPAND_STEPS) {
-			List<Lander> landersTemp = new LinkedList<Lander>(mapManager.getLanders());
-			for (Lander lander : landersTemp) {
-				float distance = Vector.distanceBetween(lander.getPosition(), position);
+	@Override
+	protected Color getColor() {
+		return COLOR;
+	}
 
-				if (distance < blastRadius) {
-					int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
+	@Override
+	protected int getContractSteps() {
+		return CONTRACT_STEPS;
+	}
 
-					lander.damage(damage, causedBy);
-				}
+	@Override
+	protected int getExpandSteps() {
+		return EXPAND_STEPS;
+	}
+
+	@Override
+	protected void reachedMaxSize() {
+		List<Lander> landersTemp = new LinkedList<Lander>(getMapManager().getLanders());
+		for (Lander lander : landersTemp) {
+			float distance = Vector.distanceBetween(lander.getPosition(), getPosition());
+
+			if (distance < blastRadius) {
+				int damage = (int) ((1 - (distance / blastRadius) * (distance / blastRadius)) * yield);
+
+				lander.damage(damage, causedBy);
 			}
-		}
-
-		if (animationStep == EXPAND_STEPS + CONTRACT_STEPS) {
-			mapManager.removeRenderable(this);
-		}
-	}
-
-	@Override
-	public Rectangle2D getBounds() {
-		float radius = getCurrentRadius();
-
-		return new Rectangle2D.Float(position.x - radius, position.y - radius, radius * 2, radius * 2);
-	}
-
-	@Override
-	public void render(Graphics2D g) {
-		float radius = getCurrentRadius();
-
-		Shape shape = new Ellipse2D.Float(-radius, -radius, radius * 2, radius * 2);
-
-		AffineTransform savedXf = g.getTransform();
-
-		g.translate(position.x, position.y);
-		g.setColor(new Color(0xFC410D));
-		g.fill(shape);
-
-		g.setTransform(savedXf);
-	}
-
-	private float getCurrentRadius() {
-		if (animationStep <= EXPAND_STEPS) {
-			return blastRadius * animationStep / EXPAND_STEPS;
-		} else {
-			return blastRadius * (EXPAND_STEPS + CONTRACT_STEPS - animationStep) / CONTRACT_STEPS;
 		}
 	}
 }
