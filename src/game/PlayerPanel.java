@@ -41,10 +41,8 @@ public class PlayerPanel extends JPanel {
 
 	private JPanel infoPanel;
 	private JPanel listPanel;
-	private List<JLabel> playerHealthLabels = null;
 
 	private JLabel playerName, healthLabel, scoreLabel;
-	private List<JLabel> playerScoreLabels = null;
 
 	private JTable table;
 	private TableModel tableModel;
@@ -60,8 +58,8 @@ public class PlayerPanel extends JPanel {
 		setLayout(new GridLayout(0, 1));
 
 		fireButton = new JButton("Fire");
+		fireButton.setFocusable(false);
 		fireButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameController.nextPlayer();
@@ -77,11 +75,6 @@ public class PlayerPanel extends JPanel {
 	public void setAngle(float angle) {
 		angleSpinner.setValue(angle * 180 / (float) Math.PI);
 	}
-
-	/*
-	 * private class ButtonListener implements ActionListener { public void actionPerformed(ActionEvent e) { if (e.getSource() == nextTurn) {
-	 * gameController.getCurrentPlayer().getLander().setAngle(getAngle()); gameController.getCurrentPlayer().getLander().setPower(getPower()); gameController.nextTurn(); } } }
-	 */
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
@@ -160,6 +153,7 @@ public class PlayerPanel extends JPanel {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		angleSpinner = new JSpinner(new SpinnerNumberModel(90f, 0f, 180f, 1f));
+		angleSpinner.setFocusable(false);
 		angleSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -172,8 +166,8 @@ public class PlayerPanel extends JPanel {
 		});
 
 		powerSpinner = new JSpinner(new SpinnerNumberModel(Lander.MAX_POWER, 0, Lander.MAX_POWER, 1));
+		powerSpinner.setFocusable(false);
 		powerSpinner.addChangeListener(new ChangeListener() {
-
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				int power = (Integer) powerSpinner.getValue();
@@ -185,7 +179,9 @@ public class PlayerPanel extends JPanel {
 		});
 
 		missile = new JRadioButton("Missile");
+		missile.setFocusable(false);
 		teleporter = new JRadioButton("Teleporter");
+		teleporter.setFocusable(false);
 		missile.setSelected(true);
 		ButtonGroup projectileType = new ButtonGroup();
 		projectileType.add(missile);
@@ -242,13 +238,11 @@ public class PlayerPanel extends JPanel {
 
 				c.setBackground(Color.WHITE);
 				
-				if (!isRowSelected(row)) {
-					int modelRow = convertRowIndexToModel(row);
-					String name = (String)getModel().getValueAt(modelRow, 0);
-					for(Player p : gameController.getPlayers()) {
-						if (p.getName().equals(name)) {
-							c.setBackground(p.getColor());
-						}
+				int modelRow = convertRowIndexToModel(row);
+				String name = (String)getModel().getValueAt(modelRow, 0);
+				for(Player p : gameController.getPlayers()) {
+					if (p.getName().equals(name)) {
+						c.setBackground(p.getColor());
 					}
 				}
 
