@@ -248,14 +248,14 @@ public class GameController implements KeyListener {
 			if (activePlayers.size() == 1) {
 				Player winner = activePlayers.getFirst();
 				winner.addScore(WIN_BONUS);
-				message = winner.getName() + " wins! New game?";
+				message = winner.getName() + " won this round! Continue?";
 			} else {
-				message = "No winner. Continue?";
+				message = "No winner for this round. Continue?";
 			}
 
 			playerPanel.updatePlayerListInfo();
 			
-			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Game over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+			int n = JOptionPane.showConfirmDialog(sceneComponent, message, "Round over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 			// if they say yes
 			if (n == 0) {
