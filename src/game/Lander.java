@@ -10,9 +10,11 @@ import java.awt.geom.Rectangle2D;
 
 public class Lander implements StaticObject, Renderable {
 
+	public enum ProjectileType {MISSILE, TELEPORTER }
 	public static int FULL_HEALTH = 100;
 	public static int MAX_POWER = 100;
 	private static final float ANGLE_INCREMENT = (float) Math.PI / 80;
+	private static final int BOUNDING_RADIUS = 4;
 
 	private static final int DESTROYED_BLAST_RADIUS = 30;
 
@@ -20,25 +22,25 @@ public class Lander implements StaticObject, Renderable {
 	private static final int GUN_LENGTH = 40;
 
 	private static final float HEIGHT = 8;
+	private static final int MASS = 1;
 	private static final float POWER_MULTIPLIER = 200f;
-	private static final float WIDTH = 20;
 	
+	private static final float WIDTH = 20;
 	private float angle;
 	private Planet currentPlanet;
 	private float gunAngle;
 	private int health;
 	private boolean highlight;
+
 	private MapManager mapManager;
 
 	private Player player;
 
 	private Vector position;
-
+	
 	private int power;
 	
 	private ProjectileType projectileType;
-	
-	public enum ProjectileType {MISSILE, TELEPORTER }
 	
 	public Lander(Player player, Planet planet, float angle, MapManager mapManager) {
 		this.player = player;
@@ -106,8 +108,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public float getBoundingRadius() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BOUNDING_RADIUS;
 	}
 
 	@Override
@@ -134,7 +135,7 @@ public class Lander implements StaticObject, Renderable {
 
 	@Override
 	public float getMass() {
-		return 0;
+		return MASS;
 	}
 
 	public Player getPlayer() {
@@ -150,11 +151,21 @@ public class Lander implements StaticObject, Renderable {
 		return power;
 	}
 
+	public ProjectileType getProjectileType() {
+		return projectileType;
+	}
+
 	public void increasePower() {
 		power++;
 		if (power > MAX_POWER) {
 			power = MAX_POWER;
 		}
+	}
+
+	public void placeOnPlanet(float angle, Planet planet) {
+		setCurrentPlanet(planet);
+		setAngle(angle);
+		setPosition(planet.getPosition().add(Vector.polar(planet.getRadius(), angle)));
 	}
 
 	@Override
@@ -235,26 +246,16 @@ public class Lander implements StaticObject, Renderable {
 	public void setHighlight(boolean highlight) {
 		this.highlight = highlight;
 	}
-
+	
 	public void setPosition(Vector position) {
 		this.position = position;
 	}
-
+	
 	public void setPower(int power) {
 		this.power = power;
 	}
 	
-	public ProjectileType getProjectileType() {
-		return projectileType;
-	}
-	
 	public void setProjectileType(ProjectileType pt) {
 		projectileType = pt;
-	}
-	
-	public void placeOnPlanet(float angle, Planet planet) {
-		setCurrentPlanet(planet);
-		setAngle(angle);
-		setPosition(planet.getPosition().add(Vector.polar(planet.getRadius(), angle)));
 	}
 }
